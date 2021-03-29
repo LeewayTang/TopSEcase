@@ -1,15 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import loginRegister from '../components/loginRegister.vue'
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
-  ]
+const routes = [
+  {
+    path: '/',
+    name: 'login',
+    component: loginRegister
+  }
+]
+
+const router = new Router({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
 })
+
+export default router
