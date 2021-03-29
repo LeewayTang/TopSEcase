@@ -64,7 +64,7 @@ export default{
     },
     login () {
       const self = this
-      if (self.form.useremail != '' && self.form.userpwd != '') {
+      if (self.form.useremail !== '' && self.form.userpwd !== '') {
         self.$axios({
           method: 'post',
           url: 'http://127.0.0.1:10520/api/user/login',
@@ -95,7 +95,7 @@ export default{
     },
     register () {
       const self = this
-      if (self.form.username != '' && self.form.useremail != '' && self.form.userpwd != '') {
+      if (self.form.username !== '' && self.form.useremail !== '' && self.form.userpwd !== '') {
         self.$axios({
           method: 'post',
           url: 'http://127.0.0.1:10520/api/user/add',
