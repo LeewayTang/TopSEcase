@@ -12,6 +12,8 @@
         <div class="site-menus" :class="{'mobileShow':mobileShow}" @click.stop="mobileShow=!mobileShow">
             <div class="menu-item header-search"><header-search/></div>
             <div class="menu-item"><router-link to="/">首页</router-link></div>
+            <div class="menu-item"><router-link to="/login">登录</router-link></div>
+<!--            <div class="menu-item"><router-link to="/writeBolg">创作</router-link></div>-->
             <div class="menu-item hasChild">
                 <a href="#">文章</a>
                 <div class="childMenu" v-if="category.length">
