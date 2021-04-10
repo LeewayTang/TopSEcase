@@ -50,7 +50,8 @@
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import MyHeader from "./MyHeader.vue";
-import qs from "qs";
+import VueElElements from 'vue-el-element';
+
 export default {
   name: "Write",
   components: {

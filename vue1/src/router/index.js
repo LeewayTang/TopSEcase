@@ -1,8 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
+import VueElElements from 'vue-el-element'
 
 Vue.use(VueRouter)
+Vue.use(VueElElements)
+
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor)
+new Vue({
+    'el': '#main'
+})
 
 const routes = [
     {
@@ -17,12 +27,12 @@ const routes = [
         component: () => import('../views/loginRegister.vue'),
         meta: { title: '注册登录'}
     },
-    // {
-    //     path: '/writeBlog',
-    //     name: 'writeBlog',
-    //     component: () => import('../components/Write.vue'),
-    //     meta: { title: '创作'}
-    // },
+    {
+        path: '/writeBlog',
+        name: 'writeBlog',
+        component: () => import('../components/Write1.vue'),
+        meta: { title: '创作'}
+    },
     {
         path: '/category/:cate',
         name: 'category',
