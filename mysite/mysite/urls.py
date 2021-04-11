@@ -17,7 +17,25 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 
+from rest_framework import permissions
+from drf_yasg2.views import get_schema_view
+from drf_yasg2 import openapi
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Tweet API",
+        default_version='v1',
+        description="Welcome to the world of Tweet",
+        terms_of_service="https://www.tweet.org",
+        contact=openapi.Contact(email="demo@tweet.org"),
+        license=openapi.License(name="Awesome IP"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', TemplateView.as_view(template_name="index.html"))
+    path('doc/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('', TemplateView.as_view(template_name="index.html"))
 ]
