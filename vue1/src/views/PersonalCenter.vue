@@ -12,20 +12,20 @@
           <MenuGroup style="padding-top:120px;text-align: center">
             <a href="#message">
               <MenuItem name="1">
-                <Icon type="md-body"/>
-                <span>关于鄙人</span>
+                <Icon size="50" type="md-body"/>
+                <span class="menu-text">信息</span>
               </MenuItem>
             </a>
             <a href="#develop">
               <MenuItem name="2">
-                <Icon type="ios-cafe"/>
-                <span>发展历程</span>
+                <Icon size="50" type="ios-cafe"/>
+                <span class="menu-text">圈子</span>
               </MenuItem>
             </a>
             <a href="#front">
               <MenuItem name="3">
-                <Icon type="md-clock"/>
-                <span>前端之路</span>
+                <Icon size="50" type="md-clock"/>
+                <span class="menu-text">书评</span>
               </MenuItem>
             </a>
             <div class="colorPick">
@@ -41,14 +41,14 @@
         <div class="con">
           <Content :style="{ margin: '20px', background: '#fff', minHeight: '220px'}">
             <card class="write" id="message">
-              <h1 slot="title">
-                About Me
+              <h1 class="-head-title" slot="title">
+                个人信息 About Me
               </h1>
 
-                <div style="display: inline-block;top: 0;height: 47vh;margin: 0 20px">
-                  <img v-if="headImg"  src="https://s3.ax1x.com/2021/02/12/yDqk7V.jpg" alt="face"
-                       style="position:relative;object-fit:cover;height:55vh;width: 65vh"/>
-                </div>
+<!--                <div style="display: inline-block;top: 0;height: 47vh;margin: 0 20px">-->
+<!--                  <img v-if="headImg" src="https://s3.ax1x.com/2021/02/12/yDqk7V.jpg" alt="face"-->
+<!--                       style="position:relative;object-fit:cover;height:20vh;width: 30vh"/>-->
+<!--                </div>-->
                 <div style="display: inline-block;top:0">
                   <cell>
                     <ol style="font-size: 25px;font-weight: bold" :style="{color:color}">information</ol>
@@ -74,8 +74,8 @@
             <!--          关于我-->
             <Divider dashed/>
             <card class="write" id="develop">
-              <h1 slot="title">
-                development
+              <h1 class="-head-title" slot="title">
+                圈子 Circle
               </h1>
               <Timeline>
                 <TimelineItem>
@@ -220,8 +220,8 @@
             <!--          发展历程-->
             <Divider dashed/>
             <card class="write" id="front">
-              <h1 slot="title">
-                Article
+              <h1 class="-head-title" slot="title">
+                书评 Book Review
               </h1>
                 <h2 :style="{borderBottomColor:color}">
                   <span :style="{backgroundColor:color}">编写个人主页</span>
@@ -288,9 +288,24 @@ export default {
   }
 }
 </script>
+<style scoped="scoped">
+.menu-text{
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-size: 3.0em;
+  font-weight: bold;
+  color: #6cd0b9;
+}
+.-head-title{
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-size: 4.0em;
+  font-weight: bold;
+  color: #6cd0b9;
+}
+.con{
+  margin-top: 60px;
+}
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+/*<!-- Add "scoped" attribute to limit CSS to this component only -->*/
 
 @import "../css/table.css";
 @import "../css/orangeheart.css";
