@@ -84,7 +84,7 @@
             }
         }
         &.home-banner {
-            height: 550px;
+            height: 350px;
             .banner-img{
                 background-position: center center;
                 background-repeat: no-repeat;
