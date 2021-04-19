@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
 import VueElElements from 'vue-el-element'
+import personalCenter from '@/views/PersonalCenter'
 
 Vue.use(VueRouter)
 Vue.use(VueElElements)
@@ -26,6 +27,12 @@ const routes = [
         name: 'login',
         component: () => import('../views/loginRegister.vue'),
         meta: { title: '注册登录'}
+    },
+    {
+        path: '/personalCenter',
+        name: 'personalCenter',
+        component: () => import('../views/PersonalCenter.vue'),
+        meta: { title: '个人中心'}
     },
     {
         path: '/writeBlog',

@@ -10,7 +10,7 @@
 
 <style scoped>
     h1.section-title {
-        color: #757575;
+        color: #007575;
         font-size: 16px;
         font-weight: 400;
         padding-bottom: 15px;
