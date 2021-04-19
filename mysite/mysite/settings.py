@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'drf_yasg2',
+    'drf_yasg',
+    'rest_framework',
+    'django1',
 ]
 
 MIDDLEWARE = [
@@ -108,6 +110,32 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': '/admin/login',
+    'LOGOUT_URL': '/admin/logout',
+    'PERSIST_AUTH': True,
+    'REFETCH_SCHEMA_WITH_AUTH': True,
+    'REFETCH_SCHEMA_ON_LOGOUT': True,
+
+    'DEFAULT_INFO': 'your_project.urls.swagger_info',#这里注意，更改为自己的项目路径
+
+    'SECURITY_DEFINITIONS': {
+        'Basic': {
+            'type': 'basic'
+        },
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'authorization',
+            'in': 'header'
+        },
+        'Query': {
+            'type': 'apiKey',
+            'name': 'auth',
+            'in': 'query'
+        }
+    }
+}
 
 
 # Internationalization
