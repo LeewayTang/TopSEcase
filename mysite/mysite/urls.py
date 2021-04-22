@@ -35,6 +35,8 @@ schema_view = get_schema_view(
 )
 
 
+router = routers.DefaultRouter()
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(
@@ -48,12 +50,11 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-
-
+    #path("api/login/", views.login),
     path('', TemplateView.as_view(template_name="index.html"))
 ]
 
-router = routers.DefaultRouter()
 router.register('user', views.UserInfoView)
+router.register('login', views.Login, basename='post')
 
-urlpatterns += path('user_api/', include(router.urls)),
+urlpatterns += path('api/', include(router.urls)),
