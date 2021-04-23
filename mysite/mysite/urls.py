@@ -55,6 +55,6 @@ urlpatterns = [
 ]
 
 router.register('user', views.UserInfoView)
-router.register('login', views.Login, basename='post')
+router.register('login_register', views.LoginRegister)
 
 urlpatterns += path('api/', include(router.urls)),

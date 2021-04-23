@@ -6,11 +6,12 @@ from django.db import models
 class User(models.Model):
     uid = models.CharField(verbose_name='用户名', max_length=16, primary_key=True)
     pwd = models.CharField(verbose_name='密码', max_length=16)
+    sex = models.IntegerField(verbose_name='性别', default=0)
     mail = models.EmailField(verbose_name='邮箱', max_length=32, unique=True)
-    avatar = models.CharField(verbose_name='头像', max_length=32, default="")
+    avatar = models.CharField(verbose_name='头像', max_length=32, default="NO")
     createTime = models.DateField(verbose_name='注册时间', auto_now=False)
     isTeacher = models.BooleanField(verbose_name='是否为导师', default=False)
-    cid = models.CharField(verbose_name='所属圈子id', max_length=16, default="")
+    cid = models.CharField(verbose_name='所属圈子id', max_length=16, default="NO")
 
 # 日志
 class Journal(models.Model):

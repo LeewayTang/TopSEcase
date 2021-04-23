@@ -82,21 +82,46 @@ class UserInfoView(viewsets.ModelViewSet):
 #         auto_schema=None,
 #     ),
 # )
-class Login(viewsets.GenericViewSet):
-    queryset = User.objects.all#.filter(uid=Uid, mail=Mail, pwd=Pwd)
-    serializer_class = LoginInfoSerializer
-    @action(methods=['GET'], detail=True)
+
+
+class LoginRegister(viewsets.GenericViewSet):
+    """
+    login:
+    账户，邮箱，密码
+    """
+    queryset = User.objects.all()
+    # serializer_class = LoginRegisterInfoSerializer
+    # test_param = openapi.Parameter('test', openapi.IN_QUERY, description="test manual param", type=openapi.TYPE_BOOLEAN)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=LoginInfoSerializer)
+                         #manual_parameters=[test_param])
+    @action(methods=['POST'], detail=False)
     def login(self, request):
-        # """
-        #     账户，邮箱，密码
-        # """
+        print(request)
+        data_json = json.loads(request.body)
+        print(data_json)
+        Uid = data_json.get('uid')
+        Pwd = data_json.get('pwd')
+        print(Uid, Pwd)
+        queryset = User.objects.filter(uid__contains=Uid)  # .filter(uid=Uid, mail=Mail, pwd=Pwd)
+        if queryset.count() == 0:
+            return Response({'msg': '用户名不存在'})
+        queryset = User.objects.filter(uid__contains=Uid, pwd__contains=Pwd)
+        if queryset.count() == 0:
+            return Response({'msg': '密码不正确'})
+        # (user_list, many=True)
+        ret = {'msg': 'success'}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=RegisterInfoSerializer)
+    @action(methods=['POST'], detail=True)
+    def register(self, request):
         Uid = request.GET.get('uid')
         Mail = request.GET.get('mail')
         Pwd = request.GET.get('pwd')
-        queryset = User.objects.filter(uid=Uid, mail=Mail, pwd=Pwd)  # .filter(uid=Uid, mail=Mail, pwd=Pwd)
-        serializer_class = LoginInfoSerializer
-        # (user_list, many=True)
-        # return Response(serializer_class.data)
 
-
+        queryset = User.objects.filter(uid=Uid, mail=Mail, pwd=Pwd)
+        return
 
