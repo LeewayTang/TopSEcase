@@ -91,7 +91,7 @@ class LoginRegister(viewsets.GenericViewSet):
     账户，邮箱，密码
     """
     queryset = User.objects.all()
-    # serializer_class = LoginRegisterInfoSerializer
+    serializer_class = LoginInfoSerializer
     # test_param = openapi.Parameter('test', openapi.IN_QUERY, description="test manual param", type=openapi.TYPE_BOOLEAN)
 
     @swagger_auto_schema(responses={200: ""},

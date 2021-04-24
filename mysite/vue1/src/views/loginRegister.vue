@@ -73,22 +73,22 @@ export default{
             password: self.form.userpwd
           }
         })
-          .then(res => {
-            switch (res.data) {
-              case 0:
-                alert('登陆成功！')
-                break
-              case -1:
-                this.emailError = true
-                break
-              case 1:
-                this.passwordError = true
-                break
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
+            .then(res => {
+              switch (res.data) {
+                case 0:
+                  alert('登陆成功！')
+                  break
+                case -1:
+                  this.emailError = true
+                  break
+                case 1:
+                  this.passwordError = true
+                  break
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
       } else {
         alert('填写不能为空！')
       }
@@ -105,20 +105,20 @@ export default{
             password: self.form.userpwd
           }
         })
-          .then(res => {
-            switch (res.data) {
-              case 0:
-                alert('注册成功！')
-                this.login()
-                break
-              case -1:
-                this.existed = true
-                break
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
+            .then(res => {
+              switch (res.data) {
+                case 0:
+                  alert('注册成功！')
+                  this.login()
+                  break
+                case -1:
+                  this.existed = true
+                  break
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
       } else {
         alert('填写不能为空！')
       }

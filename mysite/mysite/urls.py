@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from django.views.generic import TemplateView
 from django1 import views
+from django1.views import LoginRegister
 
 from rest_framework import routers, permissions
 from drf_yasg.views import get_schema_view
@@ -50,12 +51,13 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    #path("api/login/", views.login),
-    path('', TemplateView.as_view(template_name="index.html"))
-    #re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    # path("api/login/", views.login),
+    path('', TemplateView.as_view(template_name="index.html")),
+    # re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    # path("register/", LoginRegister.register)
 ]
 
-router.register('user', views.UserInfoView)
+# router.register('user', views.UserInfoView)
 router.register('login_register', views.LoginRegister)
 
 urlpatterns += path('api/', include(router.urls)),
