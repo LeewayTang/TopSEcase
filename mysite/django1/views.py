@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import mixins
 from rest_framework.decorators import action
+import re
 
 
 # Create your views here.
@@ -117,11 +118,19 @@ class LoginRegister(viewsets.GenericViewSet):
     @swagger_auto_schema(responses={200: ""},
                          request_body=RegisterInfoSerializer)
     @action(methods=['POST'], detail=True)
-    def register(self, request):
-        Uid = request.GET.get('uid')
-        Mail = request.GET.get('mail')
-        Pwd = request.GET.get('pwd')
-
-        queryset = User.objects.filter(uid=Uid, mail=Mail, pwd=Pwd)
-        return
+    def register(self, request, pk):
+        data_json = json.loads(request.body)
+        Uid = data_json.get('uid')
+        Pwd = data_json.get('pwd')
+        Mail = data_json.get('mail')
+        print(Uid)
+        print(Mail)
+        print(Pwd)
+        queryset = User.objects.filter(uid=Uid)
+        if queryset.count() != 0:
+            return Response({'msg': '用户名已存在'})
+        if not re.match('^[0-9a-zA-Z]+[@]{1}[0-9a-zA-Z]+.+[0-9a-zA-Z]+$', Mail):
+            return Response({'msg': '邮箱格式错误'})
+        User.objects.create(uid=Uid, pwd=Pwd, mail=Mail, createTime='2000-01-01')
+        return Response({'msg': '注册成功'})
 
