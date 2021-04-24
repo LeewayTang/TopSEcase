@@ -52,6 +52,7 @@ urlpatterns = [
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     #path("api/login/", views.login),
     path('', TemplateView.as_view(template_name="index.html"))
+    #re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
 
 router.register('user', views.UserInfoView)

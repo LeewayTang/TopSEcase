@@ -8,7 +8,7 @@ class User(models.Model):
     pwd = models.CharField(verbose_name='密码', max_length=16)
     sex = models.IntegerField(verbose_name='性别', default=0)
     mail = models.EmailField(verbose_name='邮箱', max_length=32, unique=True)
-    avatar = models.CharField(verbose_name='头像', max_length=32, default="NO")
+    avatar = models.FileField(verbose_name='头像', max_length=32, default="NO", upload_to='avatar')
     createTime = models.DateField(verbose_name='注册时间', auto_now=False)
     isTeacher = models.BooleanField(verbose_name='是否为导师', default=False)
     cid = models.CharField(verbose_name='所属圈子id', max_length=16, default="NO")
@@ -19,7 +19,7 @@ class Journal(models.Model):
     jid = models.CharField(verbose_name='日志id', max_length=16)
     create_time = models.DateField(verbose_name='日志创建时间', auto_now=True)
     type = models.CharField(verbose_name='日志类型', max_length=16)
-    context = models.CharField(verbose_name='正文', max_length=2048)
+    context = models.FileField(verbose_name='正文', max_length=2048, upload_to='journal')
     thumbsUp = models.IntegerField(verbose_name='点赞数', default=0)
     title = models.CharField(verbose_name='标题', max_length=64)
     introduce = models.CharField(verbose_name='日志简介', max_length=256)
@@ -30,14 +30,14 @@ class Comment(models.Model):
     uid = models.CharField(verbose_name='评论人id', max_length=16)
     jid = models.CharField(verbose_name='日志id', max_length=16)
     create_time = models.DateField(verbose_name='评论时间', auto_now=True)
-    context = models.CharField(verbose_name='正文', max_length=2048)
+    context = models.FileField(verbose_name='正文', max_length=2048, upload_to='comment')
     floor = models.IntegerField(verbose_name='评论楼层')
 
 # 讨论
 class Discuss(models.Model):
     uid = models.CharField(verbose_name='评论人id', max_length=16)
     create_time = models.DateField(verbose_name='发布时间', auto_now=True)
-    context = models.CharField(verbose_name='内容', max_length=2048)
+    context = models.FileField(verbose_name='内容', max_length=2048, upload_to='discuss')
     cid = models.CharField(verbose_name='圈子id', max_length=16)
 
 
