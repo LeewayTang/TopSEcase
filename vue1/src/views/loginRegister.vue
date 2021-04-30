@@ -67,10 +67,10 @@ export default{
       if (self.form.useremail !== '' && self.form.userpwd !== '') {
         self.$axios({
           method: 'post',
-          url: 'http://127.0.0.1:8000/api/login_register/login/',
+          url: 'api/login_register/login/',
           data: {
-            email: self.form.useremail,
-            password: self.form.userpwd
+            uid: self.form.useremail,
+            pwd: self.form.userpwd
           }
         })
           .then(res => {
@@ -98,11 +98,11 @@ export default{
       if (self.form.username !== '' && self.form.useremail !== '' && self.form.userpwd !== '') {
         self.$axios({
           method: 'post',
-          url: '/api/',
+          url: '/api/login_register/{uid}/register/',
           data: {
-            username: self.form.username,
-            email: self.form.useremail,
-            password: self.form.userpwd
+            uid: self.form.username,
+            mail: self.form.useremail,
+            pwd: self.form.userpwd
           }
         })
           .then(res => {
