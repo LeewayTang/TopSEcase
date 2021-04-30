@@ -67,7 +67,7 @@ export default{
       if (self.form.useremail !== '' && self.form.userpwd !== '') {
         self.$axios({
           method: 'post',
-          url: 'http://127.0.0.1:10520/api/user/login',
+          url: 'http://127.0.0.1:8000/api/login_register/login/',
           data: {
             email: self.form.useremail,
             password: self.form.userpwd
