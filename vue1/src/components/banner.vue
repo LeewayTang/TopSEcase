@@ -7,15 +7,16 @@
                     <!-- 头像 -->
                     <div class="header-tou">
                         <router-link to="/personalCenter"><img :src="websiteInfo.avatar"></router-link>
+                      <div>用户名</div>
                     </div>
                     <!-- 简介 -->
                     <div class="header-info">
                         <p>{{websiteInfo.slogan}}</p>
                     </div>
                     <!-- 社交信息 -->
-                    <div class="top-social">
-                        <div v-for="item in socials" :key="item.id" :title="item.title"><a :href="item.href" target="_blank" :style="{'color':item.color}"><i class="iconfont" :class="item.icon"></i></a></div>
-                    </div>
+<!--                    <div class="top-social">-->
+<!--                        <div v-for="item in socials" :key="item.id" :title="item.title"><a :href="item.href" target="_blank" :style="{'color':item.color}"><i class="iconfont" :class="item.icon"></i></a></div>-->
+<!--                    </div>-->
                 </div>
                 <!--左右倾斜-->
                 <div class="slant-left"></div>

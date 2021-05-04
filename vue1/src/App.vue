@@ -3,7 +3,7 @@
         <loading></loading>
         <layout-header></layout-header>
         <layout-body></layout-body>
-        <layout-footer></layout-footer>
+<!--        <layout-footer></layout-footer>-->
     </div>
 </template>
 <script>

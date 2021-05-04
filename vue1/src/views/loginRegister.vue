@@ -170,7 +170,7 @@ export default{
 .bform{
   width: 100%;
   height: 40%;
-  padding: 2em 0;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

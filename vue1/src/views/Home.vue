@@ -8,13 +8,13 @@
                     <span v-if="searchWords">搜索结果："{{searchWords}}" 相关文章</span>
                     <span v-else-if="category">分类 "{{category}}" 相关文章</span>
                 </div>
-                <quote v-else>{{notice}}</quote>
+<!--                <quote v-else>{{notice}}</quote>-->
             </div>
 
             <!--焦点图-->
             <div class="top-feature" v-if="!hideSlogan">
                 <section-title>
-                    <div style="display: flex;align-items: flex-end;">聚焦<small-ico></small-ico></div>
+                    <div style="display: flex;align-items: flex-end;">站内日推<small-ico></small-ico></div>
                 </section-title>
                 <div class="feature-content">
                     <div class="feature-item" v-for="item in features" :key="item.title">
@@ -24,7 +24,7 @@
             </div>
             <!--文章列表-->
             <main class="site-main" :class="{'search':hideSlogan}">
-                <section-title v-if="!hideSlogan">推荐</section-title>
+<!--                <section-title v-if="!hideSlogan">内容</section-title>-->
                 <template v-for="item in postList1">
                     <post :post="item" :key="item.id"></post>
                 </template>
@@ -78,9 +78,9 @@
             hideSlogan() {
                 return this.category || this.searchWords
             },
-            notice() {
-                return this.$store.getters.notice
-            }
+            // notice() {
+            //     return this.$store.getters.notice
+            // }
         },
         methods: {
             fetchFocus() {
