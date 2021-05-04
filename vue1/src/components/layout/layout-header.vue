@@ -15,6 +15,7 @@
             <div class="menu-item"><router-link to="/login">登录</router-link></div>
             <div class="menu-item"><router-link to="/personalCenter">个人中心</router-link></div>
             <div class="menu-item"><router-link to="/writeBlog">创作</router-link></div>
+            <div class="menu-item"><router-link to="/book">书籍</router-link></div>
             <div class="menu-item hasChild">
                 <a href="#">文章</a>
                 <div class="childMenu" v-if="category.length">

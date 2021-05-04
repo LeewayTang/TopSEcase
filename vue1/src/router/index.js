@@ -2,10 +2,17 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
 import VueElElements from 'vue-el-element'
-import personalCenter from '@/views/PersonalCenter'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import Book from './../views/Book'
+import book1 from './../components/Books/analysis'
+import book2 from './../components/Books/count'
+import book3 from './../components/Books/publish'
+import book4 from './../components/Books/forecast'
 
 Vue.use(VueRouter)
 Vue.use(VueElElements)
+Vue.use(ElementUI)
 
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
@@ -39,6 +46,37 @@ const routes = [
         name: 'writeBlog',
         component: () => import('../components/Write1.vue'),
         meta: { title: '创作'}
+    },
+    {
+        path:'/book',
+        component:Book,
+        redirect:'/book/analysis',
+        children:[
+            {
+                path:'analysis',
+                name:'analysis',
+                component:book1,
+                meta: { title: "book1"}
+            },
+            {
+                path:'count',
+                name:'count',
+                component:book2,
+                meta: { title: "book2"}
+            },
+            {
+                path:'forecast',
+                name:'forecast',
+                component:book4,
+                meta: { title: "book4"}
+            },
+            {
+                path:'publish',
+                name:'publish',
+                component:book3,
+                meta: { title: "book3"}
+            }
+        ]
     },
     {
         path: '/category/:cate',

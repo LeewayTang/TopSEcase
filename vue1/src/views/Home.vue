@@ -25,7 +25,7 @@
             <!--文章列表-->
             <main class="site-main" :class="{'search':hideSlogan}">
                 <section-title v-if="!hideSlogan">推荐</section-title>
-                <template v-for="item in postList">
+                <template v-for="item in postList1">
                     <post :post="item" :key="item.id"></post>
                 </template>
             </main>
@@ -53,7 +53,9 @@
         data() {
             return {
                 features: [],
-                postList: [],
+                postList1: [],
+                postList2: [],
+                postList3: [],
                 currPage: 1,
                 hasNextPage: false
             }
@@ -90,7 +92,7 @@
             },
             fetchList() {
                 fetchList().then(res => {
-                    this.postList = res.data.items || []
+                    this.postList1 = res.data.items || []
                     this.currPage = res.data.page
                     this.hasNextPage = res.data.hasNextPage
                 }).catch(err => {
@@ -99,7 +101,7 @@
             },
             loadMore() {
                 fetchList({page:this.currPage+1}).then(res => {
-                    this.postList = this.postList.concat(res.data.items || [])
+                    this.postList1 = this.postList1.concat(res.data.items || [])
                     this.currPage = res.data.page
                     this.hasNextPage = res.data.hasNextPage
                 })

@@ -33,10 +33,9 @@
         <hr/>
     </article>
 </template>
-<!--推荐栏下把鼠标移至图片旁边时出现的东西-->
+<!--推荐文章-->
 
 <script>
-
     export default {
         name: "post",
         props: {
@@ -210,7 +209,7 @@
                 display: none;
             }
         }
-        .post-list hr {
+        .post-list1 hr {
             margin-top: 20px;
         }
     }
