@@ -253,8 +253,12 @@ export default {
       value2: 0,
       isCollapsed: false,
       color: '#abacb3',
-      ifShow: true
+      ifShow: true,
+      websiteInfo: {}
     }
+  },
+  created() {
+    this.getWebSiteInfo()
   },
   computed: {
     rotateIcon() {
@@ -281,6 +285,11 @@ export default {
     change() {
       style.setProperty('background', this.color)
     },
+    getWebSiteInfo(){
+                this.$store.dispatch('getSiteInfo').then(data =>{
+                    this.websiteInfo = data
+                })
+            },
     collapsedSider() {
       this.$refs.side1.toggleCollapse();
       this.ifShow = !this.ifShow

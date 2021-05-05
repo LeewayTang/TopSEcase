@@ -7,7 +7,7 @@
                     <!-- 头像 -->
                     <div class="header-tou">
                         <router-link to="/personalCenter"><img :src="websiteInfo.avatar"></router-link>
-                      <div>用户名</div>
+                      <div >{{websiteInfo.username}}</div>
                     </div>
                     <!-- 简介 -->
                     <div class="header-info">
