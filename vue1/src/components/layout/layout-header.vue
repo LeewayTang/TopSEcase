@@ -2,8 +2,9 @@
     <div id="layout-header" :class="{'fixed':fixed,'hidden':hidden}" @click.stop="mobileShow=false">
         <div class="site-logo">
             <router-link to="/">
-                <img src="@/assets/site-logo.svg" alt="">
-                <p class="site-name">MoYun</p>
+<!--                <img src="@/assets/site-logo.svg" alt="">-->
+              <img src="@/assets/reading.png" alt="">
+                <p class="site-name">墨韵 | MoYun</p>
             </router-link>
         </div>
         <div class="menus-btn" @click.stop="mobileShow=!mobileShow">
