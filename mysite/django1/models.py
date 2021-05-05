@@ -1,20 +1,15 @@
 from django.db import models
-from mysite.settings import MEDIA_ROOT
 
 
 # Create your models here.
 
 # 用户
-def upload_avatar(instance):
-    return '/'.join([MEDIA_ROOT, instance.user_name, 'avatar'])
-
-
 class User(models.Model):
     uid = models.CharField(verbose_name='用户名', max_length=16, primary_key=True)
     pwd = models.CharField(verbose_name='密码', max_length=16)
     sex = models.IntegerField(verbose_name='性别', default=0)
     mail = models.EmailField(verbose_name='邮箱', max_length=32, unique=True)
-    avatar = models.FileField(verbose_name='头像', max_length=32, default="NO", upload_to=upload_avatar)
+    avatar = models.CharField(verbose_name='头像', max_length=30000, default="NO")
     createTime = models.DateField(verbose_name='注册时间', auto_now=False)
     isTeacher = models.BooleanField(verbose_name='是否为导师', default=False)
     cid = models.CharField(verbose_name='所属圈子id', max_length=16, default="NO")
@@ -48,6 +43,7 @@ class Discuss(models.Model):
     create_time = models.DateField(verbose_name='发布时间', auto_now=True)
     context = models.FileField(verbose_name='内容', max_length=2048, upload_to='discuss/%Y/%m/%d/')
     cid = models.CharField(verbose_name='圈子id', max_length=16)
+    floor = models.IntegerField(verbose_name='讨论楼层')
 
 
 # 圈子

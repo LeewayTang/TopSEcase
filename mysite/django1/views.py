@@ -89,12 +89,16 @@ class UserInfoView(viewsets.ModelViewSet):
 class LoginRegister(viewsets.GenericViewSet):
     """
     login:
-    账户，邮箱，密码
+    用户名或邮箱，密码
+
+    register:
+    用户名，邮箱，密码
     """
     queryset = User.objects.all()
     serializer_class = LoginInfoSerializer
 
-    # test_param = openapi.Parameter('test', openapi.IN_QUERY, description="test manual param", type=openapi.TYPE_BOOLEAN)
+    # test_param =
+    # openapi.Parameter('test', openapi.IN_QUERY, description="test manual param", type=openapi.TYPE_BOOLEAN)
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=RegisterInfoSerializer)
@@ -111,11 +115,11 @@ class LoginRegister(viewsets.GenericViewSet):
         print(Pwd)
         queryset = User.objects.filter(uid=Uid)
         if queryset.count() != 0:
-            return Response({'msg': '用户名已存在'})
+            return Response({'msg': '用户名已存在', 'data': '-1'})
         if not re.match('^[0-9a-zA-Z]+[@][0-9a-zA-Z]+.+[0-9a-zA-Z]+$', Mail):
-            return Response({'msg': '邮箱格式错误'})
+            return Response({'msg': '邮箱格式错误', 'data': '-1'})
         User.objects.create(uid=Uid, pwd=Pwd, mail=Mail, createTime='2000-01-01')
-        return Response({'msg': '注册成功'})
+        return Response({'msg': '注册成功', 'data': '1'})
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=LoginInfoSerializer)
@@ -133,17 +137,21 @@ class LoginRegister(viewsets.GenericViewSet):
         queryset = User.objects.filter(uid__contains=Uid)  # .filter(uid=Uid, mail=Mail, pwd=Pwd)
         queryset_mail = User.objects.filter(mail__contains=Uid)
         if queryset.count() == 0 and queryset_mail.count() == 0:
-            return Response({'msg': '用户名或邮箱不正确'})
+            return Response({'msg': '用户名或邮箱不正确', 'data': '-1'})
         queryset = User.objects.filter(uid__contains=Uid, pwd__contains=Pwd)
         queryset_mail = User.objects.filter(mail__contains=Uid, pwd__contains=Pwd)
         if queryset.count() == 0 and queryset_mail.count() == 0:
-            return Response({'msg': '密码不正确'})
+            return Response({'msg': '密码不正确', 'data': '-1'})
         # (user_list, many=True)
-        ret = {'msg': 'success'}
+        ret = {'msg': 'success', 'data': '1'}
         return Response(ret)
 
 
 class FileUpload(viewsets.GenericViewSet):
+    """
+    upload_avatar:
+    需要登陆后使用，传入用户名与头像url
+    """
     queryset = User.objects.all()
 
     @swagger_auto_schema(responses={200: ""},
@@ -152,12 +160,8 @@ class FileUpload(viewsets.GenericViewSet):
     def upload_avatar(self, request, pk):
         data_json = json.loads(request.body)
         Uid = data_json.get('uid')
-        Avatar = request.FILES.get('file')
-        if not Avatar:
-            return Response({'msg': 'files not found'})
-        queryset = User.objects.filter(uid=Uid)
-        if queryset.count() == 0:
-            return Response({'msg': 'user not found'})
+        Avatar = data_json.get('avatar')
+        queryset = User.objects.get(uid=Uid)
         queryset.avatar = Avatar
         queryset.save()
-        return Response({'msg': 'upload success'})
+        return Response({'msg': 'upload success', 'data': '1'})
