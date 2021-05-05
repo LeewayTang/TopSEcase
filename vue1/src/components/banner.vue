@@ -7,7 +7,7 @@
                     <!-- 头像 -->
                     <div class="header-tou">
                         <router-link to="/personalCenter"><img :src="websiteInfo.avatar"></router-link>
-                      <div class="header-name">{{websiteInfo.username}}  |  {{websiteInfo.title}}</div>
+                      <div class="header-name">{{websiteInfo.username}}  |  {{websiteInfo.title}}  |  {{websiteInfo.quanzi}}</div>
                     </div>
                     <!-- 简介 -->
                     <div class="header-info">
@@ -107,6 +107,7 @@
                 border-right: 800px solid transparent;
                 left: 0;
                 bottom: 0;
+              padding-bottom: 0;
             }
             .slant-right {
                 content: '';
@@ -117,6 +118,7 @@
                 border-left: 800px solid transparent;
                 right: 0;
                 bottom: 0;
+              padding-bottom: 0;
             }
         }
     }

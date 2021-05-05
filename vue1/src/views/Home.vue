@@ -138,7 +138,7 @@
     .top-feature {
         width: 100%;
         height: auto;
-        margin-top: 30px;
+        margin-top: 10px;
 
         .feature-content {
             margin-top: 10px;
@@ -153,7 +153,7 @@
     }
 
     .site-main {
-        padding-top: 80px;
+        padding-top: 10px;
 
         &.search {
             padding-top: 0;
@@ -173,8 +173,8 @@
             margin: 0 auto;
             cursor: pointer;
             &:hover{
-                color: #8fd0cc;
-                border: 1px dashed #8fd0cc;
+                color: #4f5b69;
+                border: 1px dashed #4f5b69;
             }
         }
     }

@@ -30,7 +30,7 @@
         width: inherit;
         position: relative;
         img {
-            height: 160px;
+            height: 100px;
             width: 257px;
             object-fit: cover;
             border-radius: 5px;
@@ -42,10 +42,10 @@
             position: absolute;
             z-index: 2;
             width: 257px;
-            height: 160px;
+            height: 100px;
             text-align: center;
-            line-height: 160px;
-            background: #BBE2DB;
+            line-height: 100px;
+            background: #4f5b69;
             color: white;
             font-size: 16px;
             opacity: 0;
