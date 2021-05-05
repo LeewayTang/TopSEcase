@@ -10,6 +10,7 @@ import book1 from './../components/Books/analysis'
 import book2 from './../components/Books/count'
 import book3 from './../components/Books/publish'
 import book4 from './../components/Books/forecast'
+import log from './../views/Log'
 
 Vue.use(VueRouter)
 Vue.use(VueElElements)
@@ -83,7 +84,13 @@ const routes = [
         path:'/book-ground',
         name:'book-ground',
         component:BookGround,
-        meta:{title: "book-ground"}
+        meta:{title: "藏书阁"}
+    },
+    {
+        path:'/log',
+        name:'log',
+        component: log,
+        meta: {title: "log"}
     },
     {
         path: '/category/:cate',
@@ -123,7 +130,7 @@ const router = new VueRouter({
     routes
 })
 router.beforeEach((to, from, next) => {
-    let title = 'Gblog'
+    let title = 'MoYun'
     if (to.meta.params){
         title = `${to.meta.title}:${to.params[to.meta.params] || ''} - ${title}`
     }else {

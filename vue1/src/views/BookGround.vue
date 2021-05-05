@@ -378,7 +378,7 @@ export default {
 }
 .tag {
   background-color: #eef1f3;
-  color: #74e7bd;
+  color: #354b44;
 
 }
 .tag:hover {
