@@ -11,8 +11,12 @@
       <ul class="books">
         <li>
           <router-link v-for="item in products" :to="{ path : item.path }" tag="li" active-class="active" :key="item.id" class="link-to">
-            <a :title=item.name> <img :src="item.icon" height="280px" width="220px;"> </a>
-            <div class="book-name"><a>{{ item.name }}</a></div>
+            <div>
+              <a :title=item.name>
+                <img :src="item.icon" height="280px" width="220px;">
+                <div class="book-name">{{ item.name }}</div>
+              </a>
+            </div>
           </router-link>
         </li>
       </ul>
@@ -29,8 +33,12 @@
       <ul class="books">
         <li>
           <router-link v-for="item in products" :to="{ path : item.path }" tag="li" active-class="active" :key="item.id" class="link-to">
-            <a :title=item.name> <img :src="item.icon" height="280px" width="220px;"> </a>
-            <div class="book-name"><a>{{ item.name }}</a></div>
+            <div>
+              <a :title=item.name>
+                <img :src="item.icon" height="280px" width="220px;">
+                <div class="book-name">{{ item.name }}</div>
+              </a>
+            </div>
           </router-link>
         </li>
       </ul>
