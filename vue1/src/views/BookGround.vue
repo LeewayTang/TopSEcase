@@ -379,6 +379,10 @@ export default {
 .tag {
   background-color: #eef1f3;
   color: #74e7bd;
+
+}
+.tag:hover {
+  color: #e7051e;
 }
 .more_tag {
   color: #3b4151;
