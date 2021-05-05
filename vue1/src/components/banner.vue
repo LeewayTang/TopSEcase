@@ -7,7 +7,7 @@
                     <!-- 头像 -->
                     <div class="header-tou">
                         <router-link to="/personalCenter"><img :src="websiteInfo.avatar"></router-link>
-                      <div >{{websiteInfo.username}}</div>
+                      <div class="header-name">{{websiteInfo.username}}  |  {{websiteInfo.title}}</div>
                     </div>
                     <!-- 简介 -->
                     <div class="header-info">
@@ -38,7 +38,7 @@
         props:{
             src:{
                 type: String,
-                default: 'https://s1.ax1x.com/2020/05/23/YxaLMq.jpg'
+                default: 'https://z3.ax1x.com/2021/05/05/gKDDJA.jpg'
             },
             isHome:{
                 type: [Boolean,String],
@@ -129,11 +129,12 @@
         transform: translate(-50%,-50%);
         -webkit-transform: translate(-50%,-50%);
         text-align: center;
+        font-size: 18px;
         img {
             width: 80px;
             height: auto;
             border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255,255,255,0.4);
         }
         .header-info {
             width: 60%;
@@ -146,6 +147,12 @@
             letter-spacing: 1px;
             line-height: 30px;
         }
+      .header-name{
+        color: #0f0f0f;
+        font-size: x-large;
+        font-weight: bold;
+        font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+      }
         .top-social {
             height: 32px;
             margin-top: 30px;

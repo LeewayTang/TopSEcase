@@ -1,21 +1,21 @@
 <template>
     <div id="layout-footer">
-        <div class="footer-main">
-            <div class="footer-item" v-if="socials.length">
-                <div v-for="item in socials" :key="item.id"><a target="_blank" class="out-link" :href="item.href"><i class="iconfont" :class="item.icon"></i>{{item.title}}</a></div>
-            </div>
-            <div class="footer-item">
-                <div style="font-size:17px;font-weight: bold;">资源</div>
-                <div><a target="_blank" class="out-link" href="https://segmentfault.com/weekly?utm_source=sf-footer">每周精选</a></div>
-                <div><a target="_blank" class="out-link" href="https://www.jmjc.tech/">简明教程</a></div>
-                <div><a target="_blank" class="out-link" href="https://www.liaoxuefeng.com/">廖雪峰的官方网站</a></div>
-            </div>
-            <div class="footer-item">
-                <div>本站已苟活 {{runTimeInterval}}</div>
-                <div><a target="_blank" class="out-link" href="#">☞后台管理</a></div>
-            </div>
-        </div>
-        <div class="copyright">Copyright © 2020 by <a target="_blank" class="out-link" href="https://www.fengziy.cn">fengziy.cn</a> . All rights reserved. | <a target="_blank" class="out-link" href="http://www.beian.miit.gov.cn">渝ICP备17015355号-1</a></div>
+<!--        <div class="footer-main">-->
+<!--            <div class="footer-item" v-if="socials.length">-->
+<!--                <div v-for="item in socials" :key="item.id"><a target="_blank" class="out-link" :href="item.href"><i class="iconfont" :class="item.icon"></i>{{item.title}}</a></div>-->
+<!--            </div>-->
+<!--            <div class="footer-item">-->
+<!--                <div style="font-size:17px;font-weight: bold;">资源</div>-->
+<!--                <div><a target="_blank" class="out-link" href="https://segmentfault.com/weekly?utm_source=sf-footer">每周精选</a></div>-->
+<!--                <div><a target="_blank" class="out-link" href="https://www.jmjc.tech/">简明教程</a></div>-->
+<!--                <div><a target="_blank" class="out-link" href="https://www.liaoxuefeng.com/">廖雪峰的官方网站</a></div>-->
+<!--            </div>-->
+<!--            <div class="footer-item">-->
+<!--                <div>本站已苟活 {{runTimeInterval}}</div>-->
+<!--                <div><a target="_blank" class="out-link" href="#">☞后台管理</a></div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="copyright">Copyright © 2020 by <a target="_blank" class="out-link" href="https://github.com/LeewayTang">Leeway</a> . All rights reserved. | <a target="_blank" class="out-link" href="http://www.beian.miit.gov.cn">闽ICP备20016027号-1</a></div>
     </div>
 </template>
 
