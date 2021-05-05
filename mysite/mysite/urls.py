@@ -59,5 +59,5 @@ urlpatterns = [
 
 # router.register('user', views.UserInfoView)
 router.register('login_register', views.LoginRegister)
-
+router.register('upload', views.FileUpload)
 urlpatterns += path('api/', include(router.urls)),
