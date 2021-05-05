@@ -5,6 +5,7 @@ import VueElElements from 'vue-el-element'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Book from './../views/Book'
+import BookGround from "../views/BookGround";
 import book1 from './../components/Books/analysis'
 import book2 from './../components/Books/count'
 import book3 from './../components/Books/publish'
@@ -77,6 +78,12 @@ const routes = [
                 meta: { title: "book3"}
             }
         ]
+    },
+    {
+        path:'/book-ground',
+        name:'book-ground',
+        component:BookGround,
+        meta:{title: "book-ground"}
     },
     {
         path: '/category/:cate',
