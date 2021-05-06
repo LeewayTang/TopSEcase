@@ -1,3 +1,4 @@
+from drf_yasg.openapi import Parameter, IN_PATH, TYPE_STRING, IN_QUERY
 from rest_framework import viewsets
 from rest_framework import generics
 from django1.models import *
@@ -127,12 +128,12 @@ class LoginRegister(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def login(self, request):
         print(request)
-        Uid = request.POST.get('uid')
-        Pwd = request.POST.get('pwd')
-        # data_json = json.loads(request.body, strict=False)
-        # print(data_json)
-        # Uid = data_json.get('uid')
-        # Pwd = data_json.get('pwd')
+        # Uid = request.POST.get('uid')
+        # Pwd = request.POST.get('pwd')
+        data_json = json.loads(request.body, strict=False)
+        print(data_json)
+        Uid = data_json.get('uid')
+        Pwd = data_json.get('pwd')
         print(Uid, Pwd)
         queryset = User.objects.filter(uid__contains=Uid)  # .filter(uid=Uid, mail=Mail, pwd=Pwd)
         queryset_mail = User.objects.filter(mail__contains=Uid)
@@ -167,4 +168,44 @@ class FileUpload(viewsets.GenericViewSet):
         return Response({'msg': 'upload success', 'data': '1'})
 
 
-class
+class BookTagInfo(viewsets.GenericViewSet):
+    """
+
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSetTag
+
+    @swagger_auto_schema(responses={200: ""}, request_body=BookGetTag)
+    @action(methods=['POST'], detail=True)
+    def get_tag_by_book(self, request, pk):
+        print(request)
+        data_json = json.loads(request.body)
+        ISBN = data_json.get('ISBN')
+        if ISBN is None:
+            return Response({'msg': 'Book not exists', 'data': '-1'})
+        queryset = Book.objects.filter(ISBN__contains=ISBN)
+        if queryset.count() == 0:
+            return Response({'msg': 'Book not exists', 'data': '-1'})
+        queryset = BookTag.objects.filter(ISBN__contains=ISBN)
+        if queryset.count() == 0:
+            return Response({'msg': 'This book no tags', 'data': '0'})
+        return Response({'msg': 'upload success', 'data': '1'})
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=BookSetTag)
+    @action(methods=['POST'], detail=True)
+    def set_tag_by_book(self, request, pk):
+        data_json = json.loads(request.body)
+        ISBN = data_json.get('ISBN')
+        tid = data_json.get('tid')
+        queryset = Book.objects.filter(ISBN__contains=ISBN)
+        if queryset.count() == 0:
+            return Response({'msg': 'Book not exists', 'data': '-1'})
+        queryset = Tag.objects.get(tid=tid)
+        if queryset is None:
+            return Response({'msg': 'Tag not exists', 'data': '-1'})
+        queryset = BookTag.objects.get(ISBN=ISBN, tid=tid)
+        if queryset is not None:
+            return Response({'msg': 'Book tag exists', 'data': '0'})
+        BookTag.objects.create(ISBN=ISBN, tid=tid)
+        return Response({'msg': 'upload success', 'data': '1'})
