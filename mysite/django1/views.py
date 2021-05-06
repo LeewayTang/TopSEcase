@@ -138,13 +138,13 @@ class LoginRegister(viewsets.GenericViewSet):
         queryset = User.objects.filter(uid__contains=Uid)  # .filter(uid=Uid, mail=Mail, pwd=Pwd)
         queryset_mail = User.objects.filter(mail__contains=Uid)
         if queryset.count() == 0 and queryset_mail.count() == 0:
-            return Response({'msg': '用户名或邮箱不正确', 'data': '-1'})
+            return Response({'msg': '用户名或邮箱不正确', 'data': -1})
         queryset = User.objects.filter(uid__contains=Uid, pwd__contains=Pwd)
         queryset_mail = User.objects.filter(mail__contains=Uid, pwd__contains=Pwd)
         if queryset.count() == 0 and queryset_mail.count() == 0:
-            return Response({'msg': '密码不正确', 'data': '-1'})
+            return Response({'msg': '密码不正确', 'data': -1})
         # (user_list, many=True)
-        ret = {'msg': 'success', 'data': '1'}
+        ret = {'msg': 'success', 'data': 1}
         return Response(ret)
 
 
