@@ -103,7 +103,7 @@ class LoginRegister(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=RegisterInfoSerializer)
-    @action(methods=['POST'], detail=True)
+    @action(methods=['POST'], detail=False)
     def register(self, request, pk):
         print(request)
         data_json = json.loads(request.body, strict=False)
@@ -157,7 +157,7 @@ class FileUpload(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=UploadAvatarSerializer)
-    @action(methods=['POST'], detail=True)
+    @action(methods=['POST'], detail=False)
     def upload_avatar(self, request, pk):
         data_json = json.loads(request.body)
         Uid = data_json.get('uid')
@@ -170,14 +170,33 @@ class FileUpload(viewsets.GenericViewSet):
 
 class BookTagInfo(viewsets.GenericViewSet):
     """
+    get_tag_by_book:
+    获取指定图书的标签
 
+    set_tag_by_book:
+    给指定图书添加标签
+
+    get_book_by_tag:
+    获取指定标签的图书
+
+    get_book:
+    获取所有图书
+
+    get_tag:
+    获取所有标签
+
+    add_book:
+    添加图书
+
+    add_tag:
+    添加标签
     """
     queryset = Book.objects.all()
     serializer_class = BookSetTag
 
     @swagger_auto_schema(responses={200: ""}, request_body=BookGetTag)
-    @action(methods=['POST'], detail=True)
-    def get_tag_by_book(self, request, pk):
+    @action(methods=['POST'], detail=False)
+    def get_tag_by_book(self, request):
         print(request)
         data_json = json.loads(request.body)
         ISBN = data_json.get('ISBN')
@@ -189,11 +208,12 @@ class BookTagInfo(viewsets.GenericViewSet):
         queryset = BookTag.objects.filter(ISBN__contains=ISBN)
         if queryset.count() == 0:
             return Response({'msg': 'This book no tags', 'data': '0'})
-        return Response({'msg': 'upload success', 'data': '1'})
+        ret = {'msg': 'success', 'data': queryset}
+        return Response(ret)
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=BookSetTag)
-    @action(methods=['POST'], detail=True)
+    @action(methods=['POST'], detail=False)
     def set_tag_by_book(self, request, pk):
         data_json = json.loads(request.body)
         ISBN = data_json.get('ISBN')
@@ -209,3 +229,60 @@ class BookTagInfo(viewsets.GenericViewSet):
             return Response({'msg': 'Book tag exists', 'data': '0'})
         BookTag.objects.create(ISBN=ISBN, tid=tid)
         return Response({'msg': 'upload success', 'data': '1'})
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=TagGetBook)
+    @action(methods=['POST'], detail=False)
+    def get_book_by_tag(self, request):
+        data_json = json.loads(request.body)
+        tid = data_json.get('tid')
+        queryset = Tag.objects.filter(tid=tid)
+        if queryset.count() == 0:
+            return Response({'msg': 'No such tid', 'data': '-1'})
+        queryset = BookTag.objects.filter(tid__contains=tid)
+        ret = {'msg': 'success', 'data': queryset}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['GET'], detail=False)
+    def get_book(self, request):
+        queryset = Book.objects.all()
+        ret = {'msg': 'success', 'data': queryset}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['GET'], detail=False)
+    def get_tag(self, request):
+        queryset = Tag.objects.all()
+        ret = {'msg': 'success', 'data': queryset}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""}, request_body=BookInfo)
+    @action(methods=['POST'], detail=False)
+    def add_book(self, request):
+        data_json = json.loads(request.body)
+        name = data_json.get('name')
+        publishTime = data_json.get('publishTime')
+        ISBN = data_json.get('ISBN')
+        author = data_json.get('author')
+        queryset = Book.objects.filter(ISBN=ISBN)
+        if queryset.count() != 0:
+            return {'msg': 'ISBN exists', 'data': -1}
+        Book.objects.create(name=name, publishTime=publishTime,
+                            ISBN=ISBN, author=author)
+        ret = {'msg': 'success', 'data': 1}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""}, request_body=CreateTag)
+    @action(methods=['POST'], detail=False)
+    def add_tag(self, request):
+        data_json = json.loads(request.body)
+        tag = data_json.get('tag')
+        queryset = Tag.objects.filter(tag=tag)
+        if queryset.count() != 0:
+            return {'msg': 'Tag exists', 'data': -1}
+        mx = Tag.objects.all()
+        mx = mx.count()
+        Tag.objects.create(tid=mx, tag=tag)
+        ret = {'msg': 'success', 'data': 1}
+        return Response(ret)
