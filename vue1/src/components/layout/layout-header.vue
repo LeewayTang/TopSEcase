@@ -19,7 +19,8 @@
             <div class="menu-item hasChild">
                 <a href="#">创作中心</a>
                 <div class="childMenu" v-if="category.length">
-                    <div class="sub-menu" v-for="item in category" :key="item.title"><router-link :to="`${item.href}`">{{item.title}}</router-link></div>
+                    <div class="sub-menu" v-for="item in category" :key="item.title"><router-link :to="`${item.href}`">
+                      {{item.title}}</router-link></div>
                 </div>
             </div>
           <div class="menu-item"><router-link to="/login">登录/注册</router-link></div>
