@@ -1,6 +1,6 @@
 <template>
     <div class="articles">
-        <banner></banner>
+<!--        <banner></banner>-->
         <div class="site-content animate">
             <!-- 文章目录 -->
             <div id="article-menus">
@@ -209,9 +209,11 @@ yum -y install gcc-c++</code></pre>
         box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
         border-radius: 3px;
         padding: 15px;
-        width: 300px;
+        width: 280px;
         transform: translateX(-120%) translateY(150px);
         font-size: 14px;
+      margin-left: 40px;
+      margin-right: 10px;
     }
     article.hentry {
         .entry-header {

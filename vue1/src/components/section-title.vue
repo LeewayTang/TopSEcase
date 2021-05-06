@@ -11,8 +11,8 @@
 
 <style scoped>
     h1.section-title {
-        color: #2f3034;
-        font-size: 30px;
+        color: #007575;
+        font-size: 25px;
         font-weight: 400;
         padding-bottom: 15px;
         border-bottom: 1px dashed #ECECEC;

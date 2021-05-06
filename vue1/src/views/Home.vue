@@ -115,6 +115,7 @@
 </script>
 <style scoped lang="less">
 
+
     .site-content {
         .notify {
             margin: 60px 0;

@@ -78,10 +78,12 @@ export default{
           .then(res => {
             switch (res.data.data) {
               case -1:
-                alert('shit')
+                alert('用户名或密码不正确')
                 break
               case 1:
-                alert('yeah')
+                this.$router.push({
+                  name:'home'
+                })
                 break
             }
           })
@@ -107,7 +109,10 @@ export default{
           .then(res => {
             switch (res.data.data) {
               case 1:
-                alert('注册成功！')
+                this.$Notice.open({
+                  title:'注册成功',
+                  duration: 3
+                })
                 this.login()
                 break
               case -1:
