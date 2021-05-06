@@ -45,3 +45,45 @@ class UploadAvatarSerializer(serializers.ModelSerializer):
             'uid',
             'avatar'
         )
+
+
+class BookGetTag(serializers.ModelSerializer):
+    ISBN = serializers.CharField(required=True, max_length=32)
+
+    class Meta:
+        model = Book
+        fields = (
+            'ISBN',
+        )
+
+
+class BookSetTag(serializers.ModelSerializer):
+    ISBN = serializers.CharField(required=True, max_length=32)
+    tid = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = BookTag
+        fields = (
+            'ISBN',
+            'tid'
+        )
+
+
+class CreateTag(serializers.ModelSerializer):
+    tag = serializers.CharField(required=True, max_length=32)
+
+    class Meta:
+        model = Tag
+        fields = (
+            'tag',
+        )
+
+
+class TagGetBook(serializers.ModelSerializer):
+    tid = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = Tag
+        fields = (
+            'tid',
+        )

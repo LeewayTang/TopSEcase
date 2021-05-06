@@ -60,4 +60,5 @@ urlpatterns = [
 # router.register('user', views.UserInfoView)
 router.register('login_register', views.LoginRegister)
 router.register('upload', views.FileUpload)
+router.register('book_tag', views.BookTagInfo)
 urlpatterns += path('api/', include(router.urls)),
