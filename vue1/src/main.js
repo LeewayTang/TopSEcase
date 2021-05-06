@@ -10,7 +10,9 @@ import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import vcolorpicker from 'vcolorpicker'
 import axios from 'axios'
+import qs from "qs"
 
+Vue.prototype.$qs = qs
 Vue.use(vcolorpicker)
 Vue.use(ViewUI);
 Vue.config.productionTip = false

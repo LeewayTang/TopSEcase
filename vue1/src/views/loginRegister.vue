@@ -25,13 +25,13 @@
       </div>
       <div class="small-box" :class="{active:isLogin}">
         <div class="small-contain" v-if="isLogin">
-          <div class="stitle">你好，朋友!</div>
-          <p class="scontent">开始注册，和我们一起旅行</p>
+          <div class="stitle">你好，世界!</div>
+          <p class="scontent">我直接注册</p>
           <button class="sbutton" @click="changeType">注册</button>
         </div>
         <div class="small-contain" v-else>
-          <div class="stitle">欢迎回来!</div>
-          <p class="scontent">与我们保持联系，请登录你的账户</p>
+          <div class="stitle">新世界大门</div>
+          <p class="scontent">登录你的账户吧</p>
           <button class="sbutton" @click="changeType">登录</button>
         </div>
       </div>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default{
   name: 'login-register',
   data () {
@@ -63,35 +65,43 @@ export default{
       this.form.userpwd = ''
     },
     login () {
-      const self = this
-      if (self.form.useremail !== '' && self.form.userpwd !== '') {
-        self.$axios({
-          method: 'post',
-          url: 'api/login_register/login/',
-          data: {
-            uid: self.form.useremail,
-            pwd: self.form.userpwd
-          }
+      axios({
+        methods: 'post',
+        url: 'api/login_register/login/',
+        data: this.$qs.stringify({
+          username:this.form.username,
+          password:this.form.userpwd
         })
-          .then(res => {
-            switch (res.data) {
-              case 0:
-                alert('登陆成功！')
-                break
-              case -1:
-                this.emailError = true
-                break
-              case 1:
-                this.passwordError = true
-                break
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      } else {
-        alert('填写不能为空！')
-      }
+      })
+      // const self = this
+      // if (self.form.useremail !== '' && self.form.userpwd !== '') {
+      //   self.$axios({
+      //     method: 'post',
+      //     url: 'api/login_register/login/',
+      //     data: {
+      //       uid: self.form.useremail,
+      //       pwd: self.form.userpwd
+      //     }
+      //   })
+      //     .then(res => {
+      //       switch (res.data) {
+      //         case 0:
+      //           alert('登陆成功！')
+      //           break
+      //         case -1:
+      //           this.emailError = true
+      //           break
+      //         case 1:
+      //           this.passwordError = true
+      //           break
+      //       }
+      //     })
+      //     .catch(err => {
+      //       console.log(err)
+      //     })
+      // } else {
+      //   alert('填写不能为空！')
+      // }
     },
     register () {
       const self = this
