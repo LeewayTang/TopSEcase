@@ -11,6 +11,7 @@ import book2 from './../components/Books/count'
 import book3 from './../components/Books/publish'
 import book4 from './../components/Books/forecast'
 import log from './../views/Log'
+import notLogin from '../views/NotLogin'
 
 Vue.use(VueRouter)
 Vue.use(VueElElements)
@@ -30,6 +31,12 @@ const routes = [
         name: 'home',
         component: () => import('../views/Home.vue'),
         meta: { title: '首页'}
+    },
+    {
+      path: '/notLogin',
+      name: 'notLogin',
+      component: () => import('../views/NotLogin.vue'),
+      meta: {title: '请先点击右上角登录'}
     },
     {
         path: '/login',

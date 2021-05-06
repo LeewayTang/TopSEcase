@@ -12,7 +12,7 @@
         </div>
         <div class="site-menus" :class="{'mobileShow':mobileShow}" @click.stop="mobileShow=!mobileShow">
             <div class="menu-item header-search"><header-search/></div>
-            <div class="menu-item"><router-link to="/">日志厅</router-link></div>
+            <div class="menu-item"><router-link to="/notLogin">日志厅</router-link></div>
             <div class="menu-item"><router-link to="/book-ground">藏书阁</router-link></div>
           <div class="menu-item"><router-link to="/personalCenter">我的圈子</router-link></div>
                <div class="menu-item"><router-link to="/writeBlog">创作中心</router-link></div>
