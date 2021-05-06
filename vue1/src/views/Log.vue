@@ -1,5 +1,7 @@
 <template>
+<div class="book-note-wrap">
 
+</div>
 </template>
 
 <script>
