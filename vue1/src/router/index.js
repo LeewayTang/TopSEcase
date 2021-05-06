@@ -103,7 +103,7 @@ const routes = [
         path:'/log',
         name:'log',
         component: log,
-        meta: {title: "log"}
+        meta: {title: "读书日志"}
     },
     {
         path: '/category/:cate',
