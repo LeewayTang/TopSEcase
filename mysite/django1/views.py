@@ -104,7 +104,7 @@ class LoginRegister(viewsets.GenericViewSet):
     @swagger_auto_schema(responses={200: ""},
                          request_body=RegisterInfoSerializer)
     @action(methods=['POST'], detail=False)
-    def register(self, request, pk):
+    def register(self, request):
         print(request)
         data_json = json.loads(request.body, strict=False)
         print(data_json)
