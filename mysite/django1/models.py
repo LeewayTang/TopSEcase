@@ -57,4 +57,32 @@ class Friend(models.Model):
     uidL = models.CharField(verbose_name='关系A', max_length=16)
     uidR = models.CharField(verbose_name='关系B', max_length=16)
 
+
+# 书本
+class Book(models.Model):
+    name = models.CharField(verbose_name='书名', max_length=256)
+    publishTime = models.DateField(verbose_name='出版时间')
+    ISBN = models.CharField(verbose_name='ISBN编号', max_length=32)
+    author = models.CharField(verbose_name='作者名字', max_length=32)
+
+
+# 书评
+class BookComment(models.Model):
+    ISBN = models.CharField(verbose_name='ISBN编号', max_length=32)
+    floor = models.IntegerField(verbose_name='评论楼层')
+    context = models.CharField(verbose_name='书评内容', max_length=30000)
+    uid = models.CharField(verbose_name='用户', max_length=16)
+
+
+# 书与标签对应
+class BookTag(models.Model):
+    ISBN = models.CharField(verbose_name='ISBN编号', max_length=32)
+    tid = models.IntegerField(verbose_name='标签编号')
+
+
+# 标签
+class Tag(models.Model):
+    tid = models.IntegerField(verbose_name='标签编号')
+    tag = models.CharField(verbose_name='标签内容', max_length=32)
+
 # 信息

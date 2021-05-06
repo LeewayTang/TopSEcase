@@ -127,12 +127,12 @@ class LoginRegister(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def login(self, request):
         print(request)
-        # Uid = request.POST.get('uid')
-        # Pwd = request.POST.get('pwd')
-        data_json = json.loads(request.body, strict=False)
-        print(data_json)
-        Uid = data_json.get('uid')
-        Pwd = data_json.get('pwd')
+        Uid = request.POST.get('uid')
+        Pwd = request.POST.get('pwd')
+        # data_json = json.loads(request.body, strict=False)
+        # print(data_json)
+        # Uid = data_json.get('uid')
+        # Pwd = data_json.get('pwd')
         print(Uid, Pwd)
         queryset = User.objects.filter(uid__contains=Uid)  # .filter(uid=Uid, mail=Mail, pwd=Pwd)
         queryset_mail = User.objects.filter(mail__contains=Uid)
@@ -165,3 +165,6 @@ class FileUpload(viewsets.GenericViewSet):
         queryset.avatar = Avatar
         queryset.save()
         return Response({'msg': 'upload success', 'data': '1'})
+
+
+class
