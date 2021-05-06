@@ -54,7 +54,13 @@ const routes = [
         path: '/writeBlog',
         name: 'writeBlog',
         component: () => import('../components/Write1.vue'),
-        meta: { title: '创作'}
+        meta: { title: '创作笔记'}
+    },
+    {
+        path: '/newBook',
+        name: 'newBook',
+        component: () => import('../components/newBook.vue'),
+        meta: { title: 'newBook'}
     },
     {
         path:'/book',
@@ -97,7 +103,7 @@ const routes = [
         path:'/log',
         name:'log',
         component: log,
-        meta: {title: "读书日志"}
+        meta: {title: "log"}
     },
     {
         path: '/category/:cate',

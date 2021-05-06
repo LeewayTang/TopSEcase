@@ -29,11 +29,12 @@
     .feature {
         width: inherit;
         position: relative;
+        margin-bottom: 50px;
         img {
             height: 100px;
             width: 257px;
             object-fit: cover;
-            border-radius: 5px;
+            border-radius: 10px;
         }
         & a:hover .foverlay{
             opacity:1;

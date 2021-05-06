@@ -9,8 +9,8 @@ export default [
                 code: 20000,
                 data: {
                     avatar: 'https://p3.bdxiguaimg.com/img/mosaic-legacy/321a7000c6c66e52e242a~tplv-xg-center-qs:240:240:q75.jpg',
-                    username: 'traveler',
-                    title:'导师',
+                    username: 'Asuka',
+                    title:'狗管理',
                     quanzi:'BUAA',
                     slogan: 'The way up is not crowded, and most chose ease.',
                     name: 'FZY′blog',
