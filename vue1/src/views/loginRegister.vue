@@ -65,43 +65,32 @@ export default{
       this.form.userpwd = ''
     },
     login () {
-      axios({
-        methods: 'post',
-        url: 'api/login_register/login/',
-        data: this.$qs.stringify({
-          username:this.form.username,
-          password:this.form.userpwd
+      const self = this
+      if (self.form.useremail !== '' && self.form.userpwd !== '') {
+        self.$axios({
+          method: 'post',
+          url: 'api/login_register/login/',
+          data: {
+            uid: self.form.useremail,
+            pwd: self.form.userpwd
+          }
         })
-      })
-      // const self = this
-      // if (self.form.useremail !== '' && self.form.userpwd !== '') {
-      //   self.$axios({
-      //     method: 'post',
-      //     url: 'api/login_register/login/',
-      //     data: {
-      //       uid: self.form.useremail,
-      //       pwd: self.form.userpwd
-      //     }
-      //   })
-      //     .then(res => {
-      //       switch (res.data) {
-      //         case 0:
-      //           alert('登陆成功！')
-      //           break
-      //         case -1:
-      //           this.emailError = true
-      //           break
-      //         case 1:
-      //           this.passwordError = true
-      //           break
-      //       }
-      //     })
-      //     .catch(err => {
-      //       console.log(err)
-      //     })
-      // } else {
-      //   alert('填写不能为空！')
-      // }
+          .then(res => {
+            switch (res.data.data) {
+              case -1:
+                alert('shit')
+                break
+              case 1:
+                alert('yeah')
+                break
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        alert('填写不能为空！')
+      }
     },
     register () {
       const self = this
@@ -116,8 +105,8 @@ export default{
           }
         })
           .then(res => {
-            switch (res.data) {
-              case 0:
+            switch (res.data.data) {
+              case 1:
                 alert('注册成功！')
                 this.login()
                 break
