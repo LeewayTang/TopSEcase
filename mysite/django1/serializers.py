@@ -57,6 +57,17 @@ class BookGetTag(serializers.ModelSerializer):
         )
 
 
+class BookInfo(serializers.ModelSerializer):
+    name = serializers.CharField(required=True, max_length=256)
+    publishTime = serializers.DateField(required=True)
+    ISBN = serializers.CharField(required=True, max_length=32)
+    author = serializers.CharField(required=True, max_length=32)
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+
 class BookSetTag(serializers.ModelSerializer):
     ISBN = serializers.CharField(required=True, max_length=32)
     tid = serializers.IntegerField(required=True)

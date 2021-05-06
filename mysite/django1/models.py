@@ -12,13 +12,13 @@ class User(models.Model):
     avatar = models.CharField(verbose_name='头像', max_length=2048, default="NO")
     createTime = models.DateField(verbose_name='注册时间', auto_now=False)
     isTeacher = models.BooleanField(verbose_name='是否为导师', default=False)
-    cid = models.IntegerField(verbose_name='所属圈子id', max_length=16, default=0)
+    cid = models.IntegerField(verbose_name='所属圈子id', default=0)
 
 
 # 日志
 class Journal(models.Model):
     uid = models.CharField(verbose_name='发布人id', max_length=16, default='0')
-    jid = models.IntegerField(verbose_name='日志id', max_length=16, default=0)
+    jid = models.IntegerField(verbose_name='日志id', default=0)
     create_time = models.DateField(verbose_name='日志创建时间', auto_now=True)
     type = models.CharField(verbose_name='日志类型', max_length=16, default='0')
     context = models.FileField(verbose_name='正文', max_length=2048, upload_to='journal/%Y/%m/%d/')
@@ -31,7 +31,7 @@ class Journal(models.Model):
 # 日志评论
 class Comment(models.Model):
     uid = models.CharField(verbose_name='评论人id', max_length=16, default='0')
-    jid = models.IntegerField(verbose_name='日志id', max_length=16, default=0)
+    jid = models.IntegerField(verbose_name='日志id', default=0)
     create_time = models.DateField(verbose_name='评论时间', auto_now=True)
     context = models.FileField(verbose_name='正文', max_length=2048, upload_to='comment/%Y/%m/%d/')
     floor = models.IntegerField(verbose_name='评论楼层', default=0)
@@ -42,13 +42,13 @@ class Discuss(models.Model):
     uid = models.CharField(verbose_name='评论人id', max_length=16, default='0')
     create_time = models.DateField(verbose_name='发布时间', auto_now=True)
     context = models.FileField(verbose_name='内容', max_length=2048, upload_to='discuss/%Y/%m/%d/')
-    cid = models.IntegerField(verbose_name='圈子id', max_length=16, default='0')
+    cid = models.IntegerField(verbose_name='圈子id', default='0')
     floor = models.IntegerField(verbose_name='讨论楼层', default=0)
 
 
 # 圈子
 class Circle(models.Model):
-    cid = models.IntegerField(verbose_name='圈子id', max_length=16, default="", primary_key=True)
+    cid = models.IntegerField(verbose_name='圈子id', default="", primary_key=True)
     type = models.CharField(verbose_name='圈子类型', max_length=16, default="学习")
 
 
