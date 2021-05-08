@@ -21,17 +21,31 @@ class LoginInfoSerializer(serializers.ModelSerializer):
         )
 
 
+class TokenSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True, max_length=16)
+
+    class Meta:
+        model = Token
+        fields = (
+            'token',
+        )
+
+
 class RegisterInfoSerializer(serializers.ModelSerializer):
     uid = serializers.CharField(required=True, max_length=16)
     pwd = serializers.CharField(required=True, max_length=16)
     mail = serializers.EmailField(required=True, max_length=32)
+    type = serializers.IntegerField(required=True)
+    key = serializers.CharField(max_length=16)
 
     class Meta:
         model = User
         fields = (
             'uid',
             'mail',
-            'pwd'
+            'pwd',
+            'type',
+            'key'
         )
 
 
@@ -47,7 +61,7 @@ class UploadAvatarSerializer(serializers.ModelSerializer):
         )
 
 
-class BookGetTag(serializers.ModelSerializer):
+class BookISBN(serializers.ModelSerializer):
     ISBN = serializers.CharField(required=True, max_length=32)
 
     class Meta:
@@ -70,13 +84,13 @@ class BookInfo(serializers.ModelSerializer):
 
 class BookSetTag(serializers.ModelSerializer):
     ISBN = serializers.CharField(required=True, max_length=32)
-    tid = serializers.IntegerField(required=True)
+    tag = serializers.CharField(required=True, max_length=32)
 
     class Meta:
         model = BookTag
         fields = (
             'ISBN',
-            'tid'
+            'tag'
         )
 
 
@@ -91,10 +105,10 @@ class CreateTag(serializers.ModelSerializer):
 
 
 class TagGetBook(serializers.ModelSerializer):
-    tid = serializers.IntegerField(required=True)
+    tag = serializers.CharField(required=True, max_length=32)
 
     class Meta:
         model = Tag
         fields = (
-            'tid',
+            'tag',
         )

@@ -16,19 +16,17 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'e#gm1!b%rkw=$&ya$bpl9=&fpc&b2adif$b1=z6qhcq0--hah6'
-#SECRET_KEY = '-_-p%*#8_=rsll=y+o1pkw*-$7qr=g#f4(c74*e9bo94(&*vt='
+# SECRET_KEY = '-_-p%*#8_=rsll=y+o1pkw*-$7qr=g#f4(c74*e9bo94(&*vt='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -49,7 +47,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -77,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -91,7 +88,6 @@ DATABASES = {
         "PASSWORD": 'zrhmjxa1a1b2b2',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -118,7 +114,7 @@ SWAGGER_SETTINGS = {
     'REFETCH_SCHEMA_WITH_AUTH': True,
     'REFETCH_SCHEMA_ON_LOGOUT': True,
 
-    'DEFAULT_INFO': 'your_project.urls.swagger_info',#这里注意，更改为自己的项目路径
+    'DEFAULT_INFO': 'your_project.urls.swagger_info',  # 这里注意，更改为自己的项目路径
 
     'SECURITY_DEFINITIONS': {
         'Basic': {
@@ -137,9 +133,17 @@ SWAGGER_SETTINGS = {
     }
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
+
+# 固定写法设置Email引擎
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'  # 腾讯QQ邮箱 SMTP 服务器地址
+EMAIL_PORT = 25  # SMTP服务的端口号
+EMAIL_HOST_USER = '1060555245@qq.com'  # 你的qq邮箱，邮件发送者的邮箱
+EMAIL_HOST_PASSWORD = 'gfhkjvxwtketbege'  # 你申请的授权码（略）
+EMAIL_USE_TLS = False  # 与SMTP服务器通信时,是否启用安全模式
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -150,7 +154,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
