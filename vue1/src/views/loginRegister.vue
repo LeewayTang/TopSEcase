@@ -27,13 +27,13 @@
       <div class="small-box" :class="{active:isLogin}">
         <div class="small-contain" v-if="isLogin">
           <div class="stitle">你好，世界!</div>
-          <p class="scontent">我直接注册</p>
-          <button class="sbutton" @click="changeType">注册</button>
+          <p class="scontent">我还没号</p>
+          <button class="sbutton" @click="changeType">🔜</button>
         </div>
         <div class="small-contain" v-else>
           <div class="stitle">新世界大门</div>
-          <p class="scontent">登录你的账户吧</p>
-          <button class="sbutton" @click="changeType">登录</button>
+          <p class="scontent">我有号了</p>
+          <button class="sbutton" @click="changeType">🔙</button>
         </div>
       </div>
     </div>
@@ -57,7 +57,16 @@ export default{
       }
     }
   },
+  created:function(){
+    this.loggingState()
+  },
+  destroyed:function() {
+    this.loggingState()
+  },
   methods: {
+    loggingState(){
+      this.$store.commit('SET_LOGGING_STATE')
+    },
     changeType () {
       this.isLogin = !this.isLogin
       this.form.username = ''
