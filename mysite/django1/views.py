@@ -203,42 +203,55 @@ class LoginRegister(viewsets.GenericViewSet):
         Uid = data_json.get('uid')
         Pwd = data_json.get('pwd')
         Mail = data_json.get('mail')
-        type = data_json.get('type')
         queryset = User.objects.filter(uid=Uid)
         if queryset.count() != 0:
             return Response({'msg': '用户名已存在', 'data': '-1'})
         if not re.match('^[0-9a-zA-Z]+[@][0-9a-zA-Z]+.+[0-9a-zA-Z]+$', Mail):
             return Response({'msg': '邮箱格式错误', 'data': '-1'})
-        if type == 1:
-            key = data_json.get('key')
-            if key is None:
-                return Response({'msg': '你逗我呢没有验证码', 'data': -1})
-            queryset = MailKey.objects.filter(mail__exact=Mail, key=key)
-            if queryset.count() == 0:
-                return Response({'msg': '验证码错误', 'data': -1})
-            queryset = MailKey.objects.get(mail__exact=Mail, key=key)
-            queryset.delete()
-            time = datetime.date.today()
-            User.objects.create(uid=Uid, pwd=Pwd, mail=Mail, createTime=time, circle=None)
-            return Response({'msg': '注册成功', 'data': '1'})
-        else:
-            key = generate_random_str(16)
-            self.sendEmail(Mail, key)
-            queryset = MailKey.objects.filter(mail__exact=Mail)
-            if queryset.count() != 0:
-                queryset = MailKey.objects.get(mail__exact=Mail)
-                queryset.delete()
-            MailKey.objects.create(mail=Mail, key=key)
-            return Response({'msg': '验证码发送成功', 'key': key, 'data': 1})
+        time = datetime.date.today()
+        User.objects.create(uid=Uid, pwd=Pwd, mail=Mail, createTime=time, circle=None)
+        return Response({'msg': '注册成功', 'data': '1'})
+    # def register(self, request):
+    #     data_json = json.loads(request.body, strict=False)
+    #     Uid = data_json.get('uid')
+    #     Pwd = data_json.get('pwd')
+    #     Mail = data_json.get('mail')
+    #     type = data_json.get('type')
+    #     queryset = User.objects.filter(uid=Uid)
+    #     if queryset.count() != 0:
+    #         return Response({'msg': '用户名已存在', 'data': '-1'})
+    #     if not re.match('^[0-9a-zA-Z]+[@][0-9a-zA-Z]+.+[0-9a-zA-Z]+$', Mail):
+    #         return Response({'msg': '邮箱格式错误', 'data': '-1'})
+    #     if type == 1:
+    #         key = data_json.get('key')
+    #         if key is None:
+    #             return Response({'msg': '你逗我呢没有验证码', 'data': -1})
+    #         queryset = MailKey.objects.filter(mail__exact=Mail, key=key)
+    #         if queryset.count() == 0:
+    #             return Response({'msg': '验证码错误', 'data': -1})
+    #         queryset = MailKey.objects.get(mail__exact=Mail, key=key)
+    #         queryset.delete()
+    #         time = datetime.date.today()
+    #         User.objects.create(uid=Uid, pwd=Pwd, mail=Mail, createTime=time, circle=None)
+    #         return Response({'msg': '注册成功', 'data': '1'})
+    #     else:
+    #         key = generate_random_str(16)
+    #         self.sendEmail(Mail, key)
+    #         queryset = MailKey.objects.filter(mail__exact=Mail)
+    #         if queryset.count() != 0:
+    #             queryset = MailKey.objects.get(mail__exact=Mail)
+    #             queryset.delete()
+    #         MailKey.objects.create(mail=Mail, key=key)
+    #         return Response({'msg': '验证码发送成功', 'key': key, 'data': 1})
 
-    def sendEmail(self, mail='1060555245.qq.com', key='None'):
-        subject = '墨韵平台注册认证'  # 主题
-        from_email = mysite.settings.EMAIL_HOST_USER  # 发件人，在settings.py中已经配置
-        print(from_email)
-        to_email = mail  # 邮件接收者列表
-        # 发送的消息
-        message = '注册验证码为' + key  # 发送普通的消息使用的时候message
-        send_mail(subject, message, from_email, [to_email])
+    # def sendEmail(self, mail='1060555245.qq.com', key='None'):
+    #     subject = '墨韵平台注册认证'  # 主题
+    #     from_email = mysite.settings.EMAIL_HOST_USER  # 发件人，在settings.py中已经配置
+    #     print(from_email)
+    #     to_email = mail  # 邮件接收者列表
+    #     # 发送的消息
+    #     message = '注册验证码为' + key  # 发送普通的消息使用的时候message
+    #     send_mail(subject, message, from_email, [to_email])
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=LoginInfoSerializer)
