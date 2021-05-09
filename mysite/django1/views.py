@@ -2,6 +2,7 @@ import datetime
 
 from django.core.mail import send_mail
 from django.db.models import Max
+from django.http import JsonResponse
 from drf_yasg.openapi import Parameter, IN_PATH, TYPE_STRING, IN_QUERY
 from rest_framework import viewsets
 from rest_framework import generics
@@ -33,7 +34,7 @@ import re
 #         auto_schema=None,
 #     )
 # )
-class UserInfoView(viewsets.ModelViewSet):
+class UserInfoView(viewsets.GenericViewSet):
     """
         retrieve:
             返回一组（查）
@@ -55,6 +56,83 @@ class UserInfoView(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserInfoSerializer
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=UserInfoSerializer)
+    @action(methods=['POST'], detail=False)
+    def updateUserInfo(self, request):
+        data_json = json.loads(request.body)
+        token = data_json.get('token')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'data': -1})
+        ret = {}
+        user = Token.objects.get(key__exact=token).usr
+        uid = data_json.get('uid')
+        if uid is not None:
+            user.uid = uid
+        ret.update({'uid': user.uid})
+        pwd = data_json.get('pwd')
+        if pwd is not None:
+            user.pwd = pwd
+        ret.update({'pwd': user.pwd})
+        sex = data_json.get('sex')
+        if sex is not None:
+            user.sex = sex
+        ret.update({'sex': user.sex})
+        avatar = data_json.get('avatar')
+        if avatar is not None:
+            user.avatar = avatar
+        ret.update({'avatar': user.avatar})
+        isTeacher = data_json.get('isTeacher')
+        if isTeacher is not None:
+            user.isTeacher = isTeacher
+        ret.update({'isTeacher': user.isTeacher})
+        circle = data_json.get('circle')
+        if circle is not None:
+            user.circle = circle
+        ret.update({'circle': user.circle})
+        ret.update({'msg': 'success'})
+        ret.update({'data': 1})
+        user.save()
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=TokenSerializer)
+    @action(methods=['POST'], detail=False)
+    def getUserInfo(self, request):
+        data_json = json.loads(request.body)
+        token = data_json.get('token')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'data': -1})
+        user = Token.objects.get(key__exact=token).usr
+        ret = {}
+        ret.update({'uid': user.uid})
+        ret.update({'pwd': user.pwd})
+        ret.update({'sex': user.sex})
+        ret.update({'avatar': user.avatar})
+        ret.update({'isTeacher': user.isTeacher})
+        ret.update({'circle': user.circle})
+        ret.update({'msg': 'success'})
+        ret.update({'data': 1})
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=UidInfoSerializer)
+    @action(methods=['POST'], detail=False)
+    def delCircleByUid(self, request):
+        data_json = json.loads(request.body)
+        uid = data_json.get('uid')
+        queryset = User.objects.filter(uid__exact=uid)
+        if queryset.count() == 0:
+            return Response({'msg': 'User not exists', 'data': -1})
+        user = User.objects.get(uid__exact=uid)
+        if user.circle is None:
+            return Response({'msg': 'User has not circle', 'data': -1})
+        user.circle = None
+        user.save()
+        return Response({'msg': 'Delete success', 'data': 1})
 
 
 # 防止ModelViewSet的多余接口
@@ -153,8 +231,6 @@ class LoginRegister(viewsets.GenericViewSet):
             MailKey.objects.create(mail=Mail, key=key)
             return Response({'msg': '验证码发送成功', 'key': key, 'data': 1})
 
-
-
     def sendEmail(self, mail='1060555245.qq.com', key='None'):
         subject = '墨韵平台注册认证'  # 主题
         from_email = mysite.settings.EMAIL_HOST_USER  # 发件人，在settings.py中已经配置
@@ -163,7 +239,6 @@ class LoginRegister(viewsets.GenericViewSet):
         # 发送的消息
         message = '注册验证码为' + key  # 发送普通的消息使用的时候message
         send_mail(subject, message, from_email, [to_email])
-
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=LoginInfoSerializer)
@@ -265,7 +340,7 @@ class BookTagInfo(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""}, request_body=BookISBN)
     @action(methods=['POST'], detail=False)
-    def get_tag_by_book(self, request):
+    def getTagByBook(self, request):
         print(request)
         data_json = json.loads(request.body)
         ISBN = data_json.get('ISBN')
@@ -284,7 +359,7 @@ class BookTagInfo(viewsets.GenericViewSet):
     @swagger_auto_schema(responses={200: ""},
                          request_body=BookSetTag)
     @action(methods=['POST'], detail=False)
-    def set_tag_by_book(self, request):
+    def setTagByBook(self, request):
         data_json = json.loads(request.body)
         ISBN = data_json.get('ISBN')
         tag = data_json.get('tag')
@@ -305,7 +380,7 @@ class BookTagInfo(viewsets.GenericViewSet):
     @swagger_auto_schema(responses={200: ""},
                          request_body=TagGetBook)
     @action(methods=['POST'], detail=False)
-    def get_book_by_tag(self, request):
+    def getBookByTag(self, request):
         data_json = json.loads(request.body)
         tag = data_json.get('tag')
         print(tag)
@@ -318,28 +393,28 @@ class BookTagInfo(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""})
     @action(methods=['GET'], detail=False)
-    def get_book(self, request):
+    def getBook(self, request):
         queryset = Book.objects.all().values()
         ret = {'msg': 'success', 'data': queryset}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""})
     @action(methods=['GET'], detail=False)
-    def get_tag(self, request):
+    def getTag(self, request):
         queryset = Tag.objects.all().values()
         ret = {'msg': 'success', 'data': queryset}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""})
     @action(methods=['GET'], detail=False)
-    def get_book_tag(self, request):
+    def getBookTag(self, request):
         queryset = BookTag.objects.all().values()
         ret = {'msg': 'success', 'data': queryset}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""}, request_body=CreateTag)
     @action(methods=['POST'], detail=False)
-    def get_tag_tid(self, request):
+    def getTagTid(self, request):
         data_json = json.loads(request.body)
         tag = data_json.get('tag')
         queryset = Tag.objects.filter(tag__exact=tag)
@@ -350,7 +425,7 @@ class BookTagInfo(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""}, request_body=BookInfo)
     @action(methods=['POST'], detail=False)
-    def add_book(self, request):
+    def addBook(self, request):
         data_json = json.loads(request.body)
         name = data_json.get('name')
         publishTime = data_json.get('publishTime')
@@ -366,7 +441,7 @@ class BookTagInfo(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""}, request_body=CreateTag)
     @action(methods=['POST'], detail=False)
-    def add_tag(self, request):
+    def addTag(self, request):
         data_json = json.loads(request.body)
         tag = data_json.get('tag')
         queryset = Tag.objects.filter(tag=tag)
@@ -378,7 +453,7 @@ class BookTagInfo(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""}, request_body=CreateTag)
     @action(methods=['POST'], detail=False)
-    def del_tag(self, request):
+    def delTag(self, request):
         data_json = json.loads(request.body)
         tag = data_json.get('tag')
         queryset = Tag.objects.filter(tag__exact=tag)
@@ -392,7 +467,7 @@ class BookTagInfo(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""}, request_body=BookISBN)
     @action(methods=['POST'], detail=False)
-    def del_book(self, request):
+    def delTook(self, request):
         data_json = json.loads(request.body)
         ISBN = data_json.get('ISBN')
         queryset = Book.objects.filter(ISBN=ISBN)
@@ -401,3 +476,7 @@ class BookTagInfo(viewsets.GenericViewSet):
         queryset.delete()
         ret = {'msg': 'success', 'data': 1}
         return Response(ret)
+
+
+# class CircleInfo(viewsets.GenericViewSet):
+#     queryset = Circle.objects.all()

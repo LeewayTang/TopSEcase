@@ -4,9 +4,25 @@ from django1.models import *
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True, max_length=16)
+    uid = serializers.CharField(max_length=16)
+    pwd = serializers.CharField(max_length=16)
+    sex = serializers.IntegerField(default=0)
+    avatar = serializers.CharField(max_length=2048)
+    isTeacher = serializers.BooleanField(default=False)
+    circle = serializers.IntegerField()
+
     class Meta:
         model = User
-        fields = "__all__"
+        fields = (
+            'token',
+            'uid',
+            'pwd',
+            'sex',
+            'avatar',
+            'isTeacher',
+            'circle'
+        )
 
 
 class LoginInfoSerializer(serializers.ModelSerializer):
@@ -18,6 +34,16 @@ class LoginInfoSerializer(serializers.ModelSerializer):
         fields = (
             'uid',
             'pwd'
+        )
+
+
+class UidInfoSerializer(serializers.ModelSerializer):
+    uid = serializers.CharField(required=True, max_length=16)
+
+    class Meta:
+        model = User
+        fields = (
+            'uid',
         )
 
 
