@@ -8,7 +8,7 @@
             <input type="email" placeholder="邮箱" v-model="form.useremail">
             <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
             <input type="password" placeholder="密码" v-model="form.userpwd">
-            <span class="errTips" v-if="emailError">* 密码填写错误 *</span>
+            <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
           </div>
           <button class="bbutton" @click="login">登录</button>
         </div>
@@ -17,7 +17,8 @@
           <div class="bform">
             <input type="text" placeholder="用户名" v-model="form.username">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-            <input type="email" placeholder="邮箱" v-model="form.useremail">
+            <input type="email" placeholder="邮箱" v-model="form.useremail" @input="checkEmail">
+<!--            <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>-->
             <input type="password" placeholder="密码" v-model="form.userpwd">
           </div>
           <button class="bbutton" @click="register">注册</button>
@@ -40,7 +41,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default{
   name: 'login-register',
@@ -65,43 +65,40 @@ export default{
       this.form.userpwd = ''
     },
     login () {
-      axios({
-        methods: 'post',
-        url: 'api/login_register/login/',
-        data: this.$qs.stringify({
-          username:this.form.username,
-          password:this.form.userpwd
+      const self = this
+      if (self.form.useremail !== '' && self.form.userpwd !== '') {
+        self.$axios({
+          method: 'post',
+          url: 'api/login_register/login/',
+          data: {
+            uid: self.form.useremail,
+            pwd: self.form.userpwd
+          }
         })
-      })
-      // const self = this
-      // if (self.form.useremail !== '' && self.form.userpwd !== '') {
-      //   self.$axios({
-      //     method: 'post',
-      //     url: 'api/login_register/login/',
-      //     data: {
-      //       uid: self.form.useremail,
-      //       pwd: self.form.userpwd
-      //     }
-      //   })
-      //     .then(res => {
-      //       switch (res.data) {
-      //         case 0:
-      //           alert('登陆成功！')
-      //           break
-      //         case -1:
-      //           this.emailError = true
-      //           break
-      //         case 1:
-      //           this.passwordError = true
-      //           break
-      //       }
-      //     })
-      //     .catch(err => {
-      //       console.log(err)
-      //     })
-      // } else {
-      //   alert('填写不能为空！')
-      // }
+          .then(res => {
+            switch (res.data.data) {
+              case 1:
+                this.$Notice.open({
+                  title: '成功登录'
+                })
+                localStorage.setItem('token', "Bearer " + res.data.token)
+                this.$store.commit('setUser', res.data.user)
+                  this.$router.push({
+                   path:`/`})
+                break
+              case -1:
+                this.$Notice.open({
+                  title: '用户名或密码错误'
+                })
+                break
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        alert('填写不能为空！')
+      }
     },
     register () {
       const self = this
@@ -117,8 +114,10 @@ export default{
         })
           .then(res => {
             switch (res.data) {
-              case 0:
-                alert('注册成功！')
+              case 1:
+                this.$Notice.open({
+                  title: '成功注册！'
+                })
                 this.login()
                 break
               case -1:

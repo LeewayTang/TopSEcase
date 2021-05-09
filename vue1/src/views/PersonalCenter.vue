@@ -25,7 +25,7 @@
             <a href="#front">
               <MenuItem name="3">
                 <Icon size="50" type="md-clock"/>
-                <span class="menu-text">书评</span>
+                <span class="menu-text">作品</span>
               </MenuItem>
             </a>
             <div class="colorPick">
@@ -221,7 +221,7 @@
             <Divider dashed/>
             <card class="write" id="front">
               <h1 class="-head-title" slot="title">
-                书评 Book Review
+                作品 Works
               </h1>
                 <h2 :style="{borderBottomColor:color}">
                   <span :style="{backgroundColor:color}">我的导师</span>

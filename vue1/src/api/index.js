@@ -41,8 +41,10 @@ export function fetchSocial() {
 }
 
 export function fetchSiteInfo() {
+    // alert('000')
     return request({
-        url: '/site',
+        // url: '/api/try/Try/',
+        url: '/site1',
         method: 'get',
         params: {}
     })
@@ -55,3 +57,17 @@ export function fetchComment() {
         params: {}
     })
 }
+
+export function addBook(){
+    return request({
+        url: '/book_tag/add_book',
+        method: post,
+        params:{}
+    })
+}
+
+// export function addArticle(){
+//     return request({
+//         rul: '/'
+//     })
+// }
