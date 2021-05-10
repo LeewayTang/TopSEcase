@@ -27,13 +27,13 @@
       <div class="small-box" :class="{active:isLogin}">
         <div class="small-contain" v-if="isLogin">
           <div class="stitle">你好，世界!</div>
-          <p class="scontent">我还没号</p>
-          <button class="sbutton" @click="changeType">🔜</button>
+          <p class="scontent"></p>
+          <button class="sbutton" @click="changeType">我还没号</button>
         </div>
         <div class="small-contain" v-else>
           <div class="stitle">新世界大门</div>
-          <p class="scontent">我有号了</p>
-          <button class="sbutton" @click="changeType">🔙</button>
+          <p class="scontent"></p>
+          <button class="sbutton" @click="changeType">我有号了</button>
         </div>
       </div>
     </div>

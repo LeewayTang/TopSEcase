@@ -24,6 +24,13 @@ export function fetchCategory() {
     })
 }
 
+export function fetchProfile() {
+    return request({
+        url: '/profile',
+        method: 'get',
+        params: {}
+    })
+}
 export function fetchFriend() {
     return request({
         url: '/friend',

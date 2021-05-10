@@ -68,7 +68,7 @@
             SmallIco,
             Quote
         },
-        computed: {
+      computed: {
             searchWords() {
                 return this.$route.params.words
             },

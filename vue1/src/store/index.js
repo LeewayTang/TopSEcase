@@ -10,6 +10,7 @@ let timer = null;
 const state = {
     loading: false,
     isLogging: true,
+    hasLogin:false,
     runTimeInterval: '',
     socials: '',
     websiteInfo: '',
@@ -38,6 +39,9 @@ const mutations = {
             state.isLogging = false
         else
             state.isLogging = true
+    },
+    SET_LOG_STATE:(state ,v)=>{
+       state.hasLogin = v
     }
 }
 const actions = {
