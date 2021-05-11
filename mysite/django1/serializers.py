@@ -111,6 +111,30 @@ class BookISBN(serializers.ModelSerializer):
         )
 
 
+class AddCircleComment(serializers.ModelSerializer):
+    token = serializers.CharField(required=True, max_length=16)
+    circle = serializers.IntegerField(required=True)
+    context = serializers.CharField(required=True, max_length=256)
+
+    class Meta:
+        model = Discuss
+        fields = (
+            'token',
+            'circle',
+            'context'
+        )
+
+
+class GetCircleComment(serializers.ModelSerializer):
+    circle = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = Discuss
+        fields = (
+            'circle',
+        )
+
+
 class BookInfo(serializers.ModelSerializer):
     name = serializers.CharField(required=True, max_length=256)
     publishTime = serializers.DateField(required=True)

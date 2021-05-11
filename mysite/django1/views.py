@@ -495,6 +495,16 @@ class BookTagInfo(viewsets.GenericViewSet):
         return Response(ret)
 
 
+class TokenInfo(viewsets.GenericViewSet):
+    queryset = Token.objects.all()
+
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['GET'], detail=False)
+    def getToken(self, request):
+        queryset = Token.objects.all().values()
+        return Response({'msg': 'success', 'data': queryset, 'status': 1})
+
+
 class CircleInfo(viewsets.GenericViewSet):
     queryset = Circle.objects.all()
     # serializers = CircleInfoSerializer
@@ -522,4 +532,38 @@ class CircleInfo(viewsets.GenericViewSet):
         if not queryset.usr.isTeacher:
             return Response({'msg': 'Not teacher', 'status': 0})
         Circle.objects.create(type=type, name=name, creator=queryset.usr.id)
+        return Response({'msg': 'success', 'status': 1})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=GetCircleComment)
+    @action(methods=['POST'], detail=False)
+    def getDiscuss(self, request):
+        data_json = json.loads(request.body)
+        circle = data_json.get('circle')
+        if circle is None:
+            return Response({'msg': 'Parameter wrong', 'status': -1})
+        queryset = Circle.objects.filter(id=circle)
+        if queryset.count() == 0:
+            return Response({'msg': 'Circle not exists', 'status': -1})
+        queryset = Discuss.objects.filter(circle_id=circle).values()
+        return Response({'msg': 'success', 'status': 1, 'data': queryset})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=AddCircleComment)
+    @action(methods=['POST'], detail=False)
+    def addDiscuss(self, request):
+        data_json = json.loads(request.body)
+        token = data_json.get('token')
+        circle = data_json.get('circle')
+        context = data_json.get('context')
+        if token is None or circle is None or context is None:
+            return Response({'msg': 'Parameter wrong', 'status': -1})
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Not login', 'status': -1})
+        queryset = Circle.objects.filter(id=circle)
+        if queryset.count() == 0:
+            return Response({'msg': 'Circle not exists', 'status': -1})
+        user = Token.objects.get(key__exact=token).usr
+        floor = Discuss.objects.filter(circle_id=circle).count() + 1
+        circle = Circle.objects.get(id=circle)
+        Discuss.objects.create(usr=user, circle=circle, context=context, floor=floor)
         return Response({'msg': 'success', 'status': 1})

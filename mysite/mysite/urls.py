@@ -62,4 +62,5 @@ router.register('login_register', views.LoginRegister)
 router.register('upload', views.FileUpload)
 router.register('bookTag', views.BookTagInfo)
 router.register('circle', views.CircleInfo)
+router.register('token', views.TokenInfo)
 urlpatterns += path('api/', include(router.urls)),
