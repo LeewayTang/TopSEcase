@@ -60,6 +60,9 @@ class Discuss(models.Model):
 # 圈子
 class Circle(models.Model):
     type = models.CharField(verbose_name='圈子类型', max_length=16, default="学习")
+    name = models.CharField(verbose_name='圈子名字', max_length=32, default="root")
+    number = models.IntegerField(verbose_name='圈子人数', default=0)
+    creator = models.IntegerField(verbose_name='创建者id', default=1)
 
 
 # 书本

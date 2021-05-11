@@ -25,6 +25,20 @@ class UserInfoSerializer(serializers.ModelSerializer):
         )
 
 
+class CircleInfoSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(required=True, max_length=16)
+    name = serializers.CharField(required=True, max_length=32)
+    token = serializers.CharField(required=True, max_length=16)
+
+    class Meta:
+        model = Circle
+        fields = (
+            'type',
+            'name',
+            'token'
+        )
+
+
 class LoginInfoSerializer(serializers.ModelSerializer):
     uid = serializers.CharField(required=True, max_length=16)
     pwd = serializers.CharField(required=True, max_length=16)

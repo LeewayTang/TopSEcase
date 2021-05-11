@@ -65,7 +65,7 @@ class UserInfoView(viewsets.GenericViewSet):
         token = data_json.get('token')
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
-            return Response({'msg': 'Token not exists', 'data': -1})
+            return Response({'msg': 'Token not exists', 'data': -1, 'status': -1})
         ret = {}
         user = Token.objects.get(key__exact=token).usr
         uid = data_json.get('uid')
@@ -92,10 +92,12 @@ class UserInfoView(viewsets.GenericViewSet):
         if circle is not None:
             user.circle = circle
         ret.update({'circle': user.circle})
-        ret.update({'msg': 'success'})
-        ret.update({'data': 1})
+        Ret = {}
+        Ret.update({'msg': 'success'})
+        Ret.update({'data': ret})
+        Ret.update({'status': 1})
         user.save()
-        return Response(ret)
+        return Response(Ret)
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=TokenSerializer)
@@ -105,7 +107,7 @@ class UserInfoView(viewsets.GenericViewSet):
         token = data_json.get('token')
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
-            return Response({'msg': 'Token not exists', 'data': -1})
+            return Response({'msg': 'Token not exists', 'status': -1})
         user = Token.objects.get(key__exact=token).usr
         ret = {}
         ret.update({'uid': user.uid})
@@ -114,9 +116,11 @@ class UserInfoView(viewsets.GenericViewSet):
         ret.update({'avatar': user.avatar})
         ret.update({'isTeacher': user.isTeacher})
         ret.update({'circle': user.circle})
-        ret.update({'msg': 'success'})
-        ret.update({'data': 1})
-        return Response(ret)
+        Ret = {}
+        Ret.update({'msg': 'success'})
+        Ret.update({'data': ret})
+        Ret.update({'status': 1})
+        return Response(Ret)
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=UidInfoSerializer)
@@ -126,13 +130,13 @@ class UserInfoView(viewsets.GenericViewSet):
         uid = data_json.get('uid')
         queryset = User.objects.filter(uid__exact=uid)
         if queryset.count() == 0:
-            return Response({'msg': 'User not exists', 'data': -1})
+            return Response({'msg': 'User not exists', 'status': -1})
         user = User.objects.get(uid__exact=uid)
         if user.circle is None:
-            return Response({'msg': 'User has not circle', 'data': -1})
+            return Response({'msg': 'User has not circle', 'status': -1})
         user.circle = None
         user.save()
-        return Response({'msg': 'Delete success', 'data': 1})
+        return Response({'msg': 'Delete success', 'status': 1})
 
 
 # 防止ModelViewSet的多余接口
@@ -207,10 +211,10 @@ class LoginRegister(viewsets.GenericViewSet):
         if queryset.count() != 0:
             return Response({'msg': '用户名已存在', 'data': '-1'})
         if not re.match('^[0-9a-zA-Z]+[@][0-9a-zA-Z]+.+[0-9a-zA-Z]+$', Mail):
-            return Response({'msg': '邮箱格式错误', 'data': '-1'})
+            return Response({'msg': '邮箱格式错误', 'status': '-1'})
         time = datetime.date.today()
         User.objects.create(uid=Uid, pwd=Pwd, mail=Mail, createTime=time, circle=None)
-        return Response({'msg': '注册成功', 'data': '1'})
+        return Response({'msg': '注册成功', 'status': '1'})
     # def register(self, request):
     #     data_json = json.loads(request.body, strict=False)
     #     Uid = data_json.get('uid')
@@ -263,11 +267,11 @@ class LoginRegister(viewsets.GenericViewSet):
         queryset = User.objects.filter(uid__exact=Uid)  # .filter(uid=Uid, mail=Mail, pwd=Pwd)
         queryset_mail = User.objects.filter(mail__exact=Uid)
         if queryset.count() == 0 and queryset_mail.count() == 0:
-            return Response({'msg': '用户名或邮箱不正确', 'data': -1})
+            return Response({'msg': '用户名或邮箱不正确', 'status': -1})
         queryset = User.objects.filter(uid__exact=Uid, pwd__exact=Pwd)
         queryset_mail = User.objects.filter(mail__exact=Uid, pwd__exact=Pwd)
         if queryset.count() == 0 and queryset_mail.count() == 0:
-            return Response({'msg': '密码不正确', 'data': -1})
+            return Response({'msg': '密码不正确', 'status': -1})
         # (user_list, many=True)
         user = User.objects.get(uid__exact=Uid, pwd__exact=Pwd)
         token = Token.objects.filter(usr__exact=user)
@@ -276,7 +280,7 @@ class LoginRegister(viewsets.GenericViewSet):
             token.delete()
         key = generate_random_str()
         Token.objects.create(key=key, usr=user)
-        ret = {'msg': 'success', 'data': 1, 'token': key}
+        ret = {'msg': 'success', 'status': 1, 'token': key}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""},
@@ -287,10 +291,10 @@ class LoginRegister(viewsets.GenericViewSet):
         token = data_json.get('token')
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
-            return Response({'msg': 'No token exists', 'data': -1})
+            return Response({'msg': 'No token exists', 'status': -1})
         queryset = Token.objects.get(key__exact=token)
         queryset.delete()
-        return Response({'msg': 'success', 'data': 1})
+        return Response({'msg': 'success', 'status': 1})
 
 
 class FileUpload(viewsets.GenericViewSet):
@@ -310,7 +314,7 @@ class FileUpload(viewsets.GenericViewSet):
         queryset = User.objects.get(uid=Uid)
         queryset.avatar = Avatar
         queryset.save()
-        return Response({'msg': 'upload success', 'data': '1'})
+        return Response({'msg': 'upload success', 'status': 1})
 
 
 class BookTagInfo(viewsets.GenericViewSet):
@@ -358,15 +362,15 @@ class BookTagInfo(viewsets.GenericViewSet):
         data_json = json.loads(request.body)
         ISBN = data_json.get('ISBN')
         if ISBN is None:
-            return Response({'msg': 'Input illegal', 'data': '-1'})
+            return Response({'msg': 'Input illegal', 'status': -1})
         queryset = Book.objects.filter(ISBN__exact=ISBN)
         if queryset.count() == 0:
-            return Response({'msg': 'Book not exists', 'data': '-1'})
+            return Response({'msg': 'Book not exists', 'status': -1})
         queryset = Book.objects.get(ISBN__exact=ISBN)
         queryset = queryset.booktag_set.all()
         if queryset.count() == 0:
-            return Response({'msg': 'This book no tags', 'data': '0'})
-        ret = {'msg': 'success', 'data': queryset.values()}
+            return Response({'msg': 'This book no tags', 'status': 0})
+        ret = {'msg': 'success', 'data': queryset.values(), 'status': 1}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""},
@@ -378,17 +382,17 @@ class BookTagInfo(viewsets.GenericViewSet):
         tag = data_json.get('tag')
         queryset = Book.objects.filter(ISBN__exact=ISBN)
         if queryset.count() == 0:
-            return Response({'msg': 'Book not exists', 'data': '-1'})
+            return Response({'msg': 'Book not exists', 'status': -1})
         queryset = Tag.objects.filter(tag__exact=tag)
         if queryset.count() == 0:
-            return Response({'msg': 'Tag not exists', 'data': '-1'})
+            return Response({'msg': 'Tag not exists', 'status': -1})
         tag = Tag.objects.get(tag__exact=tag)
         book = Book.objects.get(ISBN__exact=ISBN)
         queryset = BookTag.objects.filter(book=book, tag=tag)
         if queryset.count() != 0:
-            return Response({'msg': 'Book tag exists', 'data': '0'})
+            return Response({'msg': 'Book tag exists', 'status': 0})
         BookTag.objects.create(book=book, tag=tag)
-        return Response({'msg': 'upload success', 'data': '1'})
+        return Response({'msg': 'upload success', 'status': 1})
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=TagGetBook)
@@ -399,30 +403,30 @@ class BookTagInfo(viewsets.GenericViewSet):
         print(tag)
         queryset = Tag.objects.filter(tag__exact=tag)
         if queryset.count() == 0:
-            return Response({'msg': 'No such tid', 'data': '-1'})
+            return Response({'msg': 'No such tid', 'status': -1})
         queryset = Tag.objects.get(tag=tag).booktag_set.all()
-        ret = {'msg': 'success', 'data': queryset.values()}
+        ret = {'msg': 'success', 'data': queryset.values(), 'status': 1}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""})
     @action(methods=['GET'], detail=False)
     def getBook(self, request):
         queryset = Book.objects.all().values()
-        ret = {'msg': 'success', 'data': queryset}
+        ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""})
     @action(methods=['GET'], detail=False)
     def getTag(self, request):
         queryset = Tag.objects.all().values()
-        ret = {'msg': 'success', 'data': queryset}
+        ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""})
     @action(methods=['GET'], detail=False)
     def getBookTag(self, request):
         queryset = BookTag.objects.all().values()
-        ret = {'msg': 'success', 'data': queryset}
+        ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""}, request_body=CreateTag)
@@ -432,9 +436,9 @@ class BookTagInfo(viewsets.GenericViewSet):
         tag = data_json.get('tag')
         queryset = Tag.objects.filter(tag__exact=tag)
         if queryset.count() == 0:
-            return Response({'msg': 'Tag not exists', 'data': -1})
+            return Response({'msg': 'Tag not exists', 'status': -1})
         queryset = Tag.objects.get(tag__exact=tag).id
-        return Response({'msg': 'success', 'data': queryset})
+        return Response({'msg': 'success', 'data': queryset, 'status': 1})
 
     @swagger_auto_schema(responses={200: ""}, request_body=BookInfo)
     @action(methods=['POST'], detail=False)
@@ -446,10 +450,10 @@ class BookTagInfo(viewsets.GenericViewSet):
         author = data_json.get('author')
         queryset = Book.objects.filter(ISBN=ISBN)
         if queryset.count() != 0:
-            return Response({'msg': 'ISBN exists', 'data': -1})
+            return Response({'msg': 'ISBN exists', 'status': -1})
         Book.objects.create(name=name, publishTime=publishTime,
                             ISBN=ISBN, author=author)
-        ret = {'msg': 'success', 'data': 1}
+        ret = {'msg': 'success', 'status': 1}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""}, request_body=CreateTag)
@@ -459,9 +463,9 @@ class BookTagInfo(viewsets.GenericViewSet):
         tag = data_json.get('tag')
         queryset = Tag.objects.filter(tag=tag)
         if queryset.count() != 0:
-            return Response({'msg': 'Tag exists', 'data': -1})
+            return Response({'msg': 'Tag exists', 'status': -1})
         Tag.objects.create(tag=tag)
-        ret = {'msg': 'success', 'data': 1}
+        ret = {'msg': 'success', 'status': 1}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""}, request_body=CreateTag)
@@ -471,11 +475,11 @@ class BookTagInfo(viewsets.GenericViewSet):
         tag = data_json.get('tag')
         queryset = Tag.objects.filter(tag__exact=tag)
         if queryset.count() == 0:
-            return Response({'msg': 'Tag not exists', 'data': -1})
+            return Response({'msg': 'Tag not exists', 'status': -1})
         queryset = Tag.objects.get(tag__exact=tag)
         tid = queryset.id
         queryset.delete()
-        ret = {'msg': 'success', 'data': 1}
+        ret = {'msg': 'success', 'status': 1}
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""}, request_body=BookISBN)
@@ -485,11 +489,37 @@ class BookTagInfo(viewsets.GenericViewSet):
         ISBN = data_json.get('ISBN')
         queryset = Book.objects.filter(ISBN=ISBN)
         if queryset.count() == 0:
-            return Response({'msg': 'Book not exists', 'data': -1})
+            return Response({'msg': 'Book not exists', 'status': -1})
         queryset.delete()
-        ret = {'msg': 'success', 'data': 1}
+        ret = {'msg': 'success', 'status': 1}
         return Response(ret)
 
 
-# class CircleInfo(viewsets.GenericViewSet):
-#     queryset = Circle.objects.all()
+class CircleInfo(viewsets.GenericViewSet):
+    queryset = Circle.objects.all()
+    # serializers = CircleInfoSerializer
+
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['GET'], detail=False)
+    def getCircle(self, request):
+        queryset = Circle.objects.all().values()
+        return Response({'msg': 'success', 'data': queryset, 'status': 1})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=CircleInfoSerializer)
+    @action(methods=['POST'], detail=False)
+    def addCircle(self, request):
+        data_json = json.loads(request.body)
+        type = data_json.get('type')
+        name = data_json.get('name')
+        token = data_json.get('token')
+        creator = data_json.get('creator')
+        if type is None or name is None or token is None:
+            return Response({'msg': 'Parameter wrong', 'status': -1})
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Not login', 'status': -1})
+        queryset = Token.objects.get(key__exact=token)
+        if not queryset.usr.isTeacher:
+            return Response({'msg': 'Not teacher', 'status': 0})
+        Circle.objects.create(type=type, name=name, creator=queryset.usr.id)
+        return Response({'msg': 'success', 'status': 1})
