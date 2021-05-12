@@ -486,7 +486,7 @@ class BookTagInfo(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""}, request_body=BookISBN)
     @action(methods=['POST'], detail=False)
-    def delTook(self, request):
+    def delBook(self, request):
         data_json = json.loads(request.body)
         ISBN = data_json.get('ISBN')
         queryset = Book.objects.filter(ISBN=ISBN)
