@@ -168,6 +168,30 @@ class CreateTag(serializers.ModelSerializer):
         )
 
 
+class GetBookComment(serializers.ModelSerializer):
+    ISBN = serializers.CharField(required=True, max_length=32)
+
+    class Meta:
+        model = BookComment
+        fields = (
+            'ISBN',
+        )
+
+
+class AddBookComment(serializers.ModelSerializer):
+    ISBN = serializers.CharField(required=True, max_length=32)
+    token = serializers.CharField(required=True, max_length=32)
+    context = serializers.CharField(required=True, max_length=2048)
+
+    class Meta:
+        model = BookComment
+        fields = (
+            'ISBN',
+            'token',
+            'context'
+        )
+
+
 class TagGetBook(serializers.ModelSerializer):
     tag = serializers.CharField(required=True, max_length=32)
 

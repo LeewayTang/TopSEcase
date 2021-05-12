@@ -66,37 +66,44 @@ class UserInfoView(viewsets.GenericViewSet):
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
             return Response({'msg': 'Token not exists', 'data': -1, 'status': -1})
-        ret = {}
         user = Token.objects.get(key__exact=token).usr
         uid = data_json.get('uid')
         if uid is not None:
             user.uid = uid
-        ret.update({'uid': user.uid})
         pwd = data_json.get('pwd')
         if pwd is not None:
             user.pwd = pwd
-        ret.update({'pwd': user.pwd})
         sex = data_json.get('sex')
         if sex is not None:
             user.sex = sex
-        ret.update({'sex': user.sex})
         avatar = data_json.get('avatar')
         if avatar is not None:
             user.avatar = avatar
-        ret.update({'avatar': user.avatar})
         isTeacher = data_json.get('isTeacher')
         if isTeacher is not None:
             user.isTeacher = isTeacher
-        ret.update({'isTeacher': user.isTeacher})
         circle = data_json.get('circle')
+        print(circle)
         if circle is not None:
-            user.circle = circle
-        ret.update({'circle': user.circle})
+            queryset = Circle.objects.filter(id=circle)
+            if queryset.count() == 0:
+                return Response({'msg': 'Circle not exists', 'status': '-1'})
+            queryset = Circle.objects.get(id=circle)
+            queryset.number += 1
+            queryset.save()
+            if user.circle is not None:
+                queryset = Circle.objects.get(id=user.circle.id)
+                queryset.number -= 1
+                queryset.save()
+            queryset = Circle.objects.get(id=circle)
+            user.circle = Circle.objects.get(id=circle)
+        ret = [{'uid': user.uid, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
+               'isTeacher': user.isTeacher, 'circle': user.circle.id}]
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
         Ret.update({'status': 1})
-        user.save()
+        # user.save()
         return Response(Ret)
 
     @swagger_auto_schema(responses={200: ""},
@@ -109,13 +116,8 @@ class UserInfoView(viewsets.GenericViewSet):
         if queryset.count() == 0:
             return Response({'msg': 'Token not exists', 'status': -1})
         user = Token.objects.get(key__exact=token).usr
-        ret = {}
-        ret.update({'uid': user.uid})
-        ret.update({'pwd': user.pwd})
-        ret.update({'sex': user.sex})
-        ret.update({'avatar': user.avatar})
-        ret.update({'isTeacher': user.isTeacher})
-        ret.update({'circle': user.circle})
+        ret = [{'uid': user.uid, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
+               'isTeacher': user.isTeacher, 'circle': user.circle.id}]
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -506,6 +508,19 @@ class TokenInfo(viewsets.GenericViewSet):
 
 
 class CircleInfo(viewsets.GenericViewSet):
+    """
+    getCircle:
+    获取所有圈子信息
+
+    addCircle:
+    添加圈子，需要圈子类型，圈子名称，登录状态
+
+    getDiscuss:
+    获取一个圈子的所有讨论
+
+    addDiscuss:
+    在一个圈子中添加讨论，需要登录状态，圈子id，讨论内容
+    """
     queryset = Circle.objects.all()
     # serializers = CircleInfoSerializer
 
@@ -522,7 +537,6 @@ class CircleInfo(viewsets.GenericViewSet):
         type = data_json.get('type')
         name = data_json.get('name')
         token = data_json.get('token')
-        creator = data_json.get('creator')
         if type is None or name is None or token is None:
             return Response({'msg': 'Parameter wrong', 'status': -1})
         queryset = Token.objects.filter(key__exact=token)
@@ -544,7 +558,7 @@ class CircleInfo(viewsets.GenericViewSet):
         queryset = Circle.objects.filter(id=circle)
         if queryset.count() == 0:
             return Response({'msg': 'Circle not exists', 'status': -1})
-        queryset = Discuss.objects.filter(circle_id=circle).values()
+        queryset = Discuss.objects.filter(circle_id=circle).order_by('id', 'floor').values()
         return Response({'msg': 'success', 'status': 1, 'data': queryset})
 
     @swagger_auto_schema(responses={200: ""}, request_body=AddCircleComment)
@@ -566,4 +580,42 @@ class CircleInfo(viewsets.GenericViewSet):
         floor = Discuss.objects.filter(circle_id=circle).count() + 1
         circle = Circle.objects.get(id=circle)
         Discuss.objects.create(usr=user, circle=circle, context=context, floor=floor)
+        return Response({'msg': 'success', 'status': 1})
+
+
+class BookCommentInfo(viewsets.GenericViewSet):
+    queryset = BookComment.objects.all()
+
+    @swagger_auto_schema(responses={200: ""}, request_body=GetBookComment)
+    @action(methods=['POST'], detail=False)
+    def getBookCommentFull(self, request):
+        data_json = json.loads(request.body)
+        ISBN = data_json.get('ISBN')
+        if ISBN is None:
+            return Response({'msg': 'No input', 'status': -1})
+        queryset = Book.objects.filter(ISBN__exact=ISBN)
+        if queryset.count() == 0:
+            return Response({'msg': 'Book not exists', 'status': -1})
+        queryset = BookComment.objects.filter(book__ISBN=ISBN).order_by('id', 'floor').values()
+        return Response({'msg': 'success', 'status': 1, 'data': queryset})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=AddBookComment)
+    @action(methods=['POST'], detail=False)
+    def addBookComment(self, request):
+        data_json = json.loads(request.body)
+        ISBN = data_json.get('ISBN')
+        token = data_json.get('token')
+        context = data_json.get('context')
+        if ISBN is None or token is None or context is None:
+            return Response({'msg': 'No input', 'status': -1})
+        queryset = Book.objects.filter(ISBN__exact=ISBN)
+        if queryset.count() == 0:
+            return Response({'msg': 'Book not exists', 'status': -1})
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Not login', 'status': -1})
+        user = Token.objects.get(key__exact=token).usr
+        book = Book.objects.get(ISBN__exact=ISBN)
+        floor = BookComment.objects.filter(book__ISBN__exact=ISBN).count() + 1
+        BookComment.objects.create(book=book, floor=floor, usr=user, context=context)
         return Response({'msg': 'success', 'status': 1})
