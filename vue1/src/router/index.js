@@ -11,6 +11,7 @@ import book2 from './../components/Books/count'
 import book3 from './../components/Books/publish'
 import book4 from './../components/Books/forecast'
 import log from './../views/Log'
+import userContent from './../views/UserContent'
 import notLogin from '../views/NotLogin'
 
 Vue.use(VueRouter)
@@ -104,6 +105,12 @@ const routes = [
         name:'log',
         component: log,
         meta: {title: "读书日志"}
+    },
+    {
+        path: '/userContent',
+        name: 'userContent',
+        component: userContent,
+        meta: {title: "动态"}
     },
     {
         path: '/category/:cate',

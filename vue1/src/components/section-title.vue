@@ -16,5 +16,6 @@
         font-weight: 400;
         padding-bottom: 15px;
         border-bottom: 1px dashed #ECECEC;
+        display: inline-block;
     }
 </style>

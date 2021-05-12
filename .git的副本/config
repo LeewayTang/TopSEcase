@@ -8,7 +8,7 @@
 [submodule]
 	active = .
 [remote "origin"]
-	url = https://github.com/LeewayTang/TopSEcase.git
+	url = git@github.com:LeewayTang/TopSEcase.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "main"]
 	remote = origin

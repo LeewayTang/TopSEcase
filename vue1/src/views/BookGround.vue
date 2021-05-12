@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="main">
     <h2 class='sector'>
-      <span class="sec-title">导师推荐</span>
+      <section-title>导师推荐</section-title>
       <span class="link-more">
         <a class="" href="/latest?icn=index-latestbook-all"
         > 更多»</a>
@@ -26,7 +26,7 @@
 
 
     <h2 class='sector'>
-      <span class="sec-title">同学推荐</span>
+      <section-title>同学推荐</section-title>
       <span class="link-more">
         <a class="" href="/latest?icn=index-latestbook-all"
         > 更多»</a>
@@ -49,7 +49,7 @@
     </div>
 
     <h2 class='sector'>
-      <span class="sec-title">精彩点评</span>
+      <section-title>精彩点评</section-title>
       <span class="link-more">
         <a class="" href="/latest?icn=index-latestbook-all"
         > 更多»</a>
@@ -59,7 +59,7 @@
 
     <div class="aside">
       <h2 class=''>
-        <span class="sec-title">热门标签</span>
+        <section-title>热门标签</section-title>
         <span class="link-more">
         <a class="" href="/tag/?view=type&amp;icn=index-sorttags-all"
         >所有热门标签»</a>
@@ -295,7 +295,9 @@
 </template>
 
 <script>
+import SectionTitle from "../components/section-title";
 export default {
+  components: {SectionTitle},
   data () {
     return {
       products: [
@@ -344,6 +346,10 @@ export default {
   color: #0f0f0f;
   padding-right: 20px;
   font-size: 35px;
+}
+.link-more {
+  padding-left: 20px;
+  display: inline-block;
 }
 .link-to {
   width: 200px;

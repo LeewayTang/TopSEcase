@@ -10,17 +10,18 @@
       <router-link to="/personalCenter">
         <img src="../assets/images/助教也是人.png" alt="头像" class="circular">
         <div class="user-name">用户名</div>
+      </router-link>
         <div class="follow-and-followed">
           <div class="follow">99 关注</div> |
           <div class="followed">99 被关注</div>
         </div>
-      </router-link>
       </div>
     </div>
     <div class="quanzi">
       <section-title>
         我的圈子
       </section-title>
+
     </div>
   </div>
 </div>
@@ -38,7 +39,10 @@ name: "Log",
 
 <style scoped>
 .book-note-wrap {
+  width: 1400px;
   margin-top: 120px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
 }
 .main-container {
@@ -78,5 +82,10 @@ name: "Log",
 }
 .followed {
   display: inline-block;
+}
+.quanzi {
+  height: 600px;
+  width: 400px;
+  background-color: #dfdfe8;
 }
 </style>
