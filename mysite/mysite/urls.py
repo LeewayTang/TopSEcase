@@ -57,8 +57,10 @@ urlpatterns = [
     # path("register/", LoginRegister.register)
 ]
 
-# router.register('user', views.UserInfoView)
+router.register('user', views.UserInfoView)
 router.register('login_register', views.LoginRegister)
 router.register('upload', views.FileUpload)
-router.register('book_tag', views.BookTagInfo)
+router.register('bookTag', views.BookTagInfo)
+router.register('circle', views.CircleInfo)
+router.register('token', views.TokenInfo)
 urlpatterns += path('api/', include(router.urls)),
