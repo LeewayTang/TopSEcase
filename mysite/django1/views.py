@@ -584,6 +584,19 @@ class CircleInfo(viewsets.GenericViewSet):
 
 
 class BookCommentInfo(viewsets.GenericViewSet):
+    """
+    getBookCommentFull:
+    获取某个图书的全部评论
+
+    getBookCommentPart:
+    获取某个图书的前20个评论
+
+    getBookCommentByPage:
+    按页获取评论，需提供每页多少个，第几页
+
+    addBookComment:
+    添加书评
+    """
     queryset = BookComment.objects.all()
 
     @swagger_auto_schema(responses={200: ""}, request_body=GetBookComment)
@@ -597,6 +610,36 @@ class BookCommentInfo(viewsets.GenericViewSet):
         if queryset.count() == 0:
             return Response({'msg': 'Book not exists', 'status': -1})
         queryset = BookComment.objects.filter(book__ISBN=ISBN).order_by('id', 'floor').values()
+        return Response({'msg': 'success', 'status': 1, 'data': queryset})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=GetBookComment)
+    @action(methods=['POST'], detail=False)
+    def getBookCommentPart(self, request):
+        data_json = json.loads(request.body)
+        ISBN = data_json.get('ISBN')
+        if ISBN is None:
+            return Response({'msg': 'No input', 'status': -1})
+        queryset = Book.objects.filter(ISBN__exact=ISBN)
+        if queryset.count() == 0:
+            return Response({'msg': 'Book not exists', 'status': -1})
+        queryset = BookComment.objects.filter(book__ISBN=ISBN, floor__lte=20).order_by('id', 'floor').values()
+        return Response({'msg': 'success', 'status': 1, 'data': queryset})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=GetBookCommentByPage)
+    @action(methods=['POST'], detail=False)
+    def getBookCommentByPage(self, request):
+        data_json = json.loads(request.body)
+        ISBN = data_json.get('ISBN')
+        page = data_json.get('page')
+        number = data_json.get('number')
+        if ISBN is None or page is None or number is None:
+            return Response({'msg': 'No input', 'status': -1})
+        queryset = Book.objects.filter(ISBN__exact=ISBN)
+        if queryset.count() == 0:
+            return Response({'msg': 'Book not exists', 'status': -1})
+        mx = page * number
+        mn = (page - 1) * number + 1
+        queryset = BookComment.objects.filter(book__ISBN=ISBN, floor__lte=mx, floor__gte=mn).order_by('id', 'floor').values()
         return Response({'msg': 'success', 'status': 1, 'data': queryset})
 
     @swagger_auto_schema(responses={200: ""}, request_body=AddBookComment)
@@ -619,3 +662,11 @@ class BookCommentInfo(viewsets.GenericViewSet):
         floor = BookComment.objects.filter(book__ISBN__exact=ISBN).count() + 1
         BookComment.objects.create(book=book, floor=floor, usr=user, context=context)
         return Response({'msg': 'success', 'status': 1})
+
+
+class NoteInfo(viewsets.GenericViewSet):
+    queryset = Note.objects.all()
+
+
+class Search(viewsets.GenericViewSet):
+    queryset = Book.objects.all()

@@ -73,6 +73,13 @@ class Book(models.Model):
     author = models.CharField(verbose_name='作者名字', max_length=32, default='author')
 
 
+# 读书笔记
+class Note(models.Model):
+    book = models.ForeignKey(to='Book', on_delete=models.CASCADE)
+    context = models.CharField(verbose_name='笔记内容', max_length=16382)
+    usr = models.ForeignKey(verbose_name='笔记作者', to='User', on_delete=models.CASCADE)
+
+
 # 书评
 class BookComment(models.Model):
     book = models.ForeignKey(to='Book', on_delete=models.CASCADE, null=True)

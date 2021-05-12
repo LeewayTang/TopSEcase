@@ -111,6 +111,20 @@ class BookISBN(serializers.ModelSerializer):
         )
 
 
+class GetBookCommentByPage(serializers.ModelSerializer):
+    ISBN = serializers.CharField(required=True, max_length=32)
+    page = serializers.IntegerField(required=True)
+    number = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = BookComment
+        fields = (
+            'ISBN',
+            'page',
+            'number'
+        )
+
+
 class AddCircleComment(serializers.ModelSerializer):
     token = serializers.CharField(required=True, max_length=16)
     circle = serializers.IntegerField(required=True)
