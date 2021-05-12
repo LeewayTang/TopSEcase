@@ -9,9 +9,12 @@ const runAt = '1589878800000';
 let timer = null;
 const state = {
     loading: false,
+    isLogging: true,
+    hasLogin:false,
     runTimeInterval: '',
     socials: '',
-    websiteInfo: ''
+    websiteInfo: '',
+    Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : ''
 }
 const mutations = {
     SET_LOADING: (state, v) => {
@@ -30,6 +33,15 @@ const mutations = {
                 state.runTimeInterval = getTimeInterval(runAt);
             }, 1000);
         }
+    },
+    SET_LOGGING_STATE:(state)=>{
+        if(state.isLogging)
+            state.isLogging = false
+        else
+            state.isLogging = true
+    },
+    SET_LOG_STATE:(state ,v)=>{
+       state.hasLogin = v
     }
 }
 const actions = {

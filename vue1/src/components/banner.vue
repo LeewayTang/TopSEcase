@@ -45,7 +45,7 @@
                 default: false
             }
         },
-        created(){
+        mounted(){
             this.getWebSiteInfo()
             this.getSocial()
         },

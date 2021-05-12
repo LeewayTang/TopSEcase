@@ -10,7 +10,7 @@
         <div class="menus-btn" @click.stop="mobileShow=!mobileShow">
             Menus
         </div>
-        <div class="site-menus" :class="{'mobileShow':mobileShow}" @click.stop="mobileShow=!mobileShow">
+        <div v-if="$store.state.isLogging" class="site-menus" :class="{'mobileShow':mobileShow}" @click.stop="mobileShow=!mobileShow">
             <div class="menu-item header-search"><header-search/></div>
             <div class="menu-item"><router-link to="/log">发现</router-link></div>
             <div class="menu-item"><router-link to="/userContent">动态</router-link></div>
@@ -18,22 +18,29 @@
 
 <!--               <div class="menu-item hasChild"><router-link to="/writeBlog">创作中心</router-link></div>-->
             <div class="menu-item hasChild">
-                <a href="#">创作中心</a>
+                <a>创作中心</a>
                 <div class="childMenu" v-if="category.length">
                     <div class="sub-menu" v-for="item in category" :key="item.title"><router-link :to="`${item.href}`">
                       {{item.title}}</router-link></div>
                 </div>
             </div>
-          <div class="menu-item"><router-link to="/login">登录/注册</router-link></div>
-<!--            <div class="menu-item"><router-link to="/friend">友链</router-link></div>-->
-<!--            <div class="menu-item"><router-link to="/about">关于</router-link></div>-->
+          <div class="menu-item" v-if="!$store.state.hasLogin"><router-link to="/login">登录/注册</router-link></div>
+          <div class="menu-item hasChild" v-else>
+                <img class="menu-img" :src="$store.state.websiteInfo.avatar" >
+                <div class="childMenu" v-if="category.length">
+                    <div class="sub-menu" v-for="item in profile" :key="item.title">
+                    <router-link :to="`${item.href}`" @click.native="quit(item.title)"> {{item.title}}</router-link>
+                    </div>
+                </div>
+            </div>
         </div>
+      <button class="bbutton" @click="travelerLogin" v-else>以游客身份登录</button>
     </div>
 </template>
 
 <script>
     import HeaderSearch from '@/components/header-search'
-    import {fetchCategory} from '../../api'
+    import {fetchCategory, fetchProfile} from '../../api'
     export default {
         name: "layout-header",
         components: {HeaderSearch},
@@ -43,17 +50,43 @@
                 fixed: false,
                 hidden: false,
                 category: [],
+                profile:[],
                 mobileShow: false
             }
         },
         mounted(){
             window.addEventListener('scroll', this.watchScroll)
             this.fetchCategory()
+          this.fetchProfile()
+            this.checkLogin()
         },
         beforeDestroy () {
             window.removeEventListener("scroll", this.watchScroll)
         },
         methods: {
+          quit(v){
+            if(v === '退出'){
+            this.$store.commit('SET_LOG_STATE', false)
+              // this.$store.commit('SET_SITE_INFO', null)
+              localStorage.removeItem('Authorization')
+              // alert(localStorage.getItem('Authorization'))
+            }
+          },
+          travelerLogin(){
+            this.$store.dispatch('getSiteInfo').then(data =>{
+                    this.websiteInfo = data
+                })
+            localStorage.setItem('Authorization', 'I_am_a_traveler')
+            this.$store.commit('SET_LOG_STATE', true)
+            this.$router.push({
+              path:'/'
+            })
+          },
+          checkLogin(){
+            if(localStorage.getItem('Authorization') === null||localStorage.getItem('Authorization') ===''){
+              this.$store.commit('SET_LOG_STATE',false)
+            }else this.$store.commit('SET_LOG_STATE',true)
+          },
             watchScroll() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
                 if (scrollTop===0){
@@ -73,12 +106,35 @@
                 }).catch(err => {
                     console.log(err)
                 })
-            }
+            },
+          fetchProfile(){
+            fetchProfile().then(res=>{
+                this.profile = res.data
+            }).catch(err => {
+              console.log(err)
+            })
+          }
         }
     }
 </script>
 
 <style scoped lang="less">
+.menu-img{
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+.bbutton{
+  width: 20%;
+  height: 40px;
+  border-radius: 24px;
+  border: none;
+  outline: none;
+  background-color: #13c2c2;
+  color: #ffffff;
+  font-size: 0.9em;
+  cursor: pointer;
+}
     #layout-header {
         position: fixed;
         top: 0;
@@ -254,4 +310,5 @@
             z-index: 99;
         }
     }
+
 </style>

@@ -8,7 +8,7 @@
             <input type="email" placeholder="邮箱" v-model="form.useremail">
             <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
             <input type="password" placeholder="密码" v-model="form.userpwd">
-            <span class="errTips" v-if="emailError">* 密码填写错误 *</span>
+            <span class="errTips" v-if="passwordError">* 密码填写错误 *</span>
           </div>
           <button class="bbutton" @click="login">登录</button>
         </div>
@@ -17,7 +17,8 @@
           <div class="bform">
             <input type="text" placeholder="用户名" v-model="form.username">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-            <input type="email" placeholder="邮箱" v-model="form.useremail">
+            <input type="email" placeholder="邮箱" v-model="form.useremail" @input="checkEmail">
+<!--            <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>-->
             <input type="password" placeholder="密码" v-model="form.userpwd">
           </div>
           <button class="bbutton" @click="register">注册</button>
@@ -26,13 +27,13 @@
       <div class="small-box" :class="{active:isLogin}">
         <div class="small-contain" v-if="isLogin">
           <div class="stitle">你好，世界!</div>
-          <p class="scontent">我直接注册</p>
-          <button class="sbutton" @click="changeType">注册</button>
+          <p class="scontent"></p>
+          <button class="sbutton" @click="changeType">我还没号</button>
         </div>
         <div class="small-contain" v-else>
           <div class="stitle">新世界大门</div>
-          <p class="scontent">登录你的账户吧</p>
-          <button class="sbutton" @click="changeType">登录</button>
+          <p class="scontent"></p>
+          <button class="sbutton" @click="changeType">我有号了</button>
         </div>
       </div>
     </div>
@@ -40,7 +41,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default{
   name: 'login-register',
@@ -57,7 +57,16 @@ export default{
       }
     }
   },
+  created:function(){
+    this.loggingState()
+  },
+  destroyed:function() {
+    this.loggingState()
+  },
   methods: {
+    loggingState(){
+      this.$store.commit('SET_LOGGING_STATE')
+    },
     changeType () {
       this.isLogin = !this.isLogin
       this.form.username = ''
@@ -77,12 +86,18 @@ export default{
         })
           .then(res => {
             switch (res.data.data) {
-              case -1:
-                alert('用户名或密码不正确')
-                break
               case 1:
-                this.$router.push({
-                  name:'home'
+                this.$Notice.open({
+                  title: '成功登录'
+                })
+                localStorage.setItem('token', "Bearer " + res.data.token)
+                this.$store.commit('setUser', res.data.user)
+                  this.$router.push({
+                   path:`/`})
+                break
+              case -1:
+                this.$Notice.open({
+                  title: '用户名或密码错误'
                 })
                 break
             }
@@ -107,11 +122,10 @@ export default{
           }
         })
           .then(res => {
-            switch (res.data.data) {
+            switch (res.data) {
               case 1:
                 this.$Notice.open({
-                  title:'注册成功',
-                  duration: 3
+                  title: '成功注册！'
                 })
                 this.login()
                 break

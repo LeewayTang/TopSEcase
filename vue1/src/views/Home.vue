@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <banner isHome="true"></banner>
+        <banner isHome="true" v-if="!hideSlogan"></banner>
         <div class="site-content animate">
             <!--通知栏-->
             <div class="notify">
@@ -68,7 +68,7 @@
             SmallIco,
             Quote
         },
-        computed: {
+      computed: {
             searchWords() {
                 return this.$route.params.words
             },

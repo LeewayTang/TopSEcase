@@ -58,8 +58,8 @@
             margin-top: 10px;
 
             img {
-                width: 100px;
-                height: 100px;
+                width: 120px;
+                height: 120px;
                 object-fit: cover;
                 border-radius: 50%;
                 padding: 2px;
@@ -179,7 +179,7 @@
     }
 
     /*******/
-    @media (max-width: 1060px) {
+    @media (max-width: 1200px) {
         .info-meta{
             display: none;
         }

@@ -2,21 +2,18 @@ const Mock = require('mockjs');
 export default [
     // 站点信息
     {
-        url: '/site',
+        url: '/site1',
         type: 'get',
         response: () => {
             return {
                 code: 20000,
                 data: {
-                    avatar: 'https://p3.bdxiguaimg.com/img/mosaic-legacy/321a7000c6c66e52e242a~tplv-xg-center-qs:240:240:q75.jpg',
-                    username: 'Asuka',
-                    title:'狗管理',
+                    avatar: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwx2.sinaimg.cn%2Flarge%2F0068Lfdegy1gpqkvj96qxj30ge0gejwj.jpg&refer=http%3A%2F%2Fwx2.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1622992881&t=82350fae05a32e53ab4017670cd8f803',
+                    username: 'Cheems',
+                    title:'游客',
                     quanzi:'BUAA',
-                    slogan: 'The way up is not crowded, and most chose ease.',
-                    name: 'FZY′blog',
-                    domain: 'https://www.fengziy.cn',
-                    notice: '本博客的Demo数据由Mockjs生成',
-                    desc: '一个It技术的探索者'
+                    slogan: 'I do not wish to be horny any more.',
+                    name: 'MoYun'
                 }
             }
         }

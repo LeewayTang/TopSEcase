@@ -31,7 +31,11 @@ const routes = [
         path: '/',
         name: 'home',
         component: () => import('../views/Home.vue'),
-        meta: { title: '首页'}
+        // redirect: '/login',
+        meta: {
+            title: '首页',
+            // hasLogin: false
+        }
     },
     {
       path: '/notLogin',
@@ -149,7 +153,7 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
-router.beforeEach((to, from, next) => {
+router.beforeResolve(async (to, from, next) => {
     let title = 'MoYun'
     if (to.meta.params){
         title = `${to.meta.title}:${to.params[to.meta.params] || ''} - ${title}`
@@ -157,6 +161,17 @@ router.beforeEach((to, from, next) => {
         title = `${to.meta.title} - ${title}`
     }
     document.title = title
+    let token = localStorage.getItem('Authorization')
+    if(to.path === '/login' || to.path === '/' || to.path === '/book-ground')
+        // alert(token),
+        next();
+    else{
+        if(token === null || token === '')
+            next('/login')
+        else
+            // alert(token)
+            next();
+    }
     if (to.path !== from.path) {
         store.dispatch('setLoading', true);
     }
