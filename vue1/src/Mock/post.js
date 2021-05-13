@@ -23,20 +23,20 @@ const List = [{
     viewsCount: 4045,
     commentsCount: 99
 }]
-for (let i = 0; i < count; i++) {
-    List.push(Mock.mock({
-        id: '@increment',
-        'isTop|1-4': true,
-        'banner|+1': banners,
-        'isHot|1-3': true,
-        pubTime: +Mock.Random.date('T'),
-        title: Mock.Random.ctitle(10,20),
-        summary: Mock.Random.cparagraph(),
-        content: baseContent,
-        viewsCount: '@integer(300, 5000)',
-        commentsCount: '@integer(10, 200)'
-    }))
-}
+// for (let i = 0; i < count; i++) {
+//     List.push(Mock.mock({
+//         id: '@increment',
+//         'isTop|1-4': true,
+//         'banner|+1': banners,
+//         'isHot|1-3': true,
+//         pubTime: +Mock.Random.date('T'),
+//         title: Mock.Random.ctitle(10,20),
+//         summary: Mock.Random.cparagraph(),
+//         content: baseContent,
+//         viewsCount: '@integer(300, 5000)',
+//         commentsCount: '@integer(10, 200)'
+//     }))
+// }
 
 export default [
     {

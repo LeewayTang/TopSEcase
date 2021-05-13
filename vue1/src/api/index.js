@@ -88,8 +88,10 @@ export function addBook(){
     })
 }
 
-// export function addArticle(){
-//     return request({
-//         rul: '/'
-//     })
-// }
+export function fetchArticle(){
+    return request({
+        url: '/article/0',
+        method: 'get',
+        params:{}
+    })
+}

@@ -14,6 +14,8 @@
     "comment-message-editor": "^1.0.1",
     "core-js": "^3.6.4",
     "element-ui": "^2.15.1",
+    "github-markdown-css": "^4.0.0",
+    "highlight.js": "^9.18.1",
     "iview": "^3.5.4",
     "lodash": "^4.17.21",
     "mavon-editor": "^2.9.1",
@@ -23,6 +25,7 @@
     "view-design": "^4.5.0",
     "vue": "^2.6.11",
     "vue-el-element": "^1.12.8",
+    "vue-markdown": "^2.2.4",
     "vue-router": "^3.1.6",
     "vuex": "^3.1.3"
   },

@@ -1,72 +1,18 @@
 <template>
     <div class="articles">
-<!--        <banner></banner>-->
         <div class="site-content animate">
-            <!-- 文章目录 -->
-            <div id="article-menus">
-              <h1>目录</h1>
-              <br>
-                <menu-tree :menus="menus" child-label="child"></menu-tree>
-            </div>
+<!--            &lt;!&ndash; 文章目录 &ndash;&gt;-->
+<!--            <div id="article-menus">-->
+<!--              <h1>目录</h1>-->
+<!--              <br>-->
+<!--                <menu-tree :menus="menus" child-label="child"></menu-tree>-->
+<!--            </div>-->
             <main class="site-main">
                 <article class="hentry">
                     <!-- 文章头部 -->
-                    <header class="entry-header">
-                        <!-- 标题输出 -->
-                        <h1 class="entry-title">看一遍闭着眼都会安装Lua了</h1>
-                        <hr>
-                        <div class="breadcrumbs">
-                            <div id="crumbs">最后更新时间：2020年04月21日</div>
-                        </div>
-                    </header>
-                    <!-- 正文输出 -->
-                    <div class="entry-content">
-                        <p>@[TOC]</p>
-                        <h4 id="引言：">引言：</h4>
-                        <p>Lua 是一种轻量小巧的脚本语言，能为应用程序提供灵活的扩展和定制功能。</p>
-                        <h4 id="lua-应用场景">Lua 应用场景</h4>
-                        <ul>
-                            <li>游戏开发</li>
-                            <li>独立应用脚本</li>
-                            <li>Web 应用脚本</li>
-                            <li>扩展和数据库插件如：MySQL Proxy 和 MySQL WorkBench</li>
-                            <li>安全系统，如入侵检测系统</li>
-                        </ul>
-                        <hr>
-                        <h4 id="安装">安装</h4>
-                        <pre><code> curl -R -O http://www.lua.org/ftp/lua-5.3.5.tar.gz #下载
- tar zxf lua-5.3.5.tar.gz #解压
- cd lua-5.3.3 #进入解压文件夹
- make linux test #安装&amp;测试</code></pre>
-                        <hr>
-                        <h4 id="安装过程可能出现的问题">安装过程可能出现的问题</h4>
-                        <ol>
-                            <li>没有gcc命令(lua是C语言编写的，安装时依赖gcc)
-                                <blockquote>
-                                    <p>使用<code>which gcc</code>命令可以查看是否有gcc，如果没有使用下面命令进行安装gcc 与gcc-c++，</p>
-                                    <pre><code>yum -y install gcc
-yum -y install gcc-c++</code></pre>
-                                </blockquote>
-                            </li>
-                        </ol>
-                        <hr>
-                        <ol start="2">
-                            <li>致命错误：readline/readline.h：没有那个文件或目录
-                                <blockquote>
-                                    <p>执行如下命令即可:</p>
-                                    <pre><code>yum install libtermcap-devel ncurses-devel libevent-devel readline-devel</code></pre>
-                                </blockquote>
-                            </li>
-                        </ol>
-                        <hr>
-                        <h4 id="安装成功验证">安装成功验证</h4>
-                        <blockquote>
-                            <p>执行<code>lua -v</code>,出现如下信息代表安装成功<br/>
-                                Lua 5.1.4 Copyright (C) 1994-2008 Lua.org, PUC-Rio</p>
-                        </blockquote>
-                        <pre><code>lua -v</code></pre>
-
-                    </div>
+                  <div class="markdown-body">
+                    <VueMarkdown :source="value" v-highlight></VueMarkdown>
+                  </div>
                     <!-- 文章底部 -->
                     <section-title>
                         <footer class="post-footer">
@@ -74,35 +20,6 @@ yum -y install gcc-c++</code></pre>
                             <div class="post-like">
                                 <i class="iconfont iconeyes"></i>
                                 <span class="count">685</span>
-                            </div>
-                            <!-- 分享按钮 -->
-                            <!--                        <div class="post-share">-->
-                            <!--                            <ul class="sharehidden">-->
-                            <!--                                <li><a href="http://qr.liantu.com/api.php?text=https://zhebk.cn/Web/gongan.html"-->
-                            <!--                                       onclick="window.open(this.href, 'renren-share', 'width=490,height=700');return false;"-->
-                            <!--                                       class="s-weixin" target="_blank" rel="nofollow noopener noreferrer"><img src="https://cdn.zhebk.cn/usr/themes/Akina/images/wechat.png"></a></li>-->
-                            <!--                                <li>-->
-                            <!--                                    <a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://zhebk.cn/Web/gongan.html/&amp;title=公安联网备案记录"-->
-                            <!--                                       onclick="window.open(this.href, 'weibo-share', 'width=730,height=500');return false;"-->
-                            <!--                                       class="s-qq" target="_blank" rel="nofollow noopener noreferrer"><img src="https://cdn.zhebk.cn/usr/themes/Akina/images/qzone.png"></a></li>-->
-                            <!--                                <li>-->
-                            <!--                                    <a href="http://service.weibo.com/share/share.php?url=https://zhebk.cn/Web/gongan.html/&amp;title=公安联网备案记录"-->
-                            <!--                                       onclick="window.open(this.href, 'weibo-share', 'width=550,height=235');return false;"-->
-                            <!--                                       class="s-sina" target="_blank" rel="nofollow noopener noreferrer"><img src="https://cdn.zhebk.cn/usr/themes/Akina/images/sina.png"></a></li>-->
-                            <!--                                <li>-->
-                            <!--                                    <a href="http://shuo.douban.com/!service/share?https://zhebk.cn/Web/gongan.html/&amp;title=公安联网备案记录"-->
-                            <!--                                       onclick="window.open(this.href, 'renren-share', 'width=490,height=600');return false;"-->
-                            <!--                                       class="s-douban" target="_blank" rel="nofollow noopener noreferrer"><img src="https://cdn.zhebk.cn/usr/themes/Akina/images/douban.png"></a></li>-->
-                            <!--                            </ul>-->
-                            <!--                            <i class="iconfont show-share"></i>-->
-                            <!--                        </div>-->
-                            <!-- 赞助按钮 -->
-                            <div class="donate" @click="showDonate=!showDonate">
-                                <span>赏</span>
-                                <ul class="donate_inner" :class="{'show':showDonate}">
-                                    <li class="wedonate"><img src="http://cdn.fengziy.cn/gblog/wexin_pay.png"><p>微信</p></li>
-                                    <li class="alidonate"><img src="http://cdn.fengziy.cn/gblog/ali_pay.jpg"><p>支付宝</p></li>
-                                </ul>
                             </div>
                             <!-- 文章标签 -->
                             <div class="post-tags">
@@ -115,7 +32,7 @@ yum -y install gcc-c++</code></pre>
                     <!--声明-->
                     <div class="open-message">
                         <p>声明：Gblog博客|版权所有，违者必究|如未注明，均为原创|本网站采用<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">BY-NC-SA</a>协议进行授权</p>
-                        <p>转载：转载请注明原文链接 - <a href="/">看一遍闭着眼都会安装Lua了</a></p>
+                        <p>转载：转载请注明原文链接</p>
                     </div>
                     <!--评论-->
                     <div class="comments">
@@ -136,12 +53,14 @@ yum -y install gcc-c++</code></pre>
     import sectionTitle from '@/components/section-title'
     import comment from '@/components/comment'
     import menuTree from '@/components/menu-tree'
-    import {fetchComment} from '../api'
+    import {fetchComment,fetchArticle} from '../api'
+    import VueMarkdown from 'vue-markdown'
     export default {
         name: 'articles',
         data(){
           return{
               showDonate: false,
+              value: '',
               comments: [],
               menus: []
           }
@@ -150,7 +69,8 @@ yum -y install gcc-c++</code></pre>
             Banner,
             sectionTitle,
             comment,
-            menuTree
+            menuTree,
+            VueMarkdown
         },
         methods: {
           getComment(){
@@ -166,6 +86,13 @@ yum -y install gcc-c++</code></pre>
               }else {
                   return arr.filter(item => item.offsetTop > left)
               }
+          },
+          getArticle(){
+              fetchArticle().then(res =>{
+                this.value = res.data
+              }).catch(err=>{
+                console.log(err)
+              })
           },
           // 生成目录
           createMenus(){
@@ -195,6 +122,7 @@ yum -y install gcc-c++</code></pre>
         },
         created() {
             this.getComment()
+            this.getArticle()
         }
     }
 </script>

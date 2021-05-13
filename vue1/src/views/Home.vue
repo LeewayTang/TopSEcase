@@ -152,7 +152,6 @@
 
     .site-main {
         padding-top: 10px;
-
         &.search {
             padding-top: 0;
         }
