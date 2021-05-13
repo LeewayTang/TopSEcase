@@ -13,8 +13,7 @@ const state = {
     hasLogin:false,
     runTimeInterval: '',
     socials: '',
-    websiteInfo: '',
-    Authorization: localStorage.getItem('Authorization') ? localStorage.getItem('Authorization') : ''
+    websiteInfo: ''
 }
 const mutations = {
     SET_LOADING: (state, v) => {

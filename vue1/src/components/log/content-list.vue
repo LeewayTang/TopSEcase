@@ -53,7 +53,7 @@ export default {
       contentList: []
     }
   },
-mounted() {
+created() {
     this.fetchContentList();
 },
   methods: {

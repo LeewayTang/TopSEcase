@@ -11,7 +11,6 @@
         <img :src="webSiteInfo.avatar" alt="头像" class="circular">
         <div class="user-name">{{ webSiteInfo.username }}</div>
       </router-link>
-        <div class="follow-and-followed">关注数：233 | 粉丝数：3</div>
         <div class="line"/>
         <div class="slogan">{{webSiteInfo.slogan}}</div>
       </div>
@@ -105,12 +104,6 @@ name: "Log",
   font-weight: bold;
   font-size: 30px;
   color: #0f0f0f;
-  /*margin-top: 10px;*/
-}
-.follow-and-followed {
-  margin-left: 20px;
-  margin-top: 10px;
-  vertical-align: middle;
 }
 .qz{
   height: fit-content;

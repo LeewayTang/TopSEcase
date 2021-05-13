@@ -140,12 +140,12 @@ const routes = [
     //     component: () => import('../views/Friend.vue'),
     //     meta: { title: '友链'}
     // },
-    // {
-    //     path: '/article/:id',
-    //     name: 'article',
-    //     component: () => import('../views/Articles.vue'),
-    //     meta: { title: '文章'}
-    // }
+    {
+        path: '/article/:id',
+        name: 'article',
+        component: () => import('../views/Articles.vue'),
+        meta: { title: '文章'}
+    }
 ]
 
 const router = new VueRouter({
