@@ -46,6 +46,13 @@ export function fetchSocial() {
         params: {}
     });
 }
+export function fetchContentList(){
+    return request({
+        url: '/content-list',
+        method: 'get',
+        params: {}
+    })
+}
 
 export function fetchSiteInfo0() {
     return request({

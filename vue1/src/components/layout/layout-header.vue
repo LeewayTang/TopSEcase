@@ -12,8 +12,8 @@
         </div>
         <div v-if="$store.state.isLogging" class="site-menus" :class="{'mobileShow':mobileShow}" @click.stop="mobileShow=!mobileShow">
             <div class="menu-item header-search"><header-search/></div>
-            <div class="menu-item"><router-link to="/log">发现</router-link></div>
-            <div class="menu-item"><router-link to="/userContent">动态</router-link></div>
+            <div class="menu-item"><router-link to="/log">发现笔记</router-link></div>
+            <div class="menu-item"><router-link to="/userContent">圈子动态</router-link></div>
             <div class="menu-item"><router-link to="/book-ground">藏书阁</router-link></div>
 
 <!--               <div class="menu-item hasChild"><router-link to="/writeBlog">创作中心</router-link></div>-->

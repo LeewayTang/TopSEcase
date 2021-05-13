@@ -4,6 +4,8 @@
         <div class="site-content animate">
             <!-- 文章目录 -->
             <div id="article-menus">
+              <h1>目录</h1>
+              <br>
                 <menu-tree :menus="menus" child-label="child"></menu-tree>
             </div>
             <main class="site-main">
