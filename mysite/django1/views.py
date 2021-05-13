@@ -670,3 +670,59 @@ class NoteInfo(viewsets.GenericViewSet):
 
 class Search(viewsets.GenericViewSet):
     queryset = Book.objects.all()
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
+    @action(methods=['POST'], detail=False)
+    def SearchBook(self, request):
+        context = json.loads(request.body).get('context')
+        return Response(
+            {'msg': 'success',
+             'data': Book.objects.filter(name__icontains=context).order_by('id', 'ISBN').values()})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
+    @action(methods=['POST'], detail=False)
+    def SearchUser(self, request):
+        context = json.loads(request.body).get('context')
+        return Response(
+            {'msg': 'success',
+             'data': User.objects.filter(uid__icontains=context).order_by('id', 'uid').values()})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
+    @action(methods=['POST'], detail=False)
+    def SearchComment(self, request):
+        context = json.loads(request.body).get('context')
+        return Response(
+            {'msg': 'success',
+             'data': Comment.objects.filter(context__icontains=context).order_by('id', 'create_time').values()})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
+    @action(methods=['POST'], detail=False)
+    def SearchDiscuss(self, request):
+        context = json.loads(request.body).get('context')
+        return Response(
+            {'msg': 'success',
+             'data': Discuss.objects.filter(context__icontains=context).order_by('id', 'create_time').values()})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
+    @action(methods=['POST'], detail=False)
+    def SearchCircle(self, request):
+        context = json.loads(request.body).get('context')
+        return Response(
+            {'msg': 'success',
+             'data': Circle.objects.filter(type__icontains=context).order_by('id', 'id').values()})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
+    @action(methods=['POST'], detail=False)
+    def SearchNote(self, request):
+        context = json.loads(request.body).get('context')
+        return Response(
+            {'msg': 'success',
+             'data': Note.objects.filter(context__icontains=context).order_by('id', 'id').values()})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
+    @action(methods=['POST'], detail=False)
+    def SearchBookComment(self, request):
+        context = json.loads(request.body).get('context')
+        return Response(
+            {'msg': 'success',
+             'data': BookComment.objects.filter(context__icontains=context).order_by('id', 'id').values()})

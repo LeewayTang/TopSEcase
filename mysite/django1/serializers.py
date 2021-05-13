@@ -214,3 +214,13 @@ class TagGetBook(serializers.ModelSerializer):
         fields = (
             'tag',
         )
+
+
+class SearchInfo(serializers.ModelSerializer):
+    context = serializers.CharField(required=True, max_length=32)
+
+    class Meta:
+        model = Tag
+        fields = (
+            'context',
+        )
