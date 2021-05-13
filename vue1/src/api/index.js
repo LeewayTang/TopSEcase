@@ -47,6 +47,14 @@ export function fetchSocial() {
     });
 }
 
+export function fetchSiteInfo0() {
+    return request({
+        url: '/site0',
+        method: 'get',
+        params: {}
+    })
+}
+
 export function fetchSiteInfo() {
     // alert('000')
     return request({

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {getTimeInterval} from '../utils/index'
-import {fetchSocial,fetchSiteInfo} from '@/api'
+import {fetchSiteInfo0,fetchSocial,fetchSiteInfo} from '@/api'
 
 Vue.use(Vuex)
 // 略:后台获取系统运行时间
@@ -51,19 +51,26 @@ const actions = {
     initComputeTime: ({commit}) => {
         commit('GET_RUNTIME_INTERVAL');
     },
+    getSiteInfo0: ({commit,state}) =>{
+        return new Promise(resolve => {
+            fetchSiteInfo0().then(res => {
+                let data = res.data || {}
+                commit('SET_SITE_INFO',data);
+                resolve(data);
+            }).catch(err => {
+                resolve({});
+            })
+        })
+    },
     getSiteInfo: ({commit,state}) =>{
         return new Promise(resolve => {
-            if (state.websiteInfo){
-                resolve(state.websiteInfo)
-            }else {
-                fetchSiteInfo().then(res => {
-                    let data = res.data || {}
-                    commit('SET_SITE_INFO',data);
-                    resolve(data);
-                }).catch(err => {
-                    resolve({});
-                })
-            }
+            fetchSiteInfo().then(res => {
+                let data = res.data || {}
+                commit('SET_SITE_INFO',data);
+                resolve(data);
+            }).catch(err => {
+                resolve({});
+            })
         })
     },
     getSocials: ({commit,state}) =>{

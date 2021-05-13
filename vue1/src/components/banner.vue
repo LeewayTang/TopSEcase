@@ -49,6 +49,11 @@
             this.getWebSiteInfo()
             this.getSocial()
         },
+      watch:{
+          '$store.state.hasLogin'(){
+            this.getWebSiteInfo()
+          }
+      },
         methods:{
             getSocial(){
                 this.$store.dispatch('getSocials').then(data =>{
@@ -56,9 +61,15 @@
                 })
             },
             getWebSiteInfo(){
-                this.$store.dispatch('getSiteInfo').then(data =>{
+                if(this.$store.state.hasLogin){
+                  this.$store.dispatch('getSiteInfo').then(data =>{
                     this.websiteInfo = data
-                })
+                  })
+                }else{
+                  this.$store.dispatch('getSiteInfo0').then(data =>{
+                    this.websiteInfo = data
+                  })
+                }
             }
         }
     }

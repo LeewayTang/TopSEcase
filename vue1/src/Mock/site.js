@@ -1,5 +1,22 @@
 const Mock = require('mockjs');
 export default [
+    {
+        url: '/site0',
+        type: 'get',
+        response: () => {
+            return {
+                code: 20000,
+                data: {
+                    avatar:'https://z3.ax1x.com/2021/05/12/g0JPxS.jpg',
+                    username: '未登录',
+                    title:'没有名分',
+                    quanzi:'没有圈子',
+                    slogan: 'Who am I?',
+                    name: 'MoYun'
+                }
+            }
+        }
+    },
     // 站点信息
     {
         url: '/site1',

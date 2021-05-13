@@ -67,9 +67,7 @@
           quit(v){
             if(v === '退出'){
             this.$store.commit('SET_LOG_STATE', false)
-              // this.$store.commit('SET_SITE_INFO', null)
               localStorage.removeItem('Authorization')
-              // alert(localStorage.getItem('Authorization'))
             }
           },
           travelerLogin(){
