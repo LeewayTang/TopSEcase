@@ -116,6 +116,12 @@ const routes = [
         component: userContent,
         meta: {title: "动态"}
     },
+    {
+        path: '/discussion',
+        name: 'discussion',
+        component: () => import('../views/Discussion.vue'),
+        meta: {title: "讨论"}
+    },
     // {
     //     path: '/category/:cate',
     //     name: 'category',

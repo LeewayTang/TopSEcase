@@ -81,11 +81,11 @@
               })
           },
           fetchH(arr,left,right){
-              if (right) {
+             if (right) {
                   return arr.filter(item => item.offsetTop > left && item.offsetTop < right)
-              }else {
+                }else {
                   return arr.filter(item => item.offsetTop > left)
-              }
+                }
           },
           getArticle(){
               fetchArticle().then(res =>{

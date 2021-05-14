@@ -26,7 +26,7 @@ function mockComment(count,id,userName) {
             fromUserName: '@cname',
             'fromUserAvatar|+1': banners,
             content: '@ctitle(20,50)',
-            createTime: +Mock.Random.date('T'),
+            createTime: +Mock.Random.time('T'),
             toUserId: id,
             toUserName: userName||'@cname',
             'toUserAvatar|+1': banners,

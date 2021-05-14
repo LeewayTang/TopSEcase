@@ -22,7 +22,7 @@
                 <p>{{comment.content}}</p>
             </div>
             <div v-if="showCommentEditor" @click.stop="">
-                <comment-message-editor :inline="true" buttonText="回复" @submit="submitReply"></comment-message-editor>
+                <comment-message-editor :inline="false" buttonText="回复" @submit="submitReply"></comment-message-editor>
             </div>
             <slot></slot>
         </div>
@@ -73,7 +73,13 @@
 
 <style scoped lang="less">
     .comment{
-        margin: 20px 0;
+      margin: 20px 0;
+      box-sizing: border-box;
+      border: 1px solid #EEF0F6;
+      vertical-align: middle;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .comment-head{
         display: flex;
@@ -94,6 +100,7 @@
             line-height: 1.3rem;
         }
     }
+
     .user-avatar{
         width: 50px;
         height: 50px;
