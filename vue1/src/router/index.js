@@ -108,7 +108,7 @@ const routes = [
         path:'/log',
         name:'log',
         component: log,
-        meta: {title: "读书日志"}
+        meta: {title: "读书笔记"}
     },
     {
         path: '/userContent',

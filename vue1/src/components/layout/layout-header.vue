@@ -12,9 +12,18 @@
         </div>
         <div v-if="$store.state.isLogging" class="site-menus" :class="{'mobileShow':mobileShow}" @click.stop="mobileShow=!mobileShow">
             <div class="menu-item header-search"><header-search/></div>
-            <div class="menu-item"><router-link to="/log">发现笔记</router-link></div>
-            <div class="menu-item"><router-link to="/userContent">圈子动态</router-link></div>
-            <div class="menu-item"><router-link to="/book-ground">藏书阁</router-link></div>
+            <div class="menu-item">
+              <router-link v-if="this.$store.state.hasLogin" to="/log">发现笔记</router-link>
+              <router-link v-else to="/login">发现笔记</router-link>
+            </div>
+            <div class="menu-item">
+              <router-link v-if="this.$store.state.hasLogin" to="/userContent">圈子动态</router-link>
+              <router-link v-else to="/login">圈子动态</router-link>
+            </div>
+            <div class="menu-item">
+              <router-link v-if="this.$store.state.hasLogin" to="/book-ground">藏书阁</router-link>
+              <router-link v-else to="/login">藏书阁</router-link>
+            </div>
 
 <!--               <div class="menu-item hasChild"><router-link to="/writeBlog">创作中心</router-link></div>-->
             <div class="menu-item hasChild">
@@ -66,34 +75,22 @@
         methods: {
           quit(v){
             if(v === '退出'){
-            this.$store.commit('SET_LOG_STATE', false)
-              sessionStorage.removeItem('Authorization')
-              sessionStorage.removeItem('siteInfo')
+              this.$confirm('你真的要退出吗？', '将要退出账号').then(()=>{
+                this.$store.commit('SET_LOG_STATE', false)
+                sessionStorage.removeItem('Authorization')
+                sessionStorage.removeItem('siteInfo')
+              })
             }
           },
-          // 这里是存储在local的方法，下面尝试一下存在session里
-          // travelerLogin(){
-          //   this.$store.dispatch('getSiteInfo').then(data =>{
-          //           this.websiteInfo = data
-          //       })
-          //   localStorage.setItem('Authorization', 'I_am_a_traveler')
-          //   this.$store.commit('SET_LOG_STATE', true)
-          //   this.$router.push({
-          //     path:'/'
-          //   })
-          // },
-          //
-          // checkLogin(){
-          //   if(localStorage.getItem('Authorization') === null||localStorage.getItem('Authorization') ===''){
-          //     this.$store.commit('SET_LOG_STATE',false)
-          //   }else this.$store.commit('SET_LOG_STATE',true)
-          // },
           travelerLogin(){
             this.$store.dispatch('getSiteInfo').then(data =>{
               this.$store.commit('SET_LOG_STATE', true)
               this.$store.commit('SET_SITE_INFO', data)
               sessionStorage.setItem('Authorization', 'I_am_a_traveler.')
               sessionStorage.setItem('siteInfo', JSON.stringify(data))
+            })
+            this.$Notice.open({
+              title: '游客成功登录'
             })
             this.$router.push({
               path:'/'

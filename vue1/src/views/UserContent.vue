@@ -1,8 +1,7 @@
 <template>
   <div class="book-note-wrap">
     <div class="main-container">
-      <new-info></new-info>
-      <log-page-main></log-page-main>
+      <forum-page-main></forum-page-main>
     </div>
     <div class="right">
       <div class="s-block">
@@ -29,9 +28,11 @@
 import LogPageMain from "../components/log/main";
 import NewInfo from "../components/log/newInfo";
 import SectionTitle from "../components/section-title";
+import ForumList from "../components/forum/forumList"
+import ForumPageMain from "@/components/forum/main";
 export default {
   name: "UserContent",
-  components: {SectionTitle, NewInfo, LogPageMain}
+  components: {ForumPageMain, ForumList, SectionTitle, NewInfo, LogPageMain}
 }
 </script>
 
