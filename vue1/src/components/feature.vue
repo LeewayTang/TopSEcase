@@ -1,13 +1,15 @@
 <template>
     <div class="feature">
-        <router-link :to="`/article/${data.id}`">
+        <div @click="selectContent(data.name)">
             <div class="feature-title"><span class="foverlay">{{data.title}}</span></div>
             <img :src="data.img">
-        </router-link>
+        </div>
     </div>
 </template>
 
 <script>
+import {fetchArticle, fetchBooksOnly, fetchRelative} from "@/api";
+
     export default {
         name: "feature",
         props: {
@@ -21,7 +23,28 @@
                     }
                 }
             }
-        }
+        },
+      methods:{
+          selectContent(v){
+            switch (v){
+              case 'Articles':
+                fetchArticle().then(res=>{
+                  this.data = res
+                })
+                    break
+              case 'Books':
+                fetchBooksOnly().then(res=>{
+                  this.data = res
+                })
+                    break
+              case 'Relative':
+                fetchRelative().then(res=>{
+                  this.data = res
+                })
+                    break
+            }
+          }
+      }
     }
 </script>
 

@@ -53,17 +53,23 @@
         <legend>书籍上传</legend>
         <el-upload
             class="upload"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            multiple
-            :limit="3"
-            :file-list="fileList">
+            action="uploadUrl"
+            accept=".pdf,.epub,.mobi"
+            ref="upload"
+            :limit=1
+            on-success="onSuccess"
+            on-fail="onFail"
+            :auto-upload="false"
+            :file-list="fileList"
+            :on-exceed="handleExceed">
           <el-button size="small" type="primary" style="margin: 10%">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">支持pdf, mobi, epub格式文件</div>
         </el-upload>
       </fieldset>
     </div>
     <div class="submit-holder">
-      <el-button type="success">提交</el-button>
+      <el-button type="success" v-if="this.fileList.length===0|| this.ISBN === ''" disabled>提交</el-button>
+      <el-button type="success" v-else @click="submit">提交</el-button>
     </div>
   </div>
 </template>
@@ -87,6 +93,23 @@ export default {
       fileList: []
     };
   },
+  methods:{
+    handleExceed(){
+      alert('一篇书帖只能上传一本书')
+    },
+    submit(){
+      this.uploadUrl = ''
+      this.$refs.upload.submit()
+    },
+    onSuccess(){
+      this.$Notice.open({
+        title: '书帖上传成功！'
+      })
+    },
+    onFail(){
+      alert('上传失败')
+    }
+  }
 }
 </script>
 

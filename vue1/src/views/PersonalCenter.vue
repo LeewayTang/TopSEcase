@@ -5,8 +5,9 @@
         <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses"
               :style="{backgroundColor:color,height:'100vh'}">
             <span style="position: fixed;left: 60px">
-            <Img style="width: 280px;border-radius: 10px;margin-top:30%"
-                 src="https://s1.ax1x.com/2020/09/22/wXa0JI.png"/>
+              <div>
+                <img :src=""
+              </div>
             </span>
           <br><br>
           <MenuGroup style="padding-top:120px;text-align: center">
@@ -44,14 +45,9 @@
               <h1 class="-head-title" slot="title">
                 个人信息 About Me
               </h1>
-
-<!--                <div style="display: inline-block;top: 0;height: 47vh;margin: 0 20px">-->
-<!--                  <img v-if="headImg" src="https://s3.ax1x.com/2021/02/12/yDqk7V.jpg" alt="face"-->
-<!--                       style="position:relative;object-fit:cover;height:20vh;width: 30vh"/>-->
-<!--                </div>-->
                 <div style="display: inline-block;top:0">
                   <cell>
-<!--                    <ol style="font-size: 25px;font-weight: bold" :style="{color:color}">information</ol>-->
+                    <ol style="font-size: 25px;font-weight: bold" :style="{color:color}">所在圈子</ol>
                   </cell>
 <!--                  <card>-->
 <!--                    <blockquote :style="{borderLeftColor:color}">-->
@@ -71,11 +67,10 @@
                 </div>
 
             </card>
-            <!--          关于我-->
             <Divider dashed/>
             <card class="write" id="develop">
               <h1 class="-head-title" slot="title">
-                圈子 Circle
+                我的笔记 Notes
               </h1>
 <!--              <Timeline>-->
 <!--                <TimelineItem>-->
@@ -221,20 +216,12 @@
             <Divider dashed/>
             <card class="write" id="front">
               <h1 class="-head-title" slot="title">
-                作品 Works
+                我的书帖 Books
               </h1>
                 <h2 :style="{borderBottomColor:color}">
                   <span :style="{backgroundColor:color}">我的导师</span>
                 </h2>
-              <card>
-<!--              舍弃多年前制作的个人主页，用vue cli彻底重构。<br>-->
-<!--              整个网页为响应式布局，可支持PC端和移动端的浏览，在移动端会自动隐藏Menu组件，在项目图片轮播窗口大小也会自适应改变。<br>-->
-<!--              框架由viewui的layout布局打底，期间使用Sider、MenuGroup、、Gird布局等技术以及card、cell、时间线TimeLine等组件。<br>-->
-<!--              主题由颜色选择器获取颜色，再通过Vue的：style属性动态绑定实现同步颜色，改变Menu和内容页部分组件颜色和部分字体。<br>-->
-<!--              个人网站源代码已开源，欢迎大家学习，<a href="https://github.com/lbzz1906/lbzz1906.github.io.git">项目地址</a>-->
-              </card>
             </card>
-<!--            前端之路-->
             <BackTop></BackTop>
           </Content>
         </div>

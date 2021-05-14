@@ -5,7 +5,7 @@ const baseContent = '<p>I am testing data, I am testing data.</p><p><img src="ht
 const image_uri = 'https://wpimg.wallstcn.com/e4558086-631c-425c-9430-56ffb46e70b3'
 
 const banners = [
-    'https://s1.ax1x.com/2020/05/14/YDhagx.jpg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX1Ued78e4N2yBMIZLPMtS03do7rBnkhHIiA&usqp=CAU',
     'https://s1.ax1x.com/2020/05/14/YDhU81.jpg',
     'https://s1.ax1x.com/2020/05/14/YDhBDO.jpg',
     'https://s1.ax1x.com/2020/05/14/YDhoVg.jpg',
@@ -17,8 +17,8 @@ const List = [{
     banner: banners[0],
     isHot: true,
     pubTime: +Mock.Random.date('T'),
-    title: '看一遍闭着眼都会安装Lua了',
-    summary: 'Lua 是一种轻量小巧的脚本语言，能为应用程序提供灵活的扩展和定制功能。',
+    title: '岩王帝君一定很忙吧',
+    summary: '旅行者，要牛杂吗',
     content: '',
     viewsCount: 4045,
     commentsCount: 99

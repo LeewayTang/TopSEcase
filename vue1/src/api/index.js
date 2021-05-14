@@ -95,3 +95,26 @@ export function fetchArticle(){
         params:{}
     })
 }
+export function fetchArticlesOnly(){
+    return request({
+        url: '/select/Articles',
+        method: 'get',
+        params: {}
+    })
+}
+
+export function fetchBooksOnly(){
+    return request({
+        url: '/select/Books',
+        method: 'get',
+        params: {}
+    })
+}
+
+export function fetchRelative(){
+    return request({
+        url: '/select/Relative',
+        method: 'get',
+        params: {}
+    })
+}

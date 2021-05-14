@@ -52,9 +52,6 @@
           <div class="sales-board-line">
               <div class="sales-board-line-left">&nbsp;</div>
               <div class="sales-board-line-right">
-                  <!-- <div class="button" @click="showPayDialog">
-                    立即购买
-                  </div> -->
               </div>
           </div>
       </div>
@@ -69,41 +66,7 @@
 　　<p>&nbsp;&nbsp;&nbsp;&nbsp;从未读过这么让人想一翻到底的Node.js技术读物，看完 “内存控制”这一章后，重新写代码的时候，仿佛都能看到V8是如何进行垃圾回收的。如果你还在纠结callback带来的嵌套问题，那么推荐你阅读“异步编程”这一章，保证让你大开眼界。世界上本没有嵌套回调，写的人多了，也便有了。JavaScript已经不仅仅是在浏览器上运行的玩具语言, 它正在通过Node.js进军所有领域。
 　　阅读本书，开启你人生的Node节点吧。
 　　——Python发烧友，阿里巴巴数据平台技术专家</p>
-
-        <h3>商品详情</h3>
-        <div>
-          <img src="./../../assets/images/3.png" alt="">
-        </div>
       </div>
-      <!-- <my-dialog :is-show="isShowPayDialog" @on-close="hidePayDialog">
-        <table class="buy-dialog-table">
-          <tr>
-            <th>购买数量</th>
-            <th>产品类型</th>
-            <th>有效时间</th>
-            <th>产品版本</th>
-            <th>总价</th>
-          </tr>
-           <tr>
-            <td>{{ buyNum }}</td>
-            <td>{{ buyType.label }}</td>
-            <td>{{ period.label }}</td>
-            <td>
-              <span v-for="item in versions">{{ item.label }}</span>
-            </td>
-            <td>{{ price }}</td>
-          </tr>
-        </table>
-        <h3 class="buy-dialog-title">请选择银行</h3>
-        <bank-chooser @on-change="onChangeBanks"></bank-chooser>
-        <div class="button buy-dialog-btn" @click="confirmBuy">
-          确认购买
-        </div>
-      </my-dialog>
-      <my-dialog :is-show="isShowErrDialog" @on-close="hideErrDialog">
-        支付失败！
-      </my-dialog>
-      <check-order :is-show-check-dialog="isShowCheckOrder" :order-id="orderId" @on-close-check-dialog="hideCheckOrder"></check-order> -->
   </div>
 </template>
 
