@@ -76,7 +76,7 @@ class UserInfoView(viewsets.GenericViewSet):
         sex = data_json.get('sex')
         if sex is not None:
             user.sex = sex
-        avatar = data_json.get('avatar')
+        avatar = request.FILES.get('avatar')
         if avatar is not None:
             user.avatar = avatar
         isTeacher = data_json.get('isTeacher')
@@ -97,8 +97,11 @@ class UserInfoView(viewsets.GenericViewSet):
                 queryset.save()
             queryset = Circle.objects.get(id=circle)
             user.circle = Circle.objects.get(id=circle)
-        ret = [{'uid': user.uid, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-               'isTeacher': user.isTeacher, 'circle': user.circle.id}]
+        circle = "none"
+        if user.circle is not None:
+            circle = user.circle.id
+        ret = [{'uid': user.uid, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar.url,
+                'isTeacher': user.isTeacher, 'circle': circle}]
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -116,8 +119,11 @@ class UserInfoView(viewsets.GenericViewSet):
         if queryset.count() == 0:
             return Response({'msg': 'Token not exists', 'status': -1})
         user = Token.objects.get(key__exact=token).usr
-        ret = [{'uid': user.uid, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-               'isTeacher': user.isTeacher, 'circle': user.circle.id}]
+        circle = "none"
+        if user.circle is not None:
+            circle = user.circle.id
+        ret = [{'uid': user.uid, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar.url,
+                'isTeacher': user.isTeacher, 'circle': circle}]
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -217,6 +223,7 @@ class LoginRegister(viewsets.GenericViewSet):
         time = datetime.date.today()
         User.objects.create(uid=Uid, pwd=Pwd, mail=Mail, createTime=time, circle=None)
         return Response({'msg': '注册成功', 'status': '1'})
+
     # def register(self, request):
     #     data_json = json.loads(request.body, strict=False)
     #     Uid = data_json.get('uid')
@@ -304,17 +311,31 @@ class FileUpload(viewsets.GenericViewSet):
     upload_avatar:
     需要登陆后使用，传入用户名与头像url
     """
-    queryset = User.objects.all()
+    queryset = Book.objects.all()
+    serializer_class = UploadBookSerializer
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=UploadAvatarSerializer)
     @action(methods=['POST'], detail=False)
-    def upload_avatar(self, request):
-        data_json = json.loads(request.body)
-        Uid = data_json.get('uid')
-        Avatar = data_json.get('avatar')
+    def uploadAvatar(self, request):
+        # data_json = json.loads(request.body)
+        Uid = request.POST.get('uid')
+        Avatar = request.FILES.get('avatar')
         queryset = User.objects.get(uid=Uid)
         queryset.avatar = Avatar
+        queryset.save()
+        return Response({'msg': 'upload success', 'status': 1})
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=UploadBookSerializer,
+                         queryset=Book.objects.all())
+    @action(methods=['POST'], detail=False)
+    def uploadBook(self, request):
+        # data_json = json.loads(request.body)
+        ISBN = request.POST.get('ISBN')
+        file = request.FILES.get('file')
+        queryset = Book.objects.get(ISBN=ISBN)
+        queryset.file = file
         queryset.save()
         return Response({'msg': 'upload success', 'status': 1})
 
@@ -522,6 +543,7 @@ class CircleInfo(viewsets.GenericViewSet):
     在一个圈子中添加讨论，需要登录状态，圈子id，讨论内容
     """
     queryset = Circle.objects.all()
+
     # serializers = CircleInfoSerializer
 
     @swagger_auto_schema(responses={200: ""})
@@ -639,7 +661,8 @@ class BookCommentInfo(viewsets.GenericViewSet):
             return Response({'msg': 'Book not exists', 'status': -1})
         mx = page * number
         mn = (page - 1) * number + 1
-        queryset = BookComment.objects.filter(book__ISBN=ISBN, floor__lte=mx, floor__gte=mn).order_by('id', 'floor').values()
+        queryset = BookComment.objects.filter(book__ISBN=ISBN, floor__lte=mx, floor__gte=mn).order_by('id',
+                                                                                                      'floor').values()
         return Response({'msg': 'success', 'status': 1, 'data': queryset})
 
     @swagger_auto_schema(responses={200: ""}, request_body=AddBookComment)
@@ -657,6 +680,9 @@ class BookCommentInfo(viewsets.GenericViewSet):
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
             return Response({'msg': 'Not login', 'status': -1})
+        queryset = Book.objects.get(ISBN__exact=ISBN)
+        queryset.comments += 1
+        queryset.save()
         user = Token.objects.get(key__exact=token).usr
         book = Book.objects.get(ISBN__exact=ISBN)
         floor = BookComment.objects.filter(book__ISBN__exact=ISBN).count() + 1
@@ -666,6 +692,42 @@ class BookCommentInfo(viewsets.GenericViewSet):
 
 class NoteInfo(viewsets.GenericViewSet):
     queryset = Note.objects.all()
+
+    @swagger_auto_schema(responses={200: ""}, request_body=AddNote)
+    @action(methods=['POST'], detail=False)
+    def AddNote(self, request):
+        data_json = json.loads(request.body)
+        ISBN = data_json.get('ISBN')
+        content = data_json.get('content')
+        token = data_json.get('token')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Not login', 'status': -1})
+        queryset = Book.objects.filter(ISBN__exact=ISBN)
+        if queryset.count() == 0:
+            return Response({'msg': 'Book not exists', 'status': -1})
+        book = Book.objects.get(ISBN__exact=ISBN)
+        user = Token.objects.get(key__exact=token).usr
+        Note.objects.create(book=book, content=content, usr=user)
+        return Response({'msg': 'success', 'status': 1})
+
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['GET'], detail=False)
+    def GetNote(self, request):
+        queryset = Note.objects.all().order_by('-date').values()
+        return Response({'data': [{
+            'name': 'essay1',
+            'type': 'essay',
+            'title': '刚发布！Python 一二线城市月薪 15K 起！12 月再夺语言榜首',
+            'content': '',
+            # imgUrl: require('../../assets/images/headImgDefault.png'),
+            'forum': 'CSDNedu',
+            'category': '',
+            'date': '39分钟前',
+            'read': '518',
+            'comment': '1'
+        }]})
+        # return Response({'msg': 'success', 'data': queryset, 'status': 1})
 
 
 class Search(viewsets.GenericViewSet):
@@ -677,7 +739,9 @@ class Search(viewsets.GenericViewSet):
         context = json.loads(request.body).get('context')
         return Response(
             {'msg': 'success',
-             'data': Book.objects.filter(name__icontains=context).order_by('id', 'ISBN').values()})
+             'data': Book.objects.filter(name__icontains=context).order_by('ISBN').values(),
+             'tag': 'Book',
+             'status': '1'})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
     @action(methods=['POST'], detail=False)
@@ -685,7 +749,9 @@ class Search(viewsets.GenericViewSet):
         context = json.loads(request.body).get('context')
         return Response(
             {'msg': 'success',
-             'data': User.objects.filter(uid__icontains=context).order_by('id', 'uid').values()})
+             'data': User.objects.filter(uid__icontains=context).order_by('uid').values(),
+             'tag': 'User',
+             'status': '1'})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
     @action(methods=['POST'], detail=False)
@@ -693,7 +759,9 @@ class Search(viewsets.GenericViewSet):
         context = json.loads(request.body).get('context')
         return Response(
             {'msg': 'success',
-             'data': Comment.objects.filter(context__icontains=context).order_by('id', 'create_time').values()})
+             'data': Comment.objects.filter(context__icontains=context).order_by('ctime').values(),
+             'tag': 'Comment',
+             'status': '1'})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
     @action(methods=['POST'], detail=False)
@@ -701,7 +769,9 @@ class Search(viewsets.GenericViewSet):
         context = json.loads(request.body).get('context')
         return Response(
             {'msg': 'success',
-             'data': Discuss.objects.filter(context__icontains=context).order_by('id', 'create_time').values()})
+             'data': Discuss.objects.filter(context__icontains=context).order_by('dtime').values(),
+             'tag': 'Discuss',
+             'status': '1'})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
     @action(methods=['POST'], detail=False)
@@ -709,7 +779,9 @@ class Search(viewsets.GenericViewSet):
         context = json.loads(request.body).get('context')
         return Response(
             {'msg': 'success',
-             'data': Circle.objects.filter(type__icontains=context).order_by('id', 'id').values()})
+             'data': Circle.objects.filter(type__icontains=context).order_by('id').values(),
+             'tag': 'Circle',
+             'status': '1'})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
     @action(methods=['POST'], detail=False)
@@ -717,7 +789,9 @@ class Search(viewsets.GenericViewSet):
         context = json.loads(request.body).get('context')
         return Response(
             {'msg': 'success',
-             'data': Note.objects.filter(context__icontains=context).order_by('id', 'id').values()})
+             'data': Note.objects.filter(context__icontains=context).order_by('id').values(),
+             'tag': 'Note',
+             'status': '1'})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
     @action(methods=['POST'], detail=False)
@@ -725,4 +799,24 @@ class Search(viewsets.GenericViewSet):
         context = json.loads(request.body).get('context')
         return Response(
             {'msg': 'success',
-             'data': BookComment.objects.filter(context__icontains=context).order_by('id', 'id').values()})
+             'data': BookComment.objects.filter(context__icontains=context).order_by('id').values(),
+             'tag': 'BookComment',
+             'status': '1'})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
+    @action(methods=['POST'], detail=False)
+    def SearchAll(self, request):
+        context = json.loads(request.body).get('context')
+        Ret = {}
+        Ret.update({'Book': Search.SearchBook(self, request=request).data})
+        Ret.update({'User': Search.SearchUser(self, request=request).data})
+        Ret.update({'Comment': Search.SearchComment(self, request=request).data})
+        Ret.update({'Discuss': Search.SearchDiscuss(self, request=request).data})
+        Ret.update({'Circle': Search.SearchCircle(self, request=request).data})
+        Ret.update({'Note': Search.SearchNote(self, request=request).data})
+        Ret.update({'BookComment': Search.SearchBookComment(self, request=request).data})
+        return Response(
+            {'msg': 'success',
+             'data': Ret,
+             'tag': 'All',
+             'status': '1'})

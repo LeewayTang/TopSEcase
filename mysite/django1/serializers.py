@@ -75,7 +75,7 @@ class RegisterInfoSerializer(serializers.ModelSerializer):
     uid = serializers.CharField(required=True, max_length=16)
     pwd = serializers.CharField(required=True, max_length=16)
     mail = serializers.EmailField(required=True, max_length=32)
-    type = serializers.IntegerField(required=True)
+    # type = serializers.IntegerField(required=True)
     key = serializers.CharField(max_length=16)
 
     class Meta:
@@ -84,20 +84,32 @@ class RegisterInfoSerializer(serializers.ModelSerializer):
             'uid',
             'mail',
             'pwd',
-            'type',
+#             'type',
             'key'
         )
 
 
 class UploadAvatarSerializer(serializers.ModelSerializer):
     uid = serializers.CharField(required=True, max_length=16)
-    avatar = serializers.CharField(required=True, max_length=32)
+    avatar = serializers.ImageField(required=True, max_length=32)
 
     class Meta:
         model = User
         fields = (
             'uid',
             'avatar'
+        )
+
+
+class UploadBookSerializer(serializers.ModelSerializer):
+    ISBN = serializers.CharField(required=True, max_length=16)
+    file = serializers.FileField(required=True, max_length=32)
+
+    class Meta:
+        model = Book
+        fields = (
+            'ISBN',
+            'file'
         )
 
 
@@ -213,6 +225,20 @@ class TagGetBook(serializers.ModelSerializer):
         model = Tag
         fields = (
             'tag',
+        )
+
+
+class AddNote(serializers.ModelSerializer):
+    ISBN = serializers.CharField(required=True, max_length=32)
+    content = serializers.CharField(required=True, max_length=8195)
+    token = serializers.CharField(required=True, max_length=32)
+
+    class Meta:
+        model = Note
+        fields = (
+            'ISBN',
+            'content',
+            'token'
         )
 
 
