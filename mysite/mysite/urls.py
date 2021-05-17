@@ -64,4 +64,6 @@ router.register('bookTag', views.BookTagInfo)
 router.register('circle', views.CircleInfo)
 router.register('token', views.TokenInfo)
 router.register('comment', views.BookCommentInfo)
+router.register('search', views.Search)
+router.register('note', views.NoteInfo)
 urlpatterns += path('api/', include(router.urls)),
