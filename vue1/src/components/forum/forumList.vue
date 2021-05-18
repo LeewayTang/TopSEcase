@@ -5,11 +5,10 @@
           v-for="(item,index) of fixContentItem('essay')"
           :key="item.name"
           :class="'essayLi border-bottom '+item.name"
+          @click="pushPage(item.id)"
       >
         <div class="liTop">
-          <a class="title" href="https://www.baidu.com" target="_blank">
             <h3>{{item.title}}</h3>
-          </a>
           <span class="iconfont deleteIcon" @click="deleteEssayItem(index)">&#xe621;</span>
         </div>
         <div v-if="item.content != ''" class="liMiddle">
@@ -56,6 +55,14 @@ export default {
     this.fetchContentList();
   },
   methods: {
+    pushPage(v){
+      this.$router.push({
+        name: 'discussion',
+        query:{
+          id:v
+        }
+      })
+    },
     fetchContentList(){
       fetchContentList().then(res=>{
         this.contentList = res.data || []

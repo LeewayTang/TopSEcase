@@ -26,7 +26,6 @@ export default {
         {
           name: '深入浅出Vue.js',
           path: 'count',
-          icon: require('../assets/images/1.png'),
           active: false
         },
         {

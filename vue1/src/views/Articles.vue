@@ -99,7 +99,7 @@
               let arr = []
               for(let i=6;i>0;i--){
                   let temp = []
-                  let e = document.querySelector(".entry-content").querySelectorAll(`h${i}`)
+                  let e = document.querySelector(".entry-content").querySelectorAll(`#+ `)
                   for (let j=0;j<e.length;j++){
                       let child = this.fetchH(arr,e[j].offsetTop,(j+1 === e.length)?undefined:e[j+1].offsetTop)
                       temp.push({

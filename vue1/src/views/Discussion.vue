@@ -1,21 +1,14 @@
 <template>
   <div class="discussion-wrapper">
     <div class="default">
-      这里是讨论区，尽情进行思想的碰撞吧！
+      {{content}}
     </div>
     <div class="header">
       <div class="owner">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <img :src="Avatar" alt="头像">
-            <span class="user-name">{{ ownerName }}</span>
-            <span>{{time}}</span>
-          </div>
-          <div>
-            {{content}}
-            <span> <el-button type="primary">回复</el-button></span>
-          </div>
-
+        <el-card class="box-card" type="flex">
+          <div class="user"><img class="askAvatar" :src="Avatar" alt="头像"></div>
+          <div class="user">{{ownerName}}</div>
+          <el-button class="answerButton" type="primary">回复</el-button>
         </el-card>
       </div>
       <div class="tags">
@@ -52,8 +45,8 @@ export default {
       comments: [],
       menus: [],
       question: '',
-      ownerName: '吕云翔',
-      Avatar: '../assets/images/rzdf.jpg',
+      ownerName: '刻晴',
+      Avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX1Ued78e4N2yBMIZLPMtS03do7rBnkhHIiA&usqp=CAU',
       time: new Date(),
       content: '你期末想及格吗？'
     }
@@ -116,6 +109,23 @@ export default {
       padding: 80px 0 0 0;
     }
   }
+  .answerButton{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10%;
+  }
+  .user{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 30px;
+  }
+  .askAvatar{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.4);
+    display: inline-block;
+  }
   .header {
     width: 80%;
     margin-left: auto;
@@ -128,6 +138,9 @@ export default {
     font-size: 200%;
     font-weight: bolder;
     margin: 120px auto 20px;
+  }
+  .clearfix{
+    display: inline-block;
   }
   .clearfix span {
     margin-left: 10px;

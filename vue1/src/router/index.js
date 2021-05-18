@@ -122,24 +122,12 @@ const routes = [
         component: () => import('../views/Discussion.vue'),
         meta: {title: "讨论"}
     },
-    // {
-    //     path: '/category/:cate',
-    //     name: 'category',
-    //     component: () => import('../views/Home.vue'),
-    //     meta: { title: '分类', params: 'cate'}
-    // },
     {
         path: '/search/:words',
         name: 'search',
         component: () => import('../views/Home.vue'),
         meta: { title: '搜索', params: 'words'}
     },
-    // {
-    //     path: '/about',
-    //     name: 'about',
-    //     component: () => import('../views/About.vue'),
-    //     meta: { title: '关于'}
-    // },
     {
         path: '/markdown_test',
         name: 'markdown',
