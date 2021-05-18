@@ -2,14 +2,13 @@ const Mock = require('mockjs');
 
 export default [
     {
-        url: '/content-list',
+        url: '/forum-list',
         type: 'get',
         response:()=> {
             return{
                 code: 20000,
                 data:[
                     {
-                        id: 1,
                         name: 'essay1',
                         type: 'essay',
                         title: '刚发布！Python 一二线城市月薪 15K 起！12 月再夺语言榜首',
@@ -22,7 +21,6 @@ export default [
                         comment: '1'
                     },
                     {
-                        id:2,
                         name: 'essay2',
                         type: 'essay',
                         title: 'Docker最全教程——从理论到实战（七）',
@@ -36,7 +34,6 @@ export default [
                         comment: '14'
                     },
                     {
-                        id:3,
                         name: 'essay3',
                         type: 'essay',
                         title: '源码:Spark SQL 分区特性第一弹',
@@ -50,7 +47,6 @@ export default [
                         comment: '2'
                     },
                     {
-                        id:4,
                         name: 'essay4',
                         type: 'essay',
                         title: '刚发布！Python 一二线城市月薪 15K 起！12 月再夺语言榜首',
@@ -63,7 +59,6 @@ export default [
                         comment: '1'
                     },
                     {
-                        id:5,
                         name: 'essay5',
                         type: 'essay',
                         title: 'Docker最全教程——从理论到实战（七）',
@@ -77,7 +72,6 @@ export default [
                         comment: '14'
                     },
                     {
-                        id:6,
                         name: 'essay6',
                         type: 'essay',
                         title: '源码:Spark SQL 分区特性第一弹',

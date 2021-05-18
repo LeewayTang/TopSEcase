@@ -5,12 +5,10 @@
     </div>
     <div class="header">
       <div class="owner">
-        <el-card class="box-card">
-            <div class="user"><img class="askAvatar" :src="Avatar" alt="头像"></div>
-            <div class="user">{{ownerName}}</div>
-<!--            <div class="answerButton" type="flex">-->
-            <el-button class="answerButton" type="primary">回复</el-button>
-<!--          </div>-->
+        <el-card class="box-card" type="flex">
+          <div class="user"><img class="askAvatar" :src="Avatar" alt="头像"></div>
+          <div class="user">{{ownerName}}</div>
+          <el-button class="answerButton" type="primary">回复</el-button>
         </el-card>
       </div>
       <div class="tags">
