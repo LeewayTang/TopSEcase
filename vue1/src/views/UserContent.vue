@@ -20,6 +20,9 @@
         <li class="sug-item"><router-link to="/">MichaleJacksonXXX</router-link></li>
         <li class="sug-item"><router-link to="/">YogurtMakesYoungsters</router-link></li>
       </div>
+      <div>
+        <router-link to="/discussion">test</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -30,6 +33,7 @@ import NewInfo from "../components/log/newInfo";
 import SectionTitle from "../components/section-title";
 import ForumList from "../components/forum/forumList"
 import ForumPageMain from "@/components/forum/main";
+import Discussion from "./Discussion";
 export default {
   name: "UserContent",
   components: {ForumPageMain, ForumList, SectionTitle, NewInfo, LogPageMain}
