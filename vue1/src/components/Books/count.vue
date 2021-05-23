@@ -2,7 +2,7 @@
   <div class="sales-board">
       <div class="sales-board-intro">
         <h1>{{this.bookInfo.title}}</h1>
-        <p>本书从源码层面分析了Vue.js。首先，简要介绍了Vue.js；然后详细讲解了其内部核心技术“变化侦测”，这里带领大家从0到1实现一个简单的“变化侦测”系统；接着详细介绍了虚拟DOM技术，其中包括虚拟DOM的原理及其patching算法；紧接着详细讨论了模板编译技术，其中包括模板解析器的实现原理、优化器的原理以及代码生成器的原理；最后详细介绍了其整体架构以及提供给我们使用的各种API的内部原理，同时还介绍了生命周期、错误处理、指令系统与模板过滤器等功能的原理。</p>
+        <p>{{this.bookInfo.introduction}}</p>
       </div>
       <div class="sales-board-form">
           <div class="sales-board-line">
@@ -43,8 +43,7 @@ import VCounter from '../../components/base/counter'
 import VChooser from '../../components/base/chooser'
 import VMulChooser from '../../components/base/multiplyChooser'
 import Dialog from '../../components/base/dialog'
-// import BankChooser from '../../components/bankChooser'
-// import CheckOrder from '../../components/checkOrder'
+
 import _ from 'lodash'
 export default {
   components: {
@@ -121,17 +120,6 @@ export default {
 <style scoped>
 .sales-board-line-left{
   width:fit-content;
-}
-.buy-dialog-title {
-  font-size: 16px;
-  font-weight: bold;
-}
-.buy-dialog-btn {
-  margin-top: 20px;
-}
-.buy-dialog-table {
-  width: 100%;
-  margin-bottom: 20px;
 }
 .buy-dialog-table td,
 .buy-dialog-table th{

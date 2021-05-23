@@ -17,7 +17,7 @@
             layoutHeader,
             layoutBody,
             layoutFooter,
-            Loading
+            Loading,
         },
   //     mounted() {
   //   setTimeout(() => {

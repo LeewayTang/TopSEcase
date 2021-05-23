@@ -177,21 +177,7 @@ export default {
       this[attr] = val
       this.getPrice()
     },
-    getPrice () {
-      let buyVersionsArray = _.map(this.versions, (item) => {
-        return item.value
-      })
-      let reqParams = {
-        buyNumber: this.buyNum,
-        buyType: this.buyType.value,
-        period: this.period.value,
-        version: buyVersionsArray.join(',')
-      }
-      this.$http.post('/api/getPrice', reqParams)
-      .then((res) => {
-        this.price = res.data.amount
-      })
-    }},
+    },
 //     showPayDialog () {
 //       this.isShowPayDialog = true
 //     },

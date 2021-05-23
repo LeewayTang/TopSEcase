@@ -53,6 +53,21 @@ export function fetchContentList(){
         params: {}
     })
 }
+export function fetchBookInfo(id){
+    return request({
+        url: '/books/' + id,
+        method: 'get',
+        params: {}
+    })
+}
+
+export function fetchBookList() {
+    return request({
+        url: '/book-list',
+        method: 'get',
+        params: {}
+    })
+}
 
 export function fetchSiteInfo0() {
     return request({
@@ -90,7 +105,7 @@ export function addBook(){
 
 export function fetchArticle(){
     return request({
-        url: '/article/0',
+        url: '/article',
         method: 'get',
         params:{}
     })

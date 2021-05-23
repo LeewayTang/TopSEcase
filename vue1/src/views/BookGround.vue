@@ -296,40 +296,34 @@
 
 <script>
 import SectionTitle from "../components/section-title";
+import {fetchBookInfo, fetchBookList} from "../api";
 export default {
   components: {SectionTitle},
   data () {
     return {
-      products: [
-        {
-          name: '深入浅出Vue.js',
-          path: '/book/count',
-          icon: require('../assets/images/1.png'),
-          active: false
-        },
-        {
-          name: 'JavaScript高级程序设计',
-          path: '/book/forecast',
-          icon: require('../assets/images/2.png'),
-          active: false
-        },
-        {
-          name: 'Node.js源码分析',
-          path: '/book/analysis',
-          icon: require('../assets/images/3.png'),
-          active: false
-        },
-        {
-          name: 'Spring Boot实战',
-          path: '/book/publish',
-          icon: require('../assets/images/4.png'),
-          active: false
-        }
-      ],
+      tutorSugBooks: [],
+      peerSugBooks: [],
+      comments: []
     }
   },
   computed: {
-  }
+  },
+  methods: {
+    fetchTSB(){
+      fetchTSB().then(res=>{
+        // console.log(id);
+        this.tutorSugBooks = res.data || []
+        // console.log(this.bookInfo);
+      })
+    },
+    fetchPSB() {
+      fetchPSB().then(res => {
+        this.bookList = res.data || [];
+        // console.log(this.bookList);
+      })
+    }
+  },
+
 }
 </script>
 

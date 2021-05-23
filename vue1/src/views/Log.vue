@@ -33,10 +33,12 @@ import LogPageMain from "../components/log/main";
 import NewInfo from "../components/log/newInfo";
 import SectionTitle from "../components/section-title";
 export default {
-name: "Log",
+  name: "Log",
   components: {SectionTitle, NewInfo, LogPageMain},
-  data:{
-    webSiteInfo:{}
+  data() {
+    return {
+      webSiteInfo: {}
+    }
   },
   created() {
     this.getWebSiteInfo()

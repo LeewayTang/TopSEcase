@@ -29,12 +29,14 @@ new Vue({
 const routes = [
     {
         path: '/',
+        redirect: '/home',
+    },
+    {
+        path: '/home',
         name: 'home',
         component: () => import('../views/Home.vue'),
-        // redirect: '/login',
         meta: {
             title: '首页',
-            // hasLogin: false
         }
     },
     {
@@ -68,35 +70,43 @@ const routes = [
         meta: { title: '发布新书'}
     },
     {
-        path:'/book',
-        component:Book,
-        redirect:'/book/analysis',
-        children:[
-            {
-                path:'analysis',
-                name:'analysis',
-                component:book1,
-                meta: { title: "book1"}
-            },
-            {
-                path:'count',
-                name:'count',
-                component:book2,
-                meta: { title: "book2"}
-            },
-            {
-                path:'forecast',
-                name:'forecast',
-                component:book4,
-                meta: { title: "book4"}
-            },
-            {
-                path:'publish',
-                name:'publish',
-                component:book3,
-                meta: { title: "book3"}
-            }
-        ]
+        path:'/books/:id',
+        name: 'books',
+        component: Book,
+        meta: { title: '书籍详情页' }
+        // redirect:'/book/analysis',
+        // children:[
+        //     {
+        //         path:'analysis',
+        //         name:'analysis',
+        //         component:book1,
+        //         meta: { title: "book1"}
+        //     },
+        //     {
+        //         path:'count',
+        //         name:'count',
+        //         component:book2,
+        //         meta: { title: "book2"}
+        //     },
+        //     {
+        //         path:'forecast',
+        //         name:'forecast',
+        //         component:book4,
+        //         meta: { title: "book4"}
+        //     },
+        //     {
+        //         path:'publish',
+        //         name:'publish',
+        //         component:book3,
+        //         meta: { title: "book3"}
+        //     },
+        //     {
+        //         path: 'library',
+        //         name: 'library',
+        //         component: () => import('../components/Books/book-in-lib'),
+        //         meta: { title: '所有的书'}
+        //     },
+        // ]
     },
     {
         path:'/book-ground',

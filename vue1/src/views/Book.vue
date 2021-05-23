@@ -4,66 +4,147 @@
       <div class="product-board">
         <img :src="productIcon" width="220px;">
         <ul>
-          <router-link v-for="item in products" :to="{ path: item.path }" tag="li" active-class="active" :key="item.id">
+          <el-button type='text' class='switch' v-for="item in bookList" @click="bookClick(item.id)" :key="item.id">
             {{ item.name }}
-          </router-link>
+          </el-button>
         </ul>
       </div>
     </div>
     <div class="book-right">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+      <div class="sales-board">
+        <div class="sales-board-intro">
+          <h1>{{this.bookInfo.title}}</h1>
+          <p>{{this.bookInfo.introduction}}</p>
+        </div>
+        <div class="sales-board-form">
+          <div class="sales-board-line">
+            <div class="sales-board-line-left">
+              作者：{{ this.bookInfo.author }} ｜ {{ this.bookInfo.press }}
+            </div>
+          </div>
+          <div class="sales-board-line">
+            <div class="sales-board-line-left">
+              ISBN：{{ this.bookInfo.ISBN }}
+            </div>
+          </div>
+          <div class="sales-board-line">
+            <div class="sales-board-line-left">
+              <a :href="this.bookInfo.href">购买链接🔗</a>
+            </div>
+          </div>
+          <div class="sales-board-line">
+            <el-row type="flex" justify="end">
+              <el-button type="primary">获取电子书</el-button>
+            </el-row>
+          </div>
+        </div>
+        <h1>精彩书评</h1>
+        <div class="sales-board-des">
+          <li v-for="item in bookInfo.comments">
+            {{item.says}}
+            <br>
+            <el-row type="flex" justify="end">—— {{item.username}}</el-row>
+          </li>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import VSelection from "../components/base/selection";
+import VCounter from "../components/base/counter";
+import VChooser from "../components/base/chooser";
+import VMulChooser from "../components/base/multiplyChooser";
+import Dialog from "../components/base/dialog";
+import _ from "lodash";
+import {fetchBookList, fetchBookInfo} from '../api';
+
 export default {
+  name: "books",
+  components: {
+    VSelection,
+    VCounter,
+    VChooser,
+    VMulChooser,
+    MyDialog: Dialog,
+  },
   data () {
     return {
-      products: [
-        {
-          name: '深入浅出Vue.js',
-          path: 'count',
-          active: false
+      bookInfo:{
+        id: 1,
+        img: '',
+        items:[
+          {text:""},
+          {text:""},
+          {text:""},
+        ],
+        title: '',
+        introduction: '',
+        author: '',
+        press: '',
+        ISBN: '',
+        href:'',
+        comments:[{
+          username:'',
+          says: ''
         },
-        {
-          name: 'JavaScript高级程序设计',
-          path: 'forecast',
-          active: false
-        },
-        {
-          name: 'Node.js源码分析',
-          path: 'analysis',
-          active: false
-        },
-        {
-          name: 'Spring Boot实战',
-          path: 'publish',
-          active: false
-        },
-        {
-          name: "fuck you",
-          path: 'library',
-          active: false
-        }
-      ],
-      imgMap: {
-        '/book':require('./../assets/images/1.png'),
-        '/book/count': require("./../assets/images/1.png"),
-        '/book/library': require("./../assets/images/1.png"),
-        '/book/forecast': require("./../assets/images/2.png"),
-        '/book/analysis': require("./../assets/images/3.png"),
-        '/book/publish': require("./../assets/images/4.png")
-      }
+          {
+            username: '',
+            says: ''
+          },
+          {
+            username: '',
+            says: ''
+          }]
+      },
+      bookList: [],
     }
+  },
+  activated() {
+    fetchBookInfo(this.$route.params.id)
   },
   computed: {
     productIcon () {
-      return this.imgMap[this.$route.path]
+      return this.bookInfo.img;
     }
-  }
+  },
+  created() {
+    // this.fetchBookInfo(this.bookInfo.id);
+    this.fetchBookList();
+  },
+  methods: {
+    fetchBookInfo(){
+      let id = this.$route.params.id;
+      console.log(id);
+      fetchBookInfo(id).then(res=>{
+        this.bookInfo = res.data;
+        console.log("fuck you in fetchBookInfo")
+        console.log(this.bookInfo);
+      })
+    },
+    fetchBookList() {
+      fetchBookList().then(res => {
+        this.bookList = res.data || [];
+        console.log(this.bookList);
+      })
+    },
+    bookClick(id) {
+      console.log(this.$route.path);
+      this.$router.push('/books/' + id);
+      console.log(this.$route.params.id);
+      this.fetchBookInfo(this.$route.params.id);
+      console.log(this.bookInfo);
+    }
+  },
+  mounted() {
+    this.fetchBookInfo(this.bookInfo.id)
+  },
+  // watch: {
+  //   '$route'(to, from) {
+  //     this.$forceUpdate()
+  //   }
+  // }
 }
 </script>
 
@@ -130,7 +211,7 @@ export default {
 }
 .sales-board-line-left {
   display: inline-block;
-  width: 100px;
+  width: 300px;
 }
 .sales-board-line-right {
   display: inline-block;
@@ -167,4 +248,10 @@ export default {
   border: 1px solid #f0f2f5;
   padding: 15px;
 }
+.switch {
+  width: 300px;
+  font-size: 20px;
+  text-align: left
+}
+
 </style>
