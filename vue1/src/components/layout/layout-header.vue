@@ -33,7 +33,9 @@
                       {{item.title}}</router-link></div>
                 </div>
             </div>
-          <div class="menu-item" v-if="!$store.state.hasLogin"><router-link to="/login">登录/注册</router-link></div>
+          <div class="menu-item" v-if="!$store.state.hasLogin">
+            <router-link to="/login">登录/注册</router-link>
+          </div>
           <div class="menu-item hasChild" v-else>
                 <img class="menu-img" :src="$store.state.websiteInfo.avatar" >
                 <div class="childMenu" v-if="category.length">
@@ -210,8 +212,9 @@
             position: relative;
             a{
                 padding: 12px 10px;
-                color: #545454;
-                font-weight: 500;
+                color: #b9bec1;
+
+                font-weight: bold;
                 font-size: 16px;
                 &:hover {
                     color: #ff6d6d;
@@ -330,5 +333,9 @@
             z-index: 99;
         }
     }
+
+.router-link-exact-active {
+  color: #0f0f0f !important;
+}
 
 </style>

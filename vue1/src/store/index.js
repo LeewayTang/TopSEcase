@@ -43,6 +43,7 @@ const mutations = {
        state.hasLogin = v
     }
 }
+
 const actions = {
     setLoading: ({commit}, v) => {
         commit('SET_LOADING', v);

@@ -42,11 +42,17 @@ export default {
           name: 'Spring Boot实战',
           path: 'publish',
           active: false
+        },
+        {
+          name: "fuck you",
+          path: 'library',
+          active: false
         }
       ],
       imgMap: {
         '/book':require('./../assets/images/1.png'),
         '/book/count': require("./../assets/images/1.png"),
+        '/book/library': require("./../assets/images/1.png"),
         '/book/forecast': require("./../assets/images/2.png"),
         '/book/analysis': require("./../assets/images/3.png"),
         '/book/publish': require("./../assets/images/4.png")
