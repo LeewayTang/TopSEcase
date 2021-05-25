@@ -75,7 +75,7 @@
 
       <ul class="hot-tags-col5 s" data-dstat-areaid="54" data-dstat-mode="click,expose">
         <ul class="tag_title">
-          文学
+          编程语言
         </ul>
         <ul>
         <router-link v-for="item in tags" :to="{ path : '/tag-detail/' + item.path }" active-class="active" :key="item.id">
@@ -84,7 +84,7 @@
       </ul>
 
         <ul class="tag_title">
-          编程语言（数据和上面一样懒得改了）
+          数据库（数据和上面一样懒得改了）
         </ul>
         <ul>
           <router-link v-for="item in tags" :to="{ path : '/tag-detail/' + item.path }" active-class="active" :key="item.id">
@@ -106,7 +106,7 @@
         </ul>
         <ul>
           <router-link v-for="item in tags" :to="{ path : '/tag-detail/' + item.path }" active-class="active" :key="item.id">
-            <li class="tag">{{item.name}}</li>
+            <li class="tag">{{ item.name }}</li>
           </router-link>
         </ul>
       </ul>
@@ -177,12 +177,6 @@ export default {
   padding-top: 120px;
   display: flex;
 }
-.sec-title {
-  font-weight: bolder;
-  color: #0f0f0f;
-  padding-right: 20px;
-  font-size: 35px;
-}
 .link-more {
   padding-left: 20px;
   display: inline-block;
@@ -213,14 +207,13 @@ export default {
   flex-grow: 1;
 }
 .tag {
-  height: 20px;
   font-size: 20px;
-  padding-right: 10px;
   display: inline;
-  padding-top: 10px;
+  padding: 10px 10px;
+  margin-right: 10px;
+  margin-top: 10px;
   background-color: #eef1f3;
   color: #354b44;
-
 }
 .tag:hover {
   color: #e7051e;
