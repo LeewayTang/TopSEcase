@@ -68,6 +68,28 @@ export function fetchBookList() {
         params: {}
     })
 }
+export function fetchTags() {
+    return request({
+        url: 'book-ground/tags',
+        methods: 'get',
+        params: {}
+    })
+}
+export function fetchReview() {
+    return request({
+        url: 'book-ground/review',
+        methods: 'get',
+        params: {}
+    })
+
+}
+// export function fetchTSB() {
+//     return request ({
+//         url: '/book-list',
+//         methods: 'get',
+//         params: {}
+//     })
+// }
 
 export function fetchSiteInfo0() {
     return request({
