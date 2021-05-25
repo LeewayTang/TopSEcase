@@ -21,6 +21,8 @@
 <style scoped>
 #layout-body{
     /* header = 80px */
+    background-color: #eff3f6;
+    margin-top: 80px;
     min-height: -moz-calc(100vh - 80px);
     min-height: -webkit-calc(100vh - 80px);
     min-height: calc(100vh - 80px);

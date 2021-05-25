@@ -97,6 +97,7 @@
         }
         &.home-banner {
             height: 350px;
+          background-color: #eff3f6;
             .banner-img{
                 background-position: center center;
                 background-repeat: no-repeat;
@@ -114,7 +115,7 @@
                 position: absolute;
                 width: 0;
                 height: 0;
-                border-bottom: 100px solid #FFF;
+                border-bottom: 100px solid #eff3f6;;
                 border-right: 800px solid transparent;
                 left: 0;
                 bottom: 0;
@@ -125,7 +126,7 @@
                 position: absolute;
                 width: 0;
                 height: 0;
-                border-bottom: 100px solid #FFF;
+                border-bottom: 100px solid #eff3f6;;
                 border-left: 800px solid transparent;
                 right: 0;
                 bottom: 0;

@@ -1,14 +1,14 @@
 <template>
   <div class="wrapper">
     <div class="main">
-    <h2 class='sector'>
+
+      <el-card>
+      <div class='sector'>
       <section-title>导师推荐</section-title>
       <span class="link-more">
         <a class="" href="/latest?icn=index-latestbook-all"
         > 更多»</a>
       </span>
-    </h2>
-
     <div class="book-bubble">
       <ul class="books">
         <li>
@@ -23,38 +23,41 @@
         </li>
       </ul>
     </div>
-
-
-    <h2 class='sector'>
-      <section-title>同学推荐</section-title>
-      <span class="link-more">
-        <a class="" href="/latest?icn=index-latestbook-all"
-        > 更多»</a>
-      </span>
-    </h2>
-
-    <div class="book-bubble">
-      <ul class="books">
-        <li>
-          <router-link v-for="item in peerSugBooks" :to="{ path : item.path }" tag="li" active-class="active" :key="item.id" class="link-to">
-            <div>
-              <a :title=item.name>
-                <img :src="item.icon" height="280px" width="200px;">
-                <div class="book-name">{{ item.name }}</div>
-              </a>
-            </div>
-          </router-link>
-        </li>
-      </ul>
     </div>
+      </el-card>
 
-    <h2 class='sector'>
-      <section-title>精彩点评</section-title>
-      <span class="link-more">
+      <el-card>
+        <div class='sector'>
+          <section-title>同学推荐</section-title>
+          <span class="link-more">
         <a class="" href="/latest?icn=index-latestbook-all"
         > 更多»</a>
       </span>
-    </h2>
+          <div class="book-bubble">
+            <ul class="books">
+              <li>
+                <router-link v-for="item in peerSugBooks" :to="{ path : item.path }" tag="li" active-class="active" :key="item.id" class="link-to">
+                  <div>
+                    <a :title=item.name>
+                      <img :src="item.icon" height="280px" width="200px;">
+                      <div class="book-name">{{ item.name }}</div>
+                    </a>
+                  </div>
+                </router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </el-card>
+
+    <el-card>
+      <div class='sector'>
+        <section-title>精彩点评</section-title>
+        <span class="link-more">
+        <a class="" href="/latest?icn=index-latestbook-all"
+        > 更多»</a>
+      </span>
+      </div>
       <div class="review">
         <li v-for="item in comments">
           {{item.review}}
@@ -62,9 +65,12 @@
           <el-row type="flex" justify="end">—— {{item.name}}</el-row>
         </li>
       </div>
+    </el-card>
     </div>
 
+
     <div class="aside">
+      <el-card>
       <h2 class=''>
         <section-title>热门标签</section-title>
         <span class="link-more">
@@ -110,7 +116,9 @@
           </router-link>
         </ul>
       </ul>
+      </el-card>
     </div>
+
   </div>
 </template>
 
@@ -174,7 +182,7 @@ export default {
   width: 80%;
   margin: 0 auto;
   overflow: hidden;
-  padding-top: 120px;
+  padding-top: 20px;
   display: flex;
 }
 .link-more {
@@ -227,5 +235,8 @@ export default {
   padding-top: 20px;
   padding-bottom: 10px;
   color: #000000;
+}
+.el-card {
+  margin-bottom: 20px;
 }
 </style>

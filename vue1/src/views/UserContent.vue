@@ -4,7 +4,7 @@
       <forum-page-main></forum-page-main>
     </div>
     <div class="right">
-      <div class="s-block">
+      <el-card>
         <div class="title">圈内同学</div>
         <div class="sug-list">
           <li class="sug-item"><router-link to="/">cynic</router-link></li>
@@ -12,16 +12,17 @@
           <li class="sug-item"><router-link to="/">Michalel</router-link></li>
           <li class="sug-item"><router-link to="/">Yogurt</router-link></li>
         </div>
-      </div>
-      <div class="quanzi">
+      </el-card>
+
+        <el-card>
         <div class="title">优秀圈子</div>
         <li class="sug-item"><router-link to="/">cynic</router-link></li>
         <li class="sug-item"><router-link to="/">leeway</router-link></li>
         <li class="sug-item"><router-link to="/">MichaleJacksonXXX</router-link></li>
         <li class="sug-item"><router-link to="/">YogurtMakesYoungsters</router-link></li>
-      </div>
+        </el-card>
       <div>
-        <router-link to="/discussion">test</router-link>
+<!--        <router-link to="/discussion">test</router-link>-->
       </div>
     </div>
   </div>
@@ -43,7 +44,7 @@ export default {
 <style scoped>
 .book-note-wrap {
   width: 70%;
-  margin-top: 120px;
+  padding-top: 20px;
   margin-left: auto;
   margin-right: auto;
   display: flex;

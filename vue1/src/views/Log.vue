@@ -67,7 +67,7 @@ export default {
 }
 .book-note-wrap {
   width: 70%;
-  margin-top: 120px;
+  padding-top: 20px;
   margin-left: 15%;
   margin-right: 15%;
   display: flex;

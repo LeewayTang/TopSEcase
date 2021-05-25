@@ -6,7 +6,7 @@
               :style="{backgroundColor:color,height:'100vh'}">
             <span style="position: fixed;left: 60px">
               <div>
-                <img :src=""
+<!--                <img :src="">-->
               </div>
             </span>
           <br><br>

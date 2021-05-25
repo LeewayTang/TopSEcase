@@ -1,7 +1,7 @@
 <template>
-    <div id="layout-header" :class="{'fixed':fixed,'hidden':hidden}" @click.stop="mobileShow=false">
+    <div id="layout-header" class="fixed" @click.stop="mobileShow=false">
         <div class="site-logo">
-            <router-link to="/">
+            <router-link to="/home">
 <!--                <img src="@/assets/site-logo.svg" alt="">-->
               <img src="@/assets/reading.png" alt="">
                 <p class="site-name">墨韵 | MoYun</p>
@@ -58,8 +58,6 @@
         data() {
             return {
                 lastScrollTop: 0,
-                fixed: false,
-                hidden: false,
                 category: [],
                 profile:[],
                 mobileShow: false
@@ -163,6 +161,7 @@
         z-index: 9;
         width: 100%;
         height: 80px;
+        color: white;
         padding: 0 80px;
         display: flex;
         justify-content: space-between;
@@ -172,9 +171,9 @@
         -moz-transition: .3s all linear;
         -o-transition: .3s all ease;
         -ms-transition: .3s all ease;
-        &.hidden{
-            top: -100px;
-        }
+        //&.hidden{
+        //    top: -100px;
+        //}
         &.fixed{
             background-color: #FFFFFF;
             box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
@@ -190,11 +189,16 @@
         }
 
         p.site-name {
+            color: #b9bec1;
             font-size: 15px;
             font-weight: bold;
             position: relative;
             top: -10px;
+          &:hover {
+            color: #ff6d6d;
+          }
         }
+
     }
     .menus-btn{
         display: none;
