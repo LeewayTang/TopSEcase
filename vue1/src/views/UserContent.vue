@@ -33,7 +33,7 @@ import LogPageMain from "../components/log/main";
 import NewInfo from "../components/log/newInfo";
 import SectionTitle from "../components/section-title";
 import ForumList from "../components/forum/forumList"
-import ForumPageMain from "@/components/forum/main";
+import ForumPageMain from "../components/forum/main";
 import Discussion from "./Discussion";
 export default {
   name: "UserContent",

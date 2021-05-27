@@ -18,10 +18,7 @@ Vue.use(VueRouter)
 Vue.use(VueElElements)
 Vue.use(ElementUI)
 
-import mavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
-// use
-Vue.use(mavonEditor)
+
 new Vue({
     'el': '#main'
 })

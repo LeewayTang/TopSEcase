@@ -76,7 +76,7 @@ export default {
 .main-container {
   width: 70%;
   height: fit-content;
-  background-color: #989898;
+  background-color: #eff3f6;
 }
 .right {
   margin-left: 20px;

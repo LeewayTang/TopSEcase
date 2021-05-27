@@ -81,15 +81,16 @@ created() {
 <style lang="stylus" scoped>
 @import '~@/assets/styles/mixins.styl'
 .contentListWrapper
-  background-color pink
+  background-color #eff3f6
   width 100%
-  height fit-content
+  height auto
   .contentList
-    border: 1px solid lightgrey;
+    //border: 1px solid lightgrey;
     .essayLi
+      margin-bottom  20px
       padding 18px 24px
       background-color #fff
-      box-shadow 0 1px 2px 0 rgba(0, 0, 0, 0.04)
+      //box-shadow 0 1px 2px 0 rgba(0, 0, 0, 0.04)
       position relative
       top 0
       left 0

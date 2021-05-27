@@ -22,7 +22,19 @@
                 <p>{{comment.content}}</p>
             </div>
             <div v-if="showCommentEditor" @click.stop="">
-                <comment-message-editor :inline="false" buttonText="回复" @submit="submitReply"></comment-message-editor>
+                <mavon-editor :toolbars="{
+                bold: true, // 粗体
+                italic: true,// 斜体
+                header: true,// 标题
+                quote: true, // 引用
+                code: true, // code
+                table: true, // 表格
+                imagelink: true, // 图片链接
+                fullscreen: true, // 全屏编辑
+                subfield: true, // 单双栏模式
+                preview: true, // 预览
+              }"></mavon-editor>
+              <el-button type="success" @click="submitReply">提交</el-button>
             </div>
             <slot></slot>
         </div>
@@ -41,9 +53,10 @@
         },
         data(){
           return{
-              showCommentEditor: false
+              showCommentEditor: false,
           }
         },
+      inject: ['reload'],
         watch:{
             showCommentEditor(value) {
                 if (value) {
@@ -65,7 +78,7 @@
                 console.log(v)
             },
             close(){
-                this.showCommentEditor = false
+              this.showCommentEditor = false
             }
         }
     }

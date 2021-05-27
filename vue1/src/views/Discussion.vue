@@ -8,7 +8,23 @@
         <el-card class="box-card" type="flex">
           <div class="user"><img class="askAvatar" :src="Avatar" alt="头像"></div>
           <div class="user">{{ownerName}}</div>
-          <el-button class="answerButton" type="primary">回复</el-button>
+          <el-button class="answerButton" type="primary" @click.stop="showCommentEditor=true">回复</el-button>
+          <div v-if="showCommentEditor" >
+            <mavon-editor :toolbars="{
+                bold: true, // 粗体
+                italic: true,// 斜体
+                header: true,// 标题
+                quote: true, // 引用
+                code: true, // code
+                table: true, // 表格
+                imagelink: true, // 图片链接
+                fullscreen: true, // 全屏编辑
+                subfield: true, // 单双栏模式
+                preview: true, // 预览
+              }"></mavon-editor>
+            <el-button type="success" @click="submitReply">提交</el-button>
+          </div>
+
         </el-card>
       </div>
       <div class="tags" v-for="tag in tags">
@@ -45,7 +61,8 @@ export default {
       ownerName: '',
       Avatar: '',
       time: new Date(),
-      tags: []
+      tags: [],
+      showCommentEditor: false
     }
   },
 
@@ -102,15 +119,32 @@ export default {
         }
       }
       this.menus = arr
+    },
+    submitReply(v) {
+      console.log(v)
+    },
+    close() {
+      this.showCommentEditor = false
+      // this.$forceUpdate()
     }
   },
+  watch:{
+    showCommentEditor(value) {
+      if (value) {
+        document.body.addEventListener('click', this.close)
+      } else {
+        document.body.removeEventListener('click', this.close)
+      }
+    }
+  },
+
   mounted(){
     // this.createMenus()
     this.getDiscussionQues()
   },
   created() {
     this.getComment()
-  }
+  },
 }
 </script>
 

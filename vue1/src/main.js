@@ -22,12 +22,17 @@ Vue.directive('highlight', function (el) {
     hljs.highlightBlock(block)
   })
 })
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor)
 Vue.prototype.$qs = qs
 Vue.use(vcolorpicker)
 Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.prototype.$axios= axios
 Vue.config.productionTip = false
+// Vue.forceUpdate()
 Vue.filter('parseTime', (v) => parseTime(v,'{y}-{m}-{d}'))
 new Vue({
   router,

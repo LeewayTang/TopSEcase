@@ -46,7 +46,8 @@ export default {
     return {
       dynamicTags: ['标签一', '标签二', '标签三'],
       inputVisible: false,
-      inputValue: ''
+      inputValue: '',
+      // handbook: "#### how to use mavonEditor in nuxt.js"
     }
   },
   methods: {
@@ -75,13 +76,14 @@ export default {
     },
     saveTmp() {
       // 同样不会
+      // mavonEditor.save()
     }
   }
 }
 </script>
 <style>
 #editor-wrap {
-  margin-top: 100px;
+  /*margin-top: 100px;*/
   margin-right: auto;
   margin-left: auto;
   width: 80%;
