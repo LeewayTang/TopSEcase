@@ -56,7 +56,6 @@
               showCommentEditor: false,
           }
         },
-      inject: ['reload'],
         watch:{
             showCommentEditor(value) {
                 if (value) {

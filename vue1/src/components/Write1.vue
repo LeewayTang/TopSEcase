@@ -1,5 +1,7 @@
 <template>
   <div id="editor-wrap">
+    <el-card class="titleTag">
+    <el-input placeholder="请输入标题" v-model="title" clearable></el-input>
     <div id="edit-tag">
       <el-tag
           :key="tag"
@@ -21,6 +23,7 @@
       </el-input>
       <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
     </div>
+    </el-card>
     <div id="editor">
       <mavon-editor style="height: 100%"></mavon-editor>
     </div>
@@ -48,6 +51,7 @@ export default {
       inputVisible: false,
       inputValue: '',
       // handbook: "#### how to use mavonEditor in nuxt.js"
+      title: ''
     }
   },
   methods: {
@@ -84,6 +88,7 @@ export default {
 <style>
 #editor-wrap {
   /*margin-top: 100px;*/
+  padding-top: 30px;
   margin-right: auto;
   margin-left: auto;
   width: 80%;
@@ -107,6 +112,9 @@ export default {
   width: 90px;
   margin-left: 10px;
   vertical-align: bottom;
+}
+.el-card{
+  margin-bottom: 20px;
 }
 
 </style>
