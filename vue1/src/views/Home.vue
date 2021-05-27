@@ -26,7 +26,9 @@
             <main class="site-main" :class="{'search':hideSlogan}">
 <!--                <section-title v-if="!hideSlogan">内容</section-title>-->
                 <template v-for="item in postList1">
+                  <el-card>
                     <post :post="item" :key="item.id"></post>
+                  </el-card>
                 </template>
             </main>
 

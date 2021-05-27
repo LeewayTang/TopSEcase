@@ -116,6 +116,14 @@ export function fetchComment() {
     })
 }
 
+export function fetchDiscussionQues() {
+    return request({
+        url: '/discussionQues',
+        method: 'get',
+        params: {}
+    })
+}
+
 export function addBook(){
     return request({
         url: '/book_tag/add_book',

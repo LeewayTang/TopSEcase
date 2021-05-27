@@ -1,7 +1,7 @@
 <template>
   <div class="discussion-wrapper">
     <div class="default">
-      {{content}}
+      {{ question }}
     </div>
     <div class="header">
       <div class="owner">
@@ -11,12 +11,8 @@
           <el-button class="answerButton" type="primary">回复</el-button>
         </el-card>
       </div>
-      <div class="tags">
-        <el-tag>标签一</el-tag>
-        <el-tag type="success">标签二</el-tag>
-        <el-tag type="info">标签三</el-tag>
-        <el-tag type="warning">标签四</el-tag>
-        <el-tag type="danger">标签五</el-tag>
+      <div class="tags" v-for="tag in tags">
+        <el-tag type="succuess">{{tag}}</el-tag>
         </div>
     </div>
     <div class="site-content animate">
@@ -35,7 +31,8 @@
 
 <script>
 import comment from '../components/comment'
-import {fetchComment} from "../api";
+import {fetchComment,fetchDiscussionQues} from "../api";
+
 export default {
   name: "Discussion",
   data(){
@@ -45,10 +42,10 @@ export default {
       comments: [],
       menus: [],
       question: '',
-      ownerName: '刻晴',
-      Avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX1Ued78e4N2yBMIZLPMtS03do7rBnkhHIiA&usqp=CAU',
+      ownerName: '',
+      Avatar: '',
       time: new Date(),
-      content: '你期末想及格吗？'
+      tags: []
     }
   },
 
@@ -63,6 +60,20 @@ export default {
         console.log(err)
       })
     },
+  getDiscussionQues() {
+      fetchDiscussionQues().then(res => {
+        this.tags = res.data.tags || []
+        this.Avatar = res.data.Avatar
+        this.question = res.data.question
+        this.time = res.data.time
+        this.ownerName = res.data.ownerName
+        // console.log(res.data.tags)
+        // console.log(res.data.Avatar);
+        // console.log(res.data.question);
+      }).catch(err => {
+        console.log(err)
+      })
+  },
     fetchH(arr,left,right){
       if (right) {
         return arr.filter(item => item.offsetTop > left && item.offsetTop < right)
@@ -94,7 +105,8 @@ export default {
     }
   },
   mounted(){
-    this.createMenus()
+    // this.createMenus()
+    this.getDiscussionQues()
   },
   created() {
     this.getComment()
@@ -106,7 +118,7 @@ export default {
   .site-content {
     position: relative;
     .site-main {
-      padding: 80px 0 0 0;
+      padding: 0 0 0 0;
     }
   }
   .answerButton{
@@ -137,12 +149,15 @@ export default {
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     font-size: 200%;
     font-weight: bolder;
-    margin: 120px auto 20px;
+    margin: 0px auto 20px;
   }
   .clearfix{
     display: inline-block;
   }
   .clearfix span {
     margin-left: 10px;
+  }
+  .tags {
+    display: inline-block;
   }
 </style>
