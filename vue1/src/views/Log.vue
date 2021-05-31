@@ -17,11 +17,10 @@
     </div>
     <div class="qz">
       <div class="quanzi">
-        <div class="title">我的笔记作品</div>
-        <li class="sug-item"><router-link to="/">cynic</router-link></li>
-        <li class="sug-item"><router-link to="/">leeway</router-link></li>
-        <li class="sug-item"><router-link to="/">MichaleJacksonXXX</router-link></li>
-        <li class="sug-item"><router-link to="/">YogurtMakesYoungsters</router-link></li>
+        <div class="title">你可能想follow的人</div>
+        <ul v-for="item in sugList">
+        <li class="sug-item"><router-link to="/">{{item}}</router-link></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -32,21 +31,31 @@
 import LogPageMain from "../components/log/main";
 import NewInfo from "../components/log/newInfo";
 import SectionTitle from "../components/section-title";
+import {fetchSuggest} from "../api";
+
+
 export default {
   name: "Log",
   components: {SectionTitle, NewInfo, LogPageMain},
   data() {
     return {
       webSiteInfo: {},
-      bg: require('../assets/images/bg1.jpg')
+      bg: require('../assets/images/bg1.jpg'),
+      sugList: [],
     }
   },
   created() {
     this.getWebSiteInfo()
+    this.getSugList()
   },
   methods:{
     getWebSiteInfo(){
       this.webSiteInfo = this.$store.state.websiteInfo
+    },
+    getSugList() {
+      fetchSuggest().then(res=>{
+        this.sugList = res.data || []
+      })
     }
   }
 }

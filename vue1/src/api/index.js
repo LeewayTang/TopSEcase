@@ -116,6 +116,14 @@ export function fetchComment() {
     })
 }
 
+export function fetchSuggest() {
+    return request({
+        url: '/suggest',
+        method: 'get',
+        params: {}
+    })
+}
+
 export function fetchDiscussionQues() {
     return request({
         url: '/discussionQues',

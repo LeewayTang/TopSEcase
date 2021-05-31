@@ -2,14 +2,15 @@
   <div class="contentListWrapper">
     <ul class="contentList">
       <li class="tip"
-        v-for="(item,index) of fixContentItem('essay')"
-        :key="item.name"
-        :class="'essayLi border-bottom '+item.name"
+          v-for="(item,index) of fixContentItem('essay')"
+          :key="item.name"
+          :class="'essayLi border-bottom '+item.name"
+          @click="pushPage(item.id)"
       >
         <div class="liTop">
-          <a class="title" href="https://www.baidu.com" target="_blank">
+          <router-link :to="/article/" class="title">
             <h3>{{item.title}}</h3>
-          </a>
+          </router-link>
           <span class="iconfont deleteIcon" @click="deleteEssayItem(index)">&#xe621;</span>
         </div>
         <div v-if="item.content != ''" class="liMiddle">
@@ -31,14 +32,6 @@
           <span>置顶</span>
         </div>
       </li>
-      <li v-for="item of fixContentItem('adv')" :key="item.name" :class="'advLi '+item.name">
-        <img :src="item.imgUrl" class="advLiImg" />
-        <div class="advRight">
-          <h3 class="title">{{item.title}}</h3>
-          <p class="content">{{item.content}}</p>
-          <div class="advIcon">广告</div>
-        </div>
-      </li>
     </ul>
   </div>
 </template>
@@ -57,6 +50,14 @@ created() {
     this.fetchContentList();
 },
   methods: {
+    pushPage(v){
+      this.$router.push({
+        name: 'discussion',
+        query:{
+          id:v
+        }
+      })
+    },
     fetchContentList(){
       fetchContentList().then(res=>{
         this.contentList = res.data || []
