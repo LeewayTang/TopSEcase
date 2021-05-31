@@ -142,7 +142,7 @@ export function addBook(){
 
 export function fetchArticle(){
     return request({
-        url: '/article',
+        url: '/article/0',
         method: 'get',
         params:{}
     })
