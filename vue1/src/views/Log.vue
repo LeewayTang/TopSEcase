@@ -54,7 +54,7 @@ export default {
     },
     getSugList() {
       fetchSuggest().then(res=>{
-        this.sugList = res.data || []
+        this.sugList = res.follow || []
       })
     }
   }

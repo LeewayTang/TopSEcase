@@ -6,20 +6,16 @@
     <div class="right">
       <el-card>
         <div class="title">圈内同学</div>
-        <div class="sug-list">
-          <li class="sug-item"><router-link to="/">cynic</router-link></li>
-          <li class="sug-item"><router-link to="/">leeway</router-link></li>
-          <li class="sug-item"><router-link to="/">Michalel</router-link></li>
-          <li class="sug-item"><router-link to="/">Yogurt</router-link></li>
+        <div class="sug-list" v-for="item in sugPeer">
+          <li class="sug-item"><router-link to="/">{{ item }}</router-link></li>
         </div>
       </el-card>
 
         <el-card>
         <div class="title">优秀圈子</div>
-        <li class="sug-item"><router-link to="/">cynic</router-link></li>
-        <li class="sug-item"><router-link to="/">leeway</router-link></li>
-        <li class="sug-item"><router-link to="/">MichaleJacksonXXX</router-link></li>
-        <li class="sug-item"><router-link to="/">YogurtMakesYoungsters</router-link></li>
+        <div class="sug-list" v-for="item in sugQuanzi">
+          <li class="sug-item"><router-link to="/">{{ item }}</router-link></li>
+        </div>
         </el-card>
       <div>
 <!--        <router-link to="/discussion">test</router-link>-->
@@ -35,9 +31,27 @@ import SectionTitle from "../components/section-title";
 import ForumList from "../components/forum/forumList"
 import ForumPageMain from "../components/forum/main";
 import Discussion from "./Discussion";
+import {fetchSuggest} from "../api";
 export default {
   name: "UserContent",
-  components: {ForumPageMain, ForumList, SectionTitle, NewInfo, LogPageMain}
+  components: {ForumPageMain, ForumList, SectionTitle, NewInfo, LogPageMain},
+  data() {
+    return {
+      sugPeer: [],
+      sugQuanzi: [],
+    }
+  },
+  methods: {
+    getSugList() {
+      fetchSuggest().then(res=>{
+        this.sugPeer = res.peer || []
+        this.sugQuanzi = res.quanzi || []
+      })
+    }
+  },
+  mounted() {
+    this.getSugList()
+  }
 }
 </script>
 

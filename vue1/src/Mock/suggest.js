@@ -6,7 +6,9 @@ export default [
         response: () => {
             return {
                 code: 20000,
-                data: ['Cynic', 'Leeway', 'MJX', 'YMY']
+                follow: ['Cynic', 'Leeway', 'MJX', 'YMY'],
+                peer: ['MJX', 'YMY', 'Leeway', 'Cynic'],
+                quanzi: ['Software Engineering', 'Computing Science', 'Machine Learning', 'Computing Math']
             }
         }
     }
