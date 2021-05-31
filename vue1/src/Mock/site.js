@@ -10,7 +10,7 @@ export default [
                     avatar: require('../assets/images/rzdf.jpg'),
                     username: '未登录',
                     title:'没有名分',
-                    quanzi:'没有圈子',
+                    quanzi:[{name: '没有圈子'}],
                     slogan: 'Who am I?',
                     name: 'MoYun'
                 }

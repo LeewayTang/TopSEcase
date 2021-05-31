@@ -49,6 +49,7 @@
     display: inline-block;
     position: relative;
     i{
+        color: red;
         font-size: 18px;
         position: relative;
         top: 3px;
