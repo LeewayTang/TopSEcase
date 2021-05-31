@@ -26,7 +26,7 @@
                         </span>
                     </div>
                     <div class="views">
-                        <span><i class="iconfont iconeyes"></i>{{post.viewsCount}} 热度</span>
+                        <span style="color: red"><i class="iconfont iconeyes"></i>{{post.viewsCount}} 热度</span>
                     </div>
                 </div>
             </footer>

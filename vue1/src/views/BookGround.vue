@@ -79,42 +79,16 @@
       </span>
       </h2>
 
-      <ul class="hot-tags-col5 s" data-dstat-areaid="54" data-dstat-mode="click,expose">
+
+      <ul class="hot-tags-col5 s" data-dstat-areaid="54" data-dstat-mode="click,expose" v-for="title in tagTitle">
         <ul class="tag_title">
-          编程语言
+          {{ title }}
         </ul>
         <ul>
         <router-link v-for="item in tags" :to="{ path : '/tag-detail/' + item.path }" active-class="active" :key="item.id">
         <li class="tag">{{item.name}}</li>
         </router-link>
       </ul>
-
-        <ul class="tag_title">
-          数据库（数据和上面一样懒得改了）
-        </ul>
-        <ul>
-          <router-link v-for="item in tags" :to="{ path : '/tag-detail/' + item.path }" active-class="active" :key="item.id">
-            <li class="tag">{{item.name}}</li>
-          </router-link>
-        </ul>
-
-        <ul class="tag_title">
-          操作系统
-        </ul>
-        <ul>
-          <router-link v-for="item in tags" :to="{ path : '/tag-detail/' + item.path }" active-class="active" :key="item.id">
-            <li class="tag">{{item.name}}</li>
-          </router-link>
-        </ul>
-
-        <ul class="tag_title">
-          计算机组成
-        </ul>
-        <ul>
-          <router-link v-for="item in tags" :to="{ path : '/tag-detail/' + item.path }" active-class="active" :key="item.id">
-            <li class="tag">{{ item.name }}</li>
-          </router-link>
-        </ul>
       </ul>
       </el-card>
     </div>
@@ -132,7 +106,8 @@ export default {
       tutorSugBooks: [],
       peerSugBooks: [],
       comments: [],
-      tags: {}
+      tags: {},
+      tagTitle: ['编程语言', '数据库', '操作系统', '计算机组成']
     }
   },
   computed: {
@@ -179,7 +154,7 @@ export default {
 
 <style scoped>
 .wrapper {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   overflow: hidden;
   padding-top: 20px;

@@ -1,7 +1,7 @@
 <template>
 <div class="personal-center-wrap">
   <div class="header-wrap">
-  <el-card class="header" :style="{backgroundImage: 'url('+ websiteInfo.avatar+ ')'}" style="background-color: transparent">
+  <el-card class="header" :style="{backgroundImage: 'url('+ bg+ ')'}" style="width: 80%; background-size: cover">
       <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
       <div class="username">{{websiteInfo.username}}</div>
       <div v-for="q in websiteInfo.quanzi" class="qz">
@@ -9,17 +9,26 @@
       </div>
   </el-card>
   </div>
+  <div class="choose">
+    <div class="button-wrap" v-for="(item,index) in category">
+      <el-button type="text" @click="handleClick(index)">{{ item.name }}</el-button>
+    </div>
+  </div>
   <div class="body">
-    <div class="choose">
-      <div class="button-wrap" v-for="(item,index) in category">
-        <el-button type="text" @click="handleClick(index)">{{ item.name }}</el-button>
+    <div class="body-left">
+      <div class="content" v-for="(item, index) in category">
+        <div v-show="index === showIndex" v-for="it in category[index].contents">
+          <el-card>
+            <post :post="it" :key="it.id"></post>
+          </el-card>
+        </div>
       </div>
     </div>
-    <div class="content" v-for="(item, index) in category">
-      <div v-show:="index === showIndex" v-for="it in category[index].contents">
-        <el-card v-show="index === showIndex">{{it}}</el-card>
-      </div>
-    </div>
+<!--    <div class="body-right">-->
+<!--      <el-card style="width: 400px; height: 800px">-->
+<!--        君不见，黄河之水天上来-->
+<!--      </el-card>-->
+<!--    </div>-->
   </div>
     <!-- 弹出层-裁剪 -->
     <el-dialog title="编辑头像" :visible.sync="picture.dialogVisible" :before-close="handleClose">
@@ -72,10 +81,13 @@
 
 <script>
 
-import {fetchSiteInfo} from "../api";
-
+import {fetchList, fetchSiteInfo} from "../api";
+import post from '../components/post'
 export default {
 name: "PersonalCenter1",
+  components: {
+  post
+  },
   data()  {
     return{
       websiteInfo: {},
@@ -102,14 +114,16 @@ name: "PersonalCenter1",
       category: [
         {
           name: '我的笔记',
-          contents: ['欲说还休', '却道天凉好个秋']
+          contents: []
         },
         {
           name: '我的收藏',
-          contents: ['提携玉龙为君死', '旌旗十万斩阎罗']
+          // contents: ['提携玉龙为君死', '旌旗十万斩阎罗']
+          contents: []
         }
       ],
-      showIndex: 0
+      showIndex: 0,
+      bg: require('../assets/images/bg2.jpg')
     }
   },
   methods: {
@@ -123,6 +137,21 @@ name: "PersonalCenter1",
           this.websiteInfo = data
         })
       }
+    },
+    // 这里应该是从两个地方拿数据，但是类型相同，只是具体内容有差异。
+    fetchList0() {
+      fetchList().then(res => {
+        this.category[0].contents = res.data.items || []
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    fetchList1() {
+      fetchList().then(res => {
+        this.category[1].contents = res.data.items || []
+      }).catch(err => {
+        console.log(err)
+      })
     },
     //控制弹出层关闭
     handleClose(v) {
@@ -174,6 +203,8 @@ name: "PersonalCenter1",
   },
   mounted() {
     this.getPersonInfo();
+    this.fetchList0();
+    this.fetchList1();
   }
 }
 </script>
@@ -243,6 +274,7 @@ img {
   width: 80%;
   height: 40%;
   margin-left: 10%;
+  background-size: cover
 }
 .choose {
   margin-top: 1%;
@@ -252,12 +284,20 @@ img {
   color: #1b1b1b;
 }
 .el-button{
+  font-size: xx-large;
   color: #1b1b1b;
   margin-left: 25%;
 }
 .button-wrap {
   display: inline-block;
   margin-left: 25%;
+}
+.el-card {
+  margin-left: 10%;
+  width: 80%;
+  margin-top: 1%;
+}
+.body {
 }
 
 </style>

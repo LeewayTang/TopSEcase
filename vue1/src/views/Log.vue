@@ -5,7 +5,7 @@
     <log-page-main></log-page-main>
   </div>
   <div class="right">
-    <div class="square-block">
+    <div class="square-block" :style="{backgroundImage: 'url('+ bg+ ')'}">
       <div class="header">
       <router-link to="/personalCenter">
         <img :src="webSiteInfo.avatar" alt="头像" class="circular">
@@ -37,7 +37,8 @@ export default {
   components: {SectionTitle, NewInfo, LogPageMain},
   data() {
     return {
-      webSiteInfo: {}
+      webSiteInfo: {},
+      bg: require('../assets/images/bg1.jpg')
     }
   },
   created() {
@@ -94,11 +95,14 @@ export default {
 .square-block {
   /*width: 400px;*/
   height: 400px;
-  background: linear-gradient(to bottom, black 30%, grey 30%,whitesmoke 60%,whitesmoke 100%);
+  /*background: linear-gradient(to bottom, black 30%, grey 30%,whitesmoke 60%,whitesmoke 100%);*/
   margin-bottom: 50px;
-  border: 1px solid rgba(155,155,155,0.6);
+  background-size: cover;
+  /*border: 1px solid rgba(155,155,155,0.6);*/
 }
 .header{
+  /*position: absolute;*/
+  /*width: 400px;*/
   height: 30%;
 }
 .user-name {
