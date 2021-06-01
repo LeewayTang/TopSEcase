@@ -1,5 +1,6 @@
 const Mock = require('mockjs');
 
+// 藏书阁的侧栏推荐标签
 export default [
     {
         url: 'book-ground/tags',

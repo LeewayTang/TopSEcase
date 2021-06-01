@@ -1,5 +1,6 @@
 const Mock = require('mockjs');
 
+// 这个是藏书阁的精彩点评的内容，其实不应该这么简单，应该是从他人的书评那里摘出来
 export default [
     {
         url: 'book-ground/review',
