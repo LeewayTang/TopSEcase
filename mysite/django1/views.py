@@ -147,44 +147,6 @@ class UserInfoView(viewsets.GenericViewSet):
         return Response({'msg': 'Delete success', 'status': 1})
 
 
-# 防止ModelViewSet的多余接口
-# @method_decorator(
-#     name="list",
-#     decorator=swagger_auto_schema(
-#         auto_schema=None,
-#     ),
-# )
-# @method_decorator(
-#     name="update",
-#     decorator=swagger_auto_schema(
-#         auto_schema=None,
-#     ),
-# )
-# @method_decorator(
-#     name="destroy",
-#     decorator=swagger_auto_schema(
-#         auto_schema=None,
-#     ),
-# )
-# @method_decorator(
-#     name="create",
-#     decorator=swagger_auto_schema(
-#         auto_schema=None,
-#     ),
-# )
-# @method_decorator(
-#     name="partial_update",
-#     decorator=swagger_auto_schema(
-#         auto_schema=None,
-#     ),
-# )
-# @method_decorator(
-#     name="retrieve",
-#     decorator=swagger_auto_schema(
-#         auto_schema=None,
-#     ),
-# )
-
 def generate_random_str(randomlength=16):
     str_list = [random.choice(string.digits + string.ascii_letters) for i in range(randomlength)]
     random_str = ''.join(str_list)
@@ -198,8 +160,6 @@ class LoginRegister(viewsets.GenericViewSet):
 
     register:
     用户名，邮箱，密码
-    type = 0表示需要发送验证码
-    type = 1前端需要发送验证码
     """
     queryset = User.objects.all()
     serializer_class = LoginInfoSerializer
@@ -217,12 +177,12 @@ class LoginRegister(viewsets.GenericViewSet):
         Mail = data_json.get('mail')
         queryset = User.objects.filter(uid=Uid)
         if queryset.count() != 0:
-            return Response({'msg': '用户名已存在', 'data': '-1'})
+            return Response({'msg': '用户名已存在', 'status': -2})
         if not re.match('^[0-9a-zA-Z]+[@][0-9a-zA-Z]+.+[0-9a-zA-Z]+$', Mail):
-            return Response({'msg': '邮箱格式错误', 'status': '-1'})
+            return Response({'msg': '邮箱格式错误', 'status': -1})
         time = datetime.date.today()
         User.objects.create(uid=Uid, pwd=Pwd, mail=Mail, createTime=time, circle=None)
-        return Response({'msg': '注册成功', 'status': '1'})
+        return Response({'msg': '注册成功', 'status': 1})
 
     # def register(self, request):
     #     data_json = json.loads(request.body, strict=False)

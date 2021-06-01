@@ -85,7 +85,7 @@ export default{
           }
         })
           .then(res => {
-            switch (res.data.data) {
+            switch (res.data.status) {
               case 1:
                 this.$Notice.open({
                   title: '成功登录'
@@ -114,7 +114,7 @@ export default{
       if (self.form.username !== '' && self.form.useremail !== '' && self.form.userpwd !== '') {
         self.$axios({
           method: 'post',
-          url: '/api/login_register/{uid}/register/',
+          url: '/api/login_register/register/',
           data: {
             uid: self.form.username,
             mail: self.form.useremail,
@@ -122,14 +122,23 @@ export default{
           }
         })
           .then(res => {
-            switch (res.data) {
+            switch (res.data.status) {
               case 1:
                 this.$Notice.open({
                   title: '成功注册！'
                 })
                 this.login()
                 break
+              case -2:
+                this.$Notice.open({
+                  title: '用户名已存在'
+                })
+                this.existed = true
+                break
               case -1:
+                this.$Notice.open({
+                  title: '邮箱格式错误'
+                })
                 this.existed = true
                 break
             }

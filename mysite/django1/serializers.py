@@ -75,8 +75,6 @@ class RegisterInfoSerializer(serializers.ModelSerializer):
     uid = serializers.CharField(required=True, max_length=16)
     pwd = serializers.CharField(required=True, max_length=16)
     mail = serializers.EmailField(required=True, max_length=32)
-    # type = serializers.IntegerField(required=True)
-    key = serializers.CharField(max_length=16)
 
     class Meta:
         model = User
@@ -84,8 +82,6 @@ class RegisterInfoSerializer(serializers.ModelSerializer):
             'uid',
             'mail',
             'pwd',
-#             'type',
-            'key'
         )
 
 
