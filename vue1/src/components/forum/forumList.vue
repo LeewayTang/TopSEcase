@@ -2,47 +2,47 @@
   <div class="contentListWrapper">
     <ul class="contentList">
       <li class="tip"
-          v-for="(item,index) of fixContentItem('essay')"
-          :key="item.name"
-          :class="'essayLi border-bottom '+item.name"
+          v-for="(item,index) in contentList"
+          :key="item.id"
+          :class="'essayLi border-bottom '+item.id"
           @click="pushPage(item.id)"
       >
         <div class="liTop">
-            <h3>{{item.title}}</h3>
+            <h3>{{item.question}}</h3>
           <span class="iconfont deleteIcon" @click="deleteEssayItem(index)">&#xe621;</span>
         </div>
-        <div v-if="item.content != ''" class="liMiddle">
+        <div v-if="item.content !== ''" class="liMiddle">
           <p>{{item.content}}</p>
         </div>
         <div class="liBottom">
           <div class="liBottomLeft">
-            <span class="forum">{{item.forum}}</span>
-            <span v-if="item.category != ''" class="category">&nbsp;·&nbsp;{{item.category}}</span>
-            <span class="date">·&nbsp;{{item.date}}</span>
+            <span class="forum">{{item.ownerName}}</span>
+            <span v-if="item.tags !== []" class="category" v-for="it in item.tags">&nbsp;·&nbsp;{{it}}</span>
+            <span class="date">·&nbsp;{{item.time}}</span>
           </div>
           <div class="liBottomRight">
             💬
-            <span class="comment">{{item.comment}}</span>
+            <span class="comment">{{item.reply}}</span>
           </div>
         </div>
-        <div v-if="item.name == 'essay1'" class="setTopIcon">
+        <div v-if="item.id == 1" class="setTopIcon">
           <span>置顶</span>
         </div>
       </li>
-      <li v-for="item of fixContentItem('adv')" :key="item.name" :class="'advLi '+item.name">
-        <img :src="item.imgUrl" class="advLiImg" />
-        <div class="advRight">
-          <h3 class="title">{{item.title}}</h3>
-          <p class="content">{{item.content}}</p>
-          <div class="advIcon">广告</div>
-        </div>
-      </li>
+<!--      <li v-for="item of fixContentItem('adv')" :key="item.id" :class="'advLi '+item.id">-->
+<!--        <img :src="item.avatar" class="advLiImg" />-->
+<!--        <div class="advRight">-->
+<!--          <h3 class="title">{{item.question}}</h3>-->
+<!--          <p class="content">{{item.content}}</p>-->
+<!--          <div class="advIcon">广告</div>-->
+<!--        </div>-->
+<!--      </li>-->
     </ul>
   </div>
 </template>
 
 <script>
-import {fetchContentList} from "@/api";
+import {fetchDiscussionQues} from "../../api";
 
 export default {
   name: "forumList.vue",
@@ -64,7 +64,7 @@ export default {
       })
     },
     fetchContentList(){
-      fetchContentList().then(res=>{
+      fetchDiscussionQues().then(res=>{
         this.contentList = res.data || []
       })
     },
