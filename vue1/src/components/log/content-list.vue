@@ -46,9 +46,9 @@ export default {
       contentList: []
     }
   },
-created() {
-    this.fetchContentList();
-},
+  created() {
+      this.fetchContentList();
+  },
   methods: {
     pushPage(v){
       this.$router.push({

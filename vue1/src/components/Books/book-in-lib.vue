@@ -93,12 +93,13 @@ export default {
         this.bookInfo = res.book1.data
         console.log(this.bookInfo);
       })
-    },
-    },
+    }
+  },
   mounted () {
     fetchBookInfo();
     console.log("初始完毕")
   }
+
 }
 
 </script>

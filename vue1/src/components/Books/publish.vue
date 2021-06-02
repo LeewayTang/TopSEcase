@@ -176,8 +176,16 @@ export default {
       console.log(this[attr],val)
       this[attr] = val
       this.getPrice()
+    }
     },
-    },
+  mounted () {
+    this.buyNum = 1
+    this.buyType = this.buyTypes[0]
+    this.versions = [this.versionList[0]]
+    this.period = this.periodList[0]
+    this.getPrice()
+    console.log("初始完毕")
+  }
 //     showPayDialog () {
 //       this.isShowPayDialog = true
 //     },
@@ -215,14 +223,6 @@ export default {
 //       })
 //     }
 //   },
-  mounted () {
-    this.buyNum = 1
-    this.buyType = this.buyTypes[0]
-    this.versions = [this.versionList[0]]
-    this.period = this.periodList[0]
-    this.getPrice()
-    console.log("初始完毕")
-  }
 }
 
 </script>

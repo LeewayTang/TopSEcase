@@ -28,6 +28,7 @@ class User(models.Model):
     createTime = models.DateField(verbose_name='注册时间', auto_now_add=True)
     isTeacher = models.BooleanField(verbose_name='是否为导师', default=False)
     circle = models.ForeignKey(verbose_name='圈子', to='Circle', on_delete=models.CASCADE, null=True)
+    slogan = models.CharField(verbose_name='签名', max_length=256, default="这个人很懒")
 
 
 # 邮箱与验证码对应

@@ -266,17 +266,18 @@ export default {
         this.isShowBuyDialog = false
         this.isShowErrDialog = true
       })
+    },
+    mounted () {
+      this.buyNum = 1
+      this.buyType = this.buyTypes[0]
+      this.versions = [this.versionList[0]]
+      this.period = this.periodList[0]
+      this.getPrice()
+      console.log("初始完毕")
     }
-  },
-  
-  mounted () {
-    this.buyNum = 1
-    this.buyType = this.buyTypes[0]
-    this.versions = [this.versionList[0]]
-    this.period = this.periodList[0]
-    this.getPrice()
-    console.log("初始完毕")
   }
+  
+
   }
 
 

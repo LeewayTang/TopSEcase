@@ -20,3 +20,8 @@ python3 manage.py migrate
 9. get搜索=搜索
 10. post登录注册=over
 ```
+
+游客信息：
+
+Name traveler
+

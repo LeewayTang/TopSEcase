@@ -10,7 +10,7 @@ export default [
             return {
                 code: 20000,
                 data: {
-                    avatar: require('../assets/images/rzdf.jpg'),
+                    avatar: require('../assets/images/E2n0ya2UUAA2odS.jpg'),
                     username: '未登录',
                     title:'没有名分',
                     quanzi:[{name: '没有圈子'}],
