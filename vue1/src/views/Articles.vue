@@ -94,32 +94,32 @@
                 console.log(err)
               })
           },
-          // 生成目录
-          createMenus(){
-              let arr = []
-              for(let i=6;i>0;i--){
-                  let temp = []
-                  let e = document.querySelector(".entry-content").querySelectorAll(`#+ `)
-                  for (let j=0;j<e.length;j++){
-                      let child = this.fetchH(arr,e[j].offsetTop,(j+1 === e.length)?undefined:e[j+1].offsetTop)
-                      temp.push({
-                          h: i,
-                          title: e[j].innerText,
-                          id: e[j].id,
-                          offsetTop: e[j].offsetTop,
-                          child
-                      })
-                  }
-                  if (temp.length){
-                      arr = temp
-                  }
-              }
-              this.menus = arr
-          }
+          // // 生成目录
+          // createMenus(){
+          //     let arr = []
+          //     for(let i=6;i>0;i--){
+          //         let temp = []
+          //         let e = document.querySelector(".entry-content").querySelectorAll(`#+ `)
+          //         for (let j=0;j<e.length;j++){
+          //             let child = this.fetchH(arr,e[j].offsetTop,(j+1 === e.length)?undefined:e[j+1].offsetTop)
+          //             temp.push({
+          //                 h: i,
+          //                 title: e[j].innerText,
+          //                 id: e[j].id,
+          //                 offsetTop: e[j].offsetTop,
+          //                 child
+          //             })
+          //         }
+          //         if (temp.length){
+          //             arr = temp
+          //         }
+          //     }
+          //     this.menus = arr
+          // }
         },
-        mounted(){
-            this.createMenus()
-        },
+        // mounted(){
+        //     this.createMenus()
+        // },
         created() {
             this.getComment()
             this.getArticle()

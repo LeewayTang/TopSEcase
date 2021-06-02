@@ -74,10 +74,10 @@ const routes = [
         meta: {title: "读书笔记"}
     },
     {
-        path: '/userContent',
+        path: '/discussion',
         name: 'userContent',
         component: () => import ('./../views/UserContent'),
-        meta: {title: "动态"}
+        meta: {title: "争鸣殿——在这里讨论吧！"}
     },
     {
         path: '/discussion',

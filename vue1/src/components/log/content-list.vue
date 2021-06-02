@@ -8,19 +8,19 @@
           @click="pushPage(item.id)"
       >
         <div class="liTop">
-          <router-link :to="/article/" class="title">
+          <div class="title">
             <h3>{{item.title}}</h3>
-          </router-link>
+          </div>
           <span class="iconfont deleteIcon" @click="deleteEssayItem(index)">&#xe621;</span>
         </div>
-        <div v-if="item.content != ''" class="liMiddle">
+        <div v-if="item.content !== ''" class="liMiddle">
           <p>{{item.content}}</p>
         </div>
         <div class="liBottom">
           <div class="liBottomLeft">
             <img class="headImg" :src="item.imgUrl" />
             <span class="forum">{{item.forum}}</span>
-            <span v-if="item.category != ''" class="category">&nbsp;·&nbsp;{{item.category}}</span>
+            <span v-if="item.category !== ''" class="category">&nbsp;·&nbsp;{{item.category}}</span>
             <span class="date">·&nbsp;{{item.date}}</span>
           </div>
           <div class="liBottomRight">
@@ -28,7 +28,7 @@
             <span class="comment">{{item.comment}}</span>🗨
           </div>
         </div>
-        <div v-if="item.name == 'essay1'" class="setTopIcon">
+        <div v-if="item.name === 'essay1'" class="setTopIcon">
           <span>置顶</span>
         </div>
       </li>
@@ -52,7 +52,7 @@ created() {
   methods: {
     pushPage(v){
       this.$router.push({
-        name: 'discussion',
+        name: 'article',
         query:{
           id:v
         }

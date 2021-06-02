@@ -1,9 +1,14 @@
 const Mock = require('mockjs');
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 // 这个是笔记坊里一个个笔记的数据，同时也是文书房创作笔记markdown编辑器写出来的东西
 >>>>>>> parent of deea024 (Revert "对Mock加上了说明性注释")
+=======
+
+// 这个是笔记坊里一个个笔记的数据，文书房创作笔记markdown编辑器写出来的东西
+>>>>>>> parent of 7fade73 (Revert "更新")
 export default [
     {
         url: '/article/0',
