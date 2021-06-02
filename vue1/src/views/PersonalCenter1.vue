@@ -24,11 +24,6 @@
         </div>
       </div>
     </div>
-<!--    <div class="body-right">-->
-<!--      <el-card style="width: 400px; height: 800px">-->
-<!--        君不见，黄河之水天上来-->
-<!--      </el-card>-->
-<!--    </div>-->
   </div>
     <!-- 弹出层-裁剪 -->
     <el-dialog title="编辑头像" :visible.sync="picture.dialogVisible" :before-close="handleClose">
@@ -41,7 +36,7 @@
               accept="image/png, image/jpeg, image/gif, image/jpg"
               @change="uploadImg($event,1)"
               class="el-button hide"
-              style="margin-bottom:15px"
+              style="font-size: 15px; margin-bottom:15px; margin-left: 0px"
           />
           <div class="upload-img" @click="clickUpload">点击上传图片</div>
         </el-row>
@@ -118,7 +113,6 @@ name: "PersonalCenter1",
         },
         {
           name: '我的收藏',
-          // contents: ['提携玉龙为君死', '旌旗十万斩阎罗']
           contents: []
         }
       ],
@@ -163,7 +157,7 @@ name: "PersonalCenter1",
     },
     //实时预览
     realTime(data) {
-      this.previews = data;
+      this.picture.previews = data;
     },
     //点击图片调取input
     clickUpload(){
@@ -182,7 +176,7 @@ name: "PersonalCenter1",
       reader.onload = e => {
         // data = window.URL.createObjectURL(new Blob([e.target.result])) 转化为blob格式
         let data = e.target.result;
-        this.attach.customaryUrl = data;
+        this.picture.attach.customaryUrl = data;
         // 转化为base64
         // reader.readAsDataURL(file)
         // 转化为blob
