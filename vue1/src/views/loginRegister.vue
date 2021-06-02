@@ -93,7 +93,7 @@ export default{
                 this.$Notice.open({
                   title: '成功登录'
                 })
-                localStorage.setItem('token', /* "Bearer " + */ res.data.token)
+                localStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
                 sessionStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
                 this.$store.commit('setUser', res.data.user)
                 this.$router.push({
