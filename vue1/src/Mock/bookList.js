@@ -1,6 +1,5 @@
 const Mock = require('mockjs');
 
-// 这个是书的列表，和book1、2、3等对应，我觉得可以分开建表？俺也不太了解
 export default [
     {
         url: '/book-list',

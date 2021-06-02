@@ -1,7 +1,4 @@
 const Mock = require('mockjs');
-
-// 这个是首页显示的文章内容
-
 const count = 100
 
 const baseContent = '<p>I am testing data, I am testing data.</p><p><img src="https://wpimg.wallstcn.com/4c69009c-0fd4-4153-b112-6cb53d1cf943"></p>'

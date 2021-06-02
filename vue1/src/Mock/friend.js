@@ -1,6 +1,4 @@
 const Mock = require('mockjs');
-
-// 没用，不管
 const List = [{
     id: 0,
     siteName: "FZY′blog",

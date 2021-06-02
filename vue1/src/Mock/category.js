@@ -1,6 +1,4 @@
 const Mock = require('mockjs');
-
-// 这个是首页导航栏的文书房的子目录
 export default [
     {
         url: '/category',

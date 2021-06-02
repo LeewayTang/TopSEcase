@@ -1,6 +1,4 @@
 const Mock = require('mockjs');
-
-// 这个是首页的三个图标显示的内容
 export default [
     {
         url: '/focus/list',

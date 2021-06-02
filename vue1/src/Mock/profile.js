@@ -1,6 +1,4 @@
 const Mock = require('mockjs');
-
-// 这个是首页头像下面的子目录的内容
 export default [
     {
         url: '/profile',

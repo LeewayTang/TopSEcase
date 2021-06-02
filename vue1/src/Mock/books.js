@@ -1,6 +1,4 @@
 const Mock = require('mockjs');
-
-// 这个其实也就是book1，不要被名字骗了
 export default [
     {
         url: "/books/1",
