@@ -1,4 +1,6 @@
 const Mock = require('mockjs');
+
+// 笔记坊、争鸣殿的侧栏推荐内容
 export default [
     {
         url: '/suggest',

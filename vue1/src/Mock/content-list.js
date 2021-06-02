@@ -1,5 +1,6 @@
 const Mock = require('mockjs');
 
+// 这个是文章的数据内容
 export default [
     {
         url: '/content-list',
