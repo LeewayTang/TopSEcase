@@ -4,5 +4,6 @@ module.exports = {
     },
     publicPath: './',
     assetsDir: 'static',
-    lintOnSave: false
+    lintOnSave: false,
+    runtimeCompiler: true
 }

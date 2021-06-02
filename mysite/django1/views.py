@@ -263,8 +263,14 @@ class LoginRegister(viewsets.GenericViewSet):
             token.delete()
         key = generate_random_str()
         Token.objects.create(key=key, usr=user)
-        user.objects.values()
-        ret = {'msg': 'success', 'status': 1, 'token': key, }
+        ret = {'msg': 'success', 'status': 1, 'token': key}
+        ret.update({'avatar': '../assets/images/rzdf.jpg'})
+        ret.update({'username': '../assets/images/rzdf.jpg'})
+        ret.update({'title': '游客'})
+        ret.update({'quanzi': [{'name': 'BUAA'}]})
+        ret.update({'slogan': 'I do not wish to be horny any more.'})
+        ret.update({'name': 'MoYun'})
+
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""},

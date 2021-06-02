@@ -93,6 +93,7 @@
             this.$Notice.open({
               title: '游客成功登录'
             })
+            // this.$store.state.hasLogin = true
             this.$router.push({
               path:'/'
             })
