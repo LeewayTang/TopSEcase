@@ -9,7 +9,6 @@
           <div class="user"><img class="askAvatar" :src="Avatar" alt="头像"></div>
           <div class="user">{{ownerName}}</div>
           <el-button class="answerButton" type="primary" @click.stop="showCommentEditor=true">回复</el-button>
-
           <div v-if="showCommentEditor" >
             <mavon-editor :toolbars="{
                 bold: true, // 粗体
@@ -29,7 +28,7 @@
         </el-card>
       </div>
       <div class="tags" v-for="tag in tags">
-        <el-tag type="success">{{tag}}</el-tag>
+        <el-tag type="succuess">{{tag}}</el-tag>
         </div>
     </div>
     <div class="site-content animate">
@@ -99,11 +98,34 @@ export default {
         return arr.filter(item => item.offsetTop > left)
       }
     },
+    // 生成目录
+    createMenus(){
+      let arr = []
+      for(let i=6;i>0;i--){
+        let temp = []
+        let e = document.querySelector(".entry-content").querySelectorAll(`h${i}`)
+        for (let j=0;j<e.length;j++){
+          let child = this.fetchH(arr,e[j].offsetTop,(j+1 === e.length)?undefined:e[j+1].offsetTop)
+          temp.push({
+            h: i,
+            title: e[j].innerText,
+            id: e[j].id,
+            offsetTop: e[j].offsetTop,
+            child
+          })
+        }
+        if (temp.length){
+          arr = temp
+        }
+      }
+      this.menus = arr
+    },
     submitReply(v) {
       console.log(v)
     },
     close() {
       this.showCommentEditor = false
+      // this.$forceUpdate()
     }
   },
   watch:{
@@ -117,6 +139,7 @@ export default {
   },
 
   mounted(){
+    // this.createMenus()
     this.getDiscussionQues()
   },
   created() {
@@ -155,15 +178,12 @@ export default {
     margin-right: auto;
   }
   .default {
+    width: 80%;
     color: black;
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     font-size: 200%;
     font-weight: bolder;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20px;
-    text-align: center;
+    margin: 0px auto 20px;
   }
   .clearfix{
     display: inline-block;

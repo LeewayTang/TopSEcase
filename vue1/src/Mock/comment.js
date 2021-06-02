@@ -1,7 +1,5 @@
 const Mock = require('mockjs');
 
-// 这个好像才是我们抄的文章下面的评论区的数据格式，我现在也不知道怎么改tmd
-
 const banners = [
     'https://s1.ax1x.com/2020/05/14/YDhagx.jpg',
     'https://s1.ax1x.com/2020/05/14/YDhU81.jpg',
