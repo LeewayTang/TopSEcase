@@ -41,11 +41,11 @@
                 this.$store.dispatch('getSocials').then(data =>{
                     this.socials = data
                 })
-            },
+            }
         },
         created(){
-            this.getSocial();
-            this.$store.dispatch('initComputeTime');
+          this.getSocial();
+          this.$store.dispatch('initComputeTime');
         }
     }
 </script>

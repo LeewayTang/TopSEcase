@@ -103,7 +103,8 @@ export default {
       .then((res) => {
         this.price = res.data.amount
       })
-    }},
+    }
+  },
   mounted () {
     this.buyNum = 1
     this.buyType = this.buyTypes[0]
@@ -112,6 +113,7 @@ export default {
     this.getPrice()
     console.log("初始完毕")
   }
+
 }
 
 </script>

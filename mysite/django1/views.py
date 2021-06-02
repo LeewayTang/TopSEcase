@@ -252,6 +252,21 @@ class LoginRegister(viewsets.GenericViewSet):
         ret = {'msg': 'success', 'status': 1, 'token': key}
         return Response(ret)
 
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['GET'], detail=False)
+    def loginTraveler(self, request):
+        Uid = 'traveler'
+        Pwd = 'traveler'
+        user = User.objects.get(uid__exact=Uid, pwd__exact=Pwd)
+        token = Token.objects.filter(usr__exact=user)
+        if token.count() != 0:
+            token.delete()
+        key = generate_random_str()
+        Token.objects.create(key=key, usr=user)
+        user.objects.values()
+        ret = {'msg': 'success', 'status': 1, 'token': key, }
+        return Response(ret)
+
     @swagger_auto_schema(responses={200: ""},
                          request_body=TokenSerializer)
     @action(methods=['POST'], detail=False)

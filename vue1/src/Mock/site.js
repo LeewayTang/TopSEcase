@@ -31,7 +31,7 @@ export default [
                     avatar: require('../assets/images/rzdf.jpg'),
                     username: '没有共产党就没有新中国',
                     title:'游客',
-                    quanzi:[{name: 'BUAA'}, {name:'Software Engineer'}],
+                    quanzi: {name: 'BUAA'},
                     slogan: 'I do not wish to be horny any more.',
                     name: 'MoYun',
                 }

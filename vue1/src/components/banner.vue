@@ -6,8 +6,9 @@
                 <div class="focusinfo">
                     <!-- 头像 -->
                     <div class="header-tou">
-                        <router-link to="/personalCenter"><img :src="websiteInfo.avatar"></router-link>
-                      <div class="header-name">{{websiteInfo.username}}  |  {{websiteInfo.title}}
+                      <router-link to="/personalCenter"><img :src="websiteInfo.avatar"></router-link>
+                      <div class="header-name">
+                        {{websiteInfo.username}}  |  {{websiteInfo.title}}
                       </div>
 
                       <div class="qz"><div class="qz" v-for="qz in websiteInfo.quanzi">|  {{qz.name}}  </div> |</div>

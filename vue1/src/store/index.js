@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {getTimeInterval} from '../utils/index'
 import {fetchSiteInfo0,fetchSocial,fetchSiteInfo} from '@/api'
+import {fetchTravelerInfo} from "../api";
 
 Vue.use(Vuex)
 // 略:后台获取系统运行时间
@@ -65,6 +66,17 @@ const actions = {
     getSiteInfo: ({commit,state}) =>{
         return new Promise(resolve => {
             fetchSiteInfo().then(res => {
+                let data = res.data || {}
+                commit('SET_SITE_INFO',data);
+                resolve(data);
+            }).catch(err => {
+                resolve({});
+            })
+        })
+    },
+    getTravelerInfo: ({commit,state}) =>{
+        return new Promise(resolve => {
+            fetchTravelerInfo().then(res => {
                 let data = res.data || {}
                 commit('SET_SITE_INFO',data);
                 resolve(data);

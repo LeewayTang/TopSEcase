@@ -18,7 +18,7 @@
             <input type="text" placeholder="用户名" v-model="form.username">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
             <input type="email" placeholder="邮箱" v-model="form.useremail" @input="checkEmail">
-<!--            <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>-->
+            <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
             <input type="password" placeholder="密码" v-model="form.userpwd">
           </div>
           <button class="bbutton" @click="register">注册</button>
@@ -72,6 +72,9 @@ export default{
       this.form.username = ''
       this.form.useremail = ''
       this.form.userpwd = ''
+      this.emailError = false
+      this.passwordError = false
+      this.existed = false
     },
     login () {
       const self = this
@@ -90,9 +93,9 @@ export default{
                 this.$Notice.open({
                   title: '成功登录'
                 })
-                localStorage.setItem('token', "Bearer " + res.data.token)
+                localStorage.setItem('token', /* "Bearer " + */ res.data.token)
                 this.$store.commit('setUser', res.data.user)
-                  this.$router.push({
+                this.$router.push({
                    path:`/`})
                 break
               case -1:
@@ -106,7 +109,9 @@ export default{
             console.log(err)
           })
       } else {
-        alert('填写不能为空！')
+        this.$Notice.open({
+          title: '填写不能为空！'
+        })
       }
     },
     register () {
@@ -127,19 +132,29 @@ export default{
                 this.$Notice.open({
                   title: '成功注册！'
                 })
-                this.login()
+                this.existed = false
+                this.emailError = false
+                this.isLogin = true
+                this.form.username = ''
+                this.form.useremail = ''
+                this.form.userpwd = ''
+                this.$router.push({
+                  path:`/login`})
+                // this.login()
                 break
               case -2:
                 this.$Notice.open({
                   title: '用户名已存在'
                 })
                 this.existed = true
+                this.emailError = false
                 break
               case -1:
                 this.$Notice.open({
                   title: '邮箱格式错误'
                 })
-                this.existed = true
+                this.existed = false
+                this.emailError = true
                 break
             }
           })
@@ -147,7 +162,9 @@ export default{
             console.log(err)
           })
       } else {
-        alert('填写不能为空！')
+        this.$Notice.open({
+          title: '填写不能为空！'
+        })
       }
     }
   }

@@ -83,10 +83,11 @@
             }
           },
           travelerLogin(){
-            this.$store.dispatch('getSiteInfo').then(data =>{
+            this.$store.dispatch('getTravelerInfo').then(data =>{
               this.$store.commit('SET_LOG_STATE', true)
               this.$store.commit('SET_SITE_INFO', data)
               sessionStorage.setItem('Authorization', 'I_am_a_traveler.')
+              sessionStorage.setItem('token', data.token)
               sessionStorage.setItem('siteInfo', JSON.stringify(data))
             })
             this.$Notice.open({
@@ -107,18 +108,18 @@
               this.$store.commit('SET_SITE_INFO', JSON.parse(sessionStorage.getItem('siteInfo')))
             }
           },
-            watchScroll() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-                if (scrollTop===0){
-                    this.fixed = false;
-                } else if (scrollTop>=this.lastScrollTop){
-                    this.fixed = false;
-                    this.hidden = true;
-                } else {
-                    this.fixed = true
-                    this.hidden = false
-                }
-                this.lastScrollTop = scrollTop
+          watchScroll() {
+              let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+              if (scrollTop===0){
+                  this.fixed = false;
+              } else if (scrollTop>=this.lastScrollTop){
+                  this.fixed = false;
+                  this.hidden = true;
+              } else {
+                  this.fixed = true
+                  this.hidden = false
+              }
+              this.lastScrollTop = scrollTop
             },
             fetchCategory() {
                 fetchCategory().then(res => {
@@ -127,13 +128,13 @@
                     console.log(err)
                 })
             },
-          fetchProfile(){
-            fetchProfile().then(res=>{
-                this.profile = res.data
-            }).catch(err => {
-              console.log(err)
-            })
-          }
+            fetchProfile(){
+              fetchProfile().then(res=>{
+                  this.profile = res.data
+              }).catch(err => {
+                console.log(err)
+              })
+            }
         }
     }
 </script>

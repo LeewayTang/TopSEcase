@@ -56,10 +56,10 @@
                 })
             }
         },
-        mounted() {
-            this.getWebSiteInfo();
-            this.fetchFriend();
-        }
+      mounted() {
+        this.getWebSiteInfo();
+        this.fetchFriend();
+      }
     }
 </script>
 
