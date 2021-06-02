@@ -96,7 +96,11 @@
             // this.$store.state.hasLogin = true
             this.$router.push({
               path:'/'
-            })
+            },
+                // 没有这两句会Uncaught (in promise) undefined
+                onComplete => {},
+                onAbort => {}
+            )
           },
           checkLogin(){
             if(sessionStorage.getItem('Authorization')===null||sessionStorage.getItem('Authorization')===''){

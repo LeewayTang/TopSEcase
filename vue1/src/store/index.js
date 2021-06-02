@@ -41,7 +41,7 @@ const mutations = {
             state.isLogging = true
     },
     SET_LOG_STATE:(state ,v)=>{
-       state.hasLogin = v
+        state.hasLogin = v
     }
 }
 

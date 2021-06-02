@@ -259,13 +259,12 @@ class LoginRegister(viewsets.GenericViewSet):
         Pwd = 'traveler'
         user = User.objects.get(uid__exact=Uid, pwd__exact=Pwd)
         token = Token.objects.filter(usr__exact=user)
-        if token.count() != 0:
-            token.delete()
-        key = generate_random_str()
-        Token.objects.create(key=key, usr=user)
+        if token.count() == 0:
+            Token.objects.create(key=generate_random_str(), usr=user)
+        key = Token.objects.get(usr__exact=user).key
         ret = {'msg': 'success', 'status': 1, 'token': key}
         ret.update({'avatar': '../assets/images/rzdf.jpg'})
-        ret.update({'username': '../assets/images/rzdf.jpg'})
+        ret.update({'username': '123123'})
         ret.update({'title': '游客'})
         ret.update({'quanzi': [{'name': 'BUAA'}]})
         ret.update({'slogan': 'I do not wish to be horny any more.'})
