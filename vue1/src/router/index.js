@@ -79,12 +79,12 @@ const routes = [
         component: () => import ('./../views/UserContent'),
         meta: {title: "争鸣殿——在这里讨论吧！"}
     },
-    {
-        path: '/discussion',
-        name: 'discussion',
-        component: () => import('../views/Discussion.vue'),
-        meta: {title: "讨论"}
-    },
+    // {
+    //     path: '/discussion',
+    //     name: 'discussion',
+    //     component: () => import('../views/Discussion.vue'),
+    //     meta: {title: "讨论"}
+    // },
     {
         path: '/search/:words',
         name: 'search',

@@ -96,7 +96,7 @@ export default{
                 localStorage.setItem('token', /* "Bearer " + */ res.data.token)
                 this.$store.commit('setUser', res.data.user)
                 this.$router.push({
-                   path:`/`})
+                   path:`/`}, onComplete => { }, onAbort => { })
                 break
               case -1:
                 this.$Notice.open({
@@ -139,7 +139,7 @@ export default{
                 this.form.useremail = ''
                 this.form.userpwd = ''
                 this.$router.push({
-                  path:`/login`})
+                  path:`/login`}, () => { }, () => { })
                 // this.login()
                 break
               case -2:
