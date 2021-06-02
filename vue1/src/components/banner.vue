@@ -7,10 +7,7 @@
                     <!-- 头像 -->
                     <div class="header-tou">
                         <router-link to="/personalCenter"><img :src="websiteInfo.avatar"></router-link>
-                      <div class="header-name">{{websiteInfo.username}}  |  {{websiteInfo.title}}
-                      </div>
-
-                      <div class="qz"><div class="qz" v-for="qz in websiteInfo.quanzi">|  {{qz.name}}  </div> |</div>
+                      <div class="header-name">{{websiteInfo.username}}  |  {{websiteInfo.title}}  |  {{websiteInfo.quanzi}}</div>
                     </div>
                     <!-- 简介 -->
                     <div class="header-info">
@@ -52,11 +49,11 @@
             this.getWebSiteInfo()
             this.getSocial()
         },
-        watch:{
-            '$store.state.hasLogin'(){
-              this.getWebSiteInfo()
-            }
-        },
+      watch:{
+          '$store.state.hasLogin'(){
+            this.getWebSiteInfo()
+          }
+      },
         methods:{
             getSocial(){
                 this.$store.dispatch('getSocials').then(data =>{
@@ -148,13 +145,10 @@
         text-align: center;
         font-size: 18px;
         img {
-          margin-top: 40px;
-          width: 10vmin;
-          height: 10vmin;
-          object-fit: cover;
-          object-position: center;
-          border-radius: 50%;
-          //border: 3px solid rgba(255,255,255,0.4);
+            width: 80px;
+            height: auto;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.4);
         }
         .header-info {
             width: 60%;
@@ -162,14 +156,14 @@
             color: #EAEADF;
             background: rgba(0, 0, 0, 0.66);
             padding: 20px 30px;
-            margin: 15px auto 0 auto;
+            margin: 30px auto 0 auto;
             font-family: miranafont,"Hiragino Sans GB",STXihei,"Microsoft YaHei",SimSun,sans-serif;
             letter-spacing: 1px;
             line-height: 30px;
         }
       .header-name{
-        color: #FFFFFF;
-        font-size: xx-large;
+        color: #0f0f0f;
+        font-size: x-large;
         font-weight: bold;
         font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
       }
@@ -197,12 +191,5 @@
     }
     @media (max-width: 800px){
         #banner {display: none;}
-    }
-    .qz {
-      display: inline-block;
-      color: #FFFFFF;
-      font-size: x-large;
-      font-weight: bold;
-      font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
     }
 </style>

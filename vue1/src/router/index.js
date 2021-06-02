@@ -1,11 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-
+import VueElElements from 'vue-el-element'
+import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import Book from './../views/Book'
+import BookGround from "../views/BookGround";
+import book1 from './../components/Books/analysis'
+import book2 from './../components/Books/count'
+import book3 from './../components/Books/publish'
+import book4 from './../components/Books/forecast'
+import log from './../views/Log'
+import userContent from './../views/UserContent'
 import notLogin from '../views/NotLogin'
 
 Vue.use(VueRouter)
+Vue.use(VueElElements)
+Vue.use(ElementUI)
 
 
 new Vue({
@@ -40,7 +51,7 @@ const routes = [
     {
         path: '/personalCenter',
         name: 'personalCenter',
-        component: () => import('../views/PersonalCenter1.vue'),
+        component: () => import('../views/PersonalCenter.vue'),
         meta: { title: '个人中心'}
     },
     {
@@ -58,25 +69,58 @@ const routes = [
     {
         path:'/books/:id',
         name: 'books',
-        component: () => import('./../views/Book'),
+        component: Book,
         meta: { title: '书籍详情页' }
+        // redirect:'/book/analysis',
+        // children:[
+        //     {
+        //         path:'analysis',
+        //         name:'analysis',
+        //         component:book1,
+        //         meta: { title: "book1"}
+        //     },
+        //     {
+        //         path:'count',
+        //         name:'count',
+        //         component:book2,
+        //         meta: { title: "book2"}
+        //     },
+        //     {
+        //         path:'forecast',
+        //         name:'forecast',
+        //         component:book4,
+        //         meta: { title: "book4"}
+        //     },
+        //     {
+        //         path:'publish',
+        //         name:'publish',
+        //         component:book3,
+        //         meta: { title: "book3"}
+        //     },
+        //     {
+        //         path: 'library',
+        //         name: 'library',
+        //         component: () => import('../components/Books/book-in-lib'),
+        //         meta: { title: '所有的书'}
+        //     },
+        // ]
     },
     {
         path:'/book-ground',
         name:'book-ground',
-        component: () => import ("../views/BookGround"),
+        component:BookGround,
         meta:{title: "藏书阁"}
     },
     {
         path:'/log',
         name:'log',
-        component: () => import ('./../views/Log'),
+        component: log,
         meta: {title: "读书笔记"}
     },
     {
         path: '/userContent',
         name: 'userContent',
-        component: () => import ('./../views/UserContent'),
+        component: userContent,
         meta: {title: "动态"}
     },
     {

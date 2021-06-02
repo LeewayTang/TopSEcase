@@ -14,7 +14,6 @@ import 'github-markdown-css/github-markdown.css'
 import qs from "qs"
 import 'github-markdown-css/github-markdown.css'
 import hljs from 'highlight.js'
-import Element from 'element-ui'
 // 如果开启了typescript 需要额外安装 npm install @types/highlight.js
 // 通过 import * as hljs from 'highlight.js' 引入
 Vue.directive('highlight', function (el) {
@@ -25,14 +24,11 @@ Vue.directive('highlight', function (el) {
 })
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-import VueCropper from 'vue-cropper'
 // use
 Vue.use(mavonEditor)
 Vue.prototype.$qs = qs
 Vue.use(vcolorpicker)
-Vue.use(ViewUI)
-Vue.use(VueCropper)
-Vue.use(Element)
+Vue.use(ViewUI);
 Vue.config.productionTip = false
 Vue.prototype.$axios= axios
 Vue.config.productionTip = false
