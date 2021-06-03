@@ -2,22 +2,36 @@
 <div class="personal-center-wrap">
   <div class="header-wrap">
   <el-card class="header" :style="{backgroundImage: 'url('+ bg+ ')'}" style="width: 80%; background-size: cover">
-      <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
+    <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
+    <div style="display: flex">
       <div class="username">{{websiteInfo.username}}</div>
+      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="renameClick"></div>
+      <div style="width: 10%"></div>
+      <el-button class="button1" icon="el-icon-success" @click="titleClick">{{websiteInfo.title}}</el-button>
+    </div>
+    <div style="display: flex">
+      <div class="slogan">{{websiteInfo.slogan}}</div>
+      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="sloganClick"></div>
+    </div>
+    <div>
       <div v-for="q in websiteInfo.quanzi" class="qz">
         <el-tag type="info">{{q.name}}</el-tag>
       </div>
+      <el-button class="button1" v-if="websiteInfo.title === '导师'"
+                 size="mini" icon="el-icon-circle-plus"
+                 style="margin-left: 55%" @click="dialogFormVisible = true">创建圈子</el-button>
+    </div>
   </el-card>
   </div>
   <div class="choose">
     <div class="button-wrap" v-for="(item,index) in category">
-      <el-button type="text" @click="handleClick(index)">{{ item.name }}</el-button>
+      <el-button type="text" :class="{ active: item.isActive }" @click="handleClick(index)">{{ item.name }}</el-button>
     </div>
   </div>
   <div class="body">
     <div class="body-left">
       <div class="content" v-for="(item, index) in category">
-        <div v-show="index === showIndex" v-for="it in category[index].contents">
+        <div v-show="item.isActive" v-for="it in category[index].contents">
           <el-card>
             <post :post="it" :key="it.id"></post>
           </el-card>
@@ -71,6 +85,43 @@
         </el-row>
       </span>
     </el-dialog>
+
+<!--  弹出层——创建圈子-->
+  <el-dialog title="新建圈子" :visible.sync="dialogFormVisible">
+    <el-form :model="quanzi">
+      <el-form-item label="圈子名称" :label-width="formLabelWidth">
+        <el-input v-model="quanzi.name" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="圈子描述" :label-width="formLabelWidth">
+        <el-input v-model="quanzi.description" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="添加学生" :label-width="formLabelWidth">
+        <el-tag
+            :key="tag"
+            v-for="tag in quanzi.dynamicTags"
+            closable
+            :disable-transitions="false"
+            @close="handleTagClose(tag)">
+          {{tag}}
+        </el-tag>
+        <el-input
+            class="input-new-tag"
+            v-if="quanzi.inputVisible"
+            v-model="quanzi.inputValue"
+            ref="saveTagInput"
+            size="small"
+            @keyup.enter.native="handleInputConfirm"
+            @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 学生</el-button>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="commitQuanzi(quanzi.name)">确 定</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 
@@ -109,15 +160,26 @@ name: "PersonalCenter1",
       category: [
         {
           name: '我的笔记',
-          contents: []
+          contents: [],
+          isActive: true
         },
         {
           name: '我的收藏',
-          contents: []
+          contents: [],
+          isActive: false
         }
       ],
       showIndex: 0,
-      bg: require('../assets/images/bg2.jpg')
+      bg: require('../assets/images/bg2.jpg'),
+      dialogFormVisible: false,
+      quanzi: {
+        dynamicTags: [],
+        inputVisible: false,
+        inputValue: '',
+        name: '',
+        description: '',
+      },
+      formLabelWidth: '120px',
     }
   },
   methods: {
@@ -132,10 +194,30 @@ name: "PersonalCenter1",
         })
       }
     },
+    handleTagClose(tag) {
+      this.quanzi.dynamicTags.splice(this.quanzi.dynamicTags.indexOf(tag), 1);
+    },
+
+    showInput() {
+      this.quanzi.inputVisible = true;
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
+    },
+
+    handleInputConfirm() {
+      let inputValue = this.quanzi.inputValue;
+      if (inputValue) {
+        this.quanzi.dynamicTags.push(inputValue);
+      }
+      this.quanzi.inputVisible = false;
+      this.quanzi.inputValue = '';
+    },
     // 这里应该是从两个地方拿数据，但是类型相同，只是具体内容有差异。
     fetchList0() {
       fetchList().then(res => {
         this.category[0].contents = res.data.items || []
+
       }).catch(err => {
         console.log(err)
       })
@@ -152,8 +234,84 @@ name: "PersonalCenter1",
       this.picture.dialogVisible = false;
     },
     handleClick(index) {
-      // console.log(tab, event);
-      this.showIndex = index
+      let anotherIndex = index?0:1
+      this.category[anotherIndex].isActive = false
+      this.category[index].isActive = true
+      // console.log(this.category)
+    },
+    titleClick() {
+      if (this.websiteInfo.title === '学生') {
+        this.$message('您是学生，有加入和退出圈子的权限')
+      }
+      else if (this.websiteInfo.title === '导师') {
+        this.$message('您是导师，有创建和删除圈子的权限')
+      }
+    },
+    renameClick() {
+      console.log("rename!!!")
+      this.$prompt('请输入您想更改的昵称', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(({value}) => {
+        this.$message({
+          type: 'success',
+          message: '你的昵称已更改为' + value
+        });
+        // this.$axios({
+        //   url: '/site1',
+        //   method: 'post',
+        //   data: {
+        //     username: this.websiteInfo.username
+        //   }
+        // })
+        // .then(res => {
+        //   console.log('/site1', res.data)
+        //   return res.data
+        // })
+        // .catch(err => {
+        //   console.log(err)
+        // })
+        // 数据这块没整明白，我先打个样
+        this.websiteInfo.username = value
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });
+      });
+    },
+    sloganClick() {
+      console.log("slogan!!!")
+      this.$prompt('请输入您想更改的个性签名', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(({value}) => {
+        this.$message({
+          type: 'success',
+          message: '你的昵称已更改为' + value
+        });
+        // this.$axios({
+        //   url: '/site1',
+        //   method: 'post',
+        //   data: {
+        //     username: this.websiteInfo.username
+        //   }
+        // })
+        // .then(res => {
+        //   console.log('/site1', res.data)
+        //   return res.data
+        // })
+        // .catch(err => {
+        //   console.log(err)
+        // })
+        // 数据这块没整明白，我先打个样
+        this.websiteInfo.slogan = value
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });
+      });
     },
     //实时预览
     realTime(data) {
@@ -188,6 +346,12 @@ name: "PersonalCenter1",
         console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
 
       });
+    },
+    commitQuanzi(v) {
+      // 没有传到服务器！！！！
+      this.websiteInfo.quanzi.push({name: v})
+      console.log(this.websiteInfo.quanzi)
+      this.dialogFormVisible = false
     }
   },
   watch:{
@@ -260,13 +424,21 @@ img {
   padding-left: 5%;
   padding-top: 2%;
   color: #FFFFFF;
-  font-size: x-large;
+  font-size: xxx-large;
+  font-weight: bold;
+  font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+}
+.slogan {
+  padding-left: 5%;
+  padding-top: 2%;
+  color: #FFFFFF;
+  font-size: xx-large;
   font-weight: bold;
   font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
 }
 .header {
   width: 80%;
-  height: 40%;
+  height: 50%;
   margin-left: 10%;
   background-size: cover
 }
@@ -279,7 +451,7 @@ img {
 }
 .el-button{
   font-size: xx-large;
-  color: #1b1b1b;
+  color: #b9bec1;
   margin-left: 25%;
 }
 .button-wrap {
@@ -291,7 +463,25 @@ img {
   width: 80%;
   margin-top: 1%;
 }
-.body {
+.active {
+  color: black;
 }
-
+.button1{
+  color: #56c4b7
+}
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
 </style>
