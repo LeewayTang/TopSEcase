@@ -86,8 +86,8 @@ class RegisterInfoSerializer(serializers.ModelSerializer):
 
 
 class UploadAvatarSerializer(serializers.ModelSerializer):
-    uid = serializers.CharField(required=True, max_length=16)
-    avatar = serializers.ImageField(required=True, max_length=32)
+    token = serializers.CharField(required=True, max_length=32)
+    avatar = serializers.CharField(required=True, max_length=256)
 
     class Meta:
         model = User

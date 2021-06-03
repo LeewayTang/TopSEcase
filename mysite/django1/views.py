@@ -298,11 +298,16 @@ class FileUpload(viewsets.GenericViewSet):
                          request_body=UploadAvatarSerializer)
     @action(methods=['POST'], detail=False)
     def uploadAvatar(self, request):
-        # data_json = json.loads(request.body)
-        Uid = request.POST.get('uid')
-        Avatar = request.FILES.get('avatar')
-        queryset = User.objects.get(uid=Uid)
-        queryset.avatar = Avatar
+        data_json = json.loads(request.body)
+        token = data_json.get('uid')
+        avatar = data_json.get('avatar')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'failed', 'status': -1})
+        queryset = Token.objects.get(key__exact=token).usr
+        if queryset.uid == 'traveler':
+            return Response({'msg': 'failed', 'status': -2})
+        queryset.avatar = avatar
         queryset.save()
         return Response({'msg': 'upload success', 'status': 1})
 

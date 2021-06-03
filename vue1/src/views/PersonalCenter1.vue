@@ -1,30 +1,30 @@
 <template>
-<div class="personal-center-wrap">
-  <div class="header-wrap">
-  <el-card class="header" :style="{backgroundImage: 'url('+ bg+ ')'}" style="width: 80%; background-size: cover">
-      <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
-      <div class="username">{{websiteInfo.username}}</div>
-      <div v-for="q in websiteInfo.quanzi" class="qz">
-        <el-tag type="info">{{q.name}}</el-tag>
-      </div>
-  </el-card>
-  </div>
-  <div class="choose">
-    <div class="button-wrap" v-for="(item,index) in category">
-      <el-button type="text" @click="handleClick(index)">{{ item.name }}</el-button>
+  <div class="personal-center-wrap">
+    <div class="header-wrap">
+      <el-card class="header" :style="{backgroundImage: 'url('+ bg+ ')'}" style="width: 80%; background-size: cover">
+        <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
+        <div class="username">{{websiteInfo.username}}</div>
+        <div v-for="q in websiteInfo.quanzi" class="qz">
+          <el-tag type="info">{{q.name}}</el-tag>
+        </div>
+      </el-card>
     </div>
-  </div>
-  <div class="body">
-    <div class="body-left">
-      <div class="content" v-for="(item, index) in category">
-        <div v-show="index === showIndex" v-for="it in category[index].contents">
-          <el-card>
-            <post :post="it" :key="it.id"></post>
-          </el-card>
+    <div class="choose">
+      <div class="button-wrap" v-for="(item,index) in category">
+        <el-button type="text" @click="handleClick(index)">{{ item.name }}</el-button>
+      </div>
+    </div>
+    <div class="body">
+      <div class="body-left">
+        <div class="content" v-for="(item, index) in category">
+          <div v-show="index === showIndex" v-for="it in category[index].contents">
+            <el-card>
+              <post :post="it" :key="it.id"></post>
+            </el-card>
+          </div>
         </div>
       </div>
     </div>
-  </div>
     <!-- 弹出层-裁剪 -->
     <el-dialog title="编辑头像" :visible.sync="picture.dialogVisible" :before-close="handleClose">
       <span>
@@ -79,9 +79,9 @@
 import {fetchList, fetchSiteInfo} from "../api";
 import post from '../components/post'
 export default {
-name: "PersonalCenter1",
+  name: "PersonalCenter1",
   components: {
-  post
+    post
   },
   data()  {
     return{
@@ -186,20 +186,54 @@ name: "PersonalCenter1",
     confirm(type) {
       this.$refs.cropper.getCropData(res => {
         console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
-
-      });
+        const self = this
+        self.$axios({
+          method: 'post',
+          url: '/api/upload/uploadAvatar/',
+          data: {
+            token: sessionStorage.getItem('Authorization'),
+            avatar: res
+          }
+        })
+            .then(Res => {
+              switch (Res.data.status) {
+                case 1:
+                  this.$Notice.open({
+                    title: '上传成功'
+                  })
+                  this.$router.push({
+                    path:`/personalCenter`}, onComplete => { }, onAbort => { })
+                  break
+                case -2:
+                  this.$Notice.open({
+                    title: '游客不能更改头像'
+                  })
+                  this.$router.push({
+                    path:`/personalCenter`}, onComplete => { }, onAbort => { })
+                  break
+                case -1:
+                  this.$Notice.open({
+                    title: '未登录'
+                  })
+                  break
+              }
+            })
+            .catch(err => {
+              console.log(err)
+            })
+      })
     }
-  },
-  watch:{
-    '$store.state.hasLogin'(){
-      this.getWebSiteInfo()
-    }
-  },
-  mounted() {
-    this.getPersonInfo();
-    this.fetchList0();
-    this.fetchList1();
+},
+watch:{
+  '$store.state.hasLogin'(){
+    this.getWebSiteInfo()
   }
+},
+mounted() {
+  this.getPersonInfo();
+  this.fetchList0();
+  this.fetchList1();
+}
 }
 </script>
 

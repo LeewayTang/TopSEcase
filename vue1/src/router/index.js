@@ -118,7 +118,7 @@ router.beforeResolve(async (to, from, next) => {
         title = `${to.meta.title} - ${title}`
     }
     document.title = title
-    let token = localStorage.getItem('Authorization')
+    let token = sessionStorage.getItem('Authorization')
     if(to.path === '/login' || to.path === '/' || to.path === '/book-ground')
         // alert(token),
         next();

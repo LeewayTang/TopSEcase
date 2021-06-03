@@ -89,7 +89,7 @@
               sessionStorage.setItem('Authorization', 'I_am_a_traveler.')
               sessionStorage.setItem('token', data.token)
               sessionStorage.setItem('siteInfo', JSON.stringify(data))
-              localStorage.setItem('Authorization', "data.token")
+              //localStorage.setItem('Authorization', "data.token")
             })
             this.$Notice.open({
               title: '游客成功登录'

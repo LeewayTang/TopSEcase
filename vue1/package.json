@@ -23,6 +23,7 @@
     "vcolorpicker": "^1.1.0",
     "view-design": "^4.5.0",
     "vue": "^2.6.11",
+    "vue-cropper": "^0.5.6",
     "vue-el-element": "^1.12.8",
     "vue-markdown": "^2.2.4",
     "vue-router": "^3.1.6",
