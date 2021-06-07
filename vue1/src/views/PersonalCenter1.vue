@@ -369,6 +369,9 @@ name: "PersonalCenter1",
   watch:{
     '$store.state.hasLogin'(){
       this.getWebSiteInfo()
+    },
+    '$route.params'() {
+      this.getPersonInfo()
     }
   },
   mounted() {
