@@ -102,7 +102,7 @@ const routes = [
         path: '/article/:id',
         name: 'article',
         component: () => import('../views/Articles.vue'),
-        meta: { title: '文章'}
+        meta: { title: '文章', params: 'id'}
     }
 ]
 

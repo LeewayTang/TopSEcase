@@ -5,19 +5,19 @@
     <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
     <div style="display: flex">
       <div class="username">{{websiteInfo.username}}</div>
-      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="renameClick"></div>
+      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="renameClick" v-if="$store.state.username === $route.params.username"></div>
       <div style="width: 10%"></div>
       <el-button class="button1" icon="el-icon-success" @click="titleClick">{{websiteInfo.title}}</el-button>
     </div>
     <div style="display: flex">
       <div class="slogan">{{websiteInfo.slogan}}</div>
-      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="sloganClick"></div>
+      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="sloganClick" v-if="$store.state.username === $route.params.username"></div>
     </div>
     <div>
       <div v-for="q in websiteInfo.quanzi" class="qz">
         <el-tag type="info">{{q.name}}</el-tag>
       </div>
-      <el-button class="button1" v-if="websiteInfo.title === '导师' && this.$store.state.username === websiteInfo.username"
+      <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
                  size="mini" icon="el-icon-circle-plus"
                  style="margin-left: 55%" @click="dialogFormVisible = true">创建圈子</el-button>
     </div>
@@ -25,7 +25,7 @@
   </div>
   <div class="choose">
     <div class="button-wrap" v-for="(item,index) in category">
-      <el-button type="text" :class="{ active: item.isActive }" @click="handleClick(index)">{{ item.name }}</el-button>
+      <el-button type="text" v-if="$store.state.username === $route.params.username || item.name === '动态'" :class="{ active: item.isActive }" @click="handleClick(index)">{{ item.name }}</el-button>
     </div>
   </div>
   <div class="body">
@@ -159,7 +159,7 @@ name: "PersonalCenter1",
       },
       category: [
         {
-          name: '我的笔记',
+          name: '动态',
           contents: [],
           isActive: true
         },
