@@ -12,7 +12,7 @@ export default [
                     {
                         id: 1,
                         title: '个人资料',
-                        href: '/personalCenter'
+                        href: '/personalCenter/'
                     },
                     {
                         id: 2,

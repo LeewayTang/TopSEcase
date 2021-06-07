@@ -6,7 +6,7 @@
                 <div class="focusinfo">
                     <!-- 头像 -->
                     <div class="header-tou">
-                      <router-link to="/personalCenter"><img :src="websiteInfo.avatar"></router-link>
+                      <router-link :to="/personalCenter/ + this.$store.state.username"><img :src="websiteInfo.avatar"></router-link>
                       <div class="header-name">
                         {{websiteInfo.username}}  |  {{websiteInfo.title}}
                       </div>

@@ -8,7 +8,7 @@ const baseContent = '<p>I am testing data, I am testing data.</p><p><img src="ht
 const image_uri = 'https://wpimg.wallstcn.com/e4558086-631c-425c-9430-56ffb46e70b3'
 
 const banners = [
-    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX1Ued78e4N2yBMIZLPMtS03do7rBnkhHIiA&usqp=CAU',
+    require('../assets/images/E2n0ya2UUAA2odS.jpg'),
     'https://s1.ax1x.com/2020/05/14/YDhU81.jpg',
     'https://s1.ax1x.com/2020/05/14/YDhBDO.jpg',
     'https://s1.ax1x.com/2020/05/14/YDhoVg.jpg',
@@ -57,7 +57,7 @@ export default [
                     items:pageList.sort((a,b)=>a.isTop===b.isTop?0:a.isTop?-1:1),
                     hasNextPage: page * size < List.length,
                     page: page,
-                    size: size
+                    size: size,
                 }
             }
         }

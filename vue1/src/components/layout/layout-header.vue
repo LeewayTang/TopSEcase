@@ -40,7 +40,7 @@
                 <img class="menu-img" :src="$store.state.websiteInfo.avatar" >
                 <div class="childMenu" v-if="category.length">
                     <div class="sub-menu" v-for="item in profile" :key="item.title">
-                    <router-link :to="`${item.href}`" @click.native="quit(item.title)"> {{item.title}}</router-link>
+                    <router-link :to="`${item.href + $store.state.username}`" @click.native="quit(item.title)"> {{item.title}}</router-link>
                     </div>
                 </div>
             </div>

@@ -30,9 +30,26 @@ export default [
                 data: {
                     avatar: require('../assets/images/rzdf.jpg'),
                     username: '没有共产党就没有新中国',
-                    title:'游客',
+                    title:'导师',
                     quanzi:[{name: 'BUAA'}, {name:'Software Engineer'}],
-                    slogan: 'I do not wish to be horny any more.',
+                    slogan: '银鞍照白马，飒沓如流星。',
+                    name: 'MoYun',
+                }
+            }
+        }
+    },
+    {
+        url: '/Cynic',
+        type: 'get',
+        response: () => {
+            return {
+                code: 20000,
+                data: {
+                    avatar: require('../assets/images/gg.jpg'),
+                    username: 'cynic',
+                    title:'学生',
+                    quanzi:[{name: 'BUAA'}, {name:'Software Engineer'}],
+                    slogan: '那年十八，母校舞会，站着如喽罗。',
                     name: 'MoYun',
                 }
             }

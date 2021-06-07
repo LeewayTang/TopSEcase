@@ -1,27 +1,46 @@
 <template>
-  <div class="personal-center-wrap">
-    <div class="header-wrap">
-      <el-card class="header" :style="{backgroundImage: 'url('+ bg+ ')'}" style="width: 80%; background-size: cover">
-        <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
-        <div class="username">{{websiteInfo.username}}</div>
-        <div v-for="q in websiteInfo.quanzi" class="qz">
-          <el-tag type="info">{{q.name}}</el-tag>
-        </div>
-      </el-card>
+<div class="personal-center-wrap">
+  <div class="header-wrap">
+  <el-card class="header" :style="{backgroundImage: 'url('+ bg+ ')'}" style="width: 80%; background-size: cover">
+    <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
+    <div style="display: flex">
+      <div class="username">{{websiteInfo.username}}</div>
+      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="renameClick" v-if="$store.state.username === $route.params.username"></div>
+      <div style="width: 10%"></div>
+      <el-button class="button1" icon="el-icon-success" @click="titleClick">{{websiteInfo.title}}</el-button>
     </div>
-    <div class="choose">
-      <div class="button-wrap" v-for="(item,index) in category">
-        <el-button type="text" @click="handleClick(index)">{{ item.name }}</el-button>
+    <div style="display: flex">
+      <div class="slogan">{{websiteInfo.slogan}}</div>
+      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="sloganClick" v-if="$store.state.username === $route.params.username"></div>
+    </div>
+    <div>
+      <div v-for="q in websiteInfo.quanzi" class="qz" v-show="removeQuanzi">
+        <el-tag closable type="info" @close="handleTagClose(q)">{{q.name}}</el-tag>
       </div>
+      <div v-for="q in websiteInfo.quanzi" class="qz" v-show="!removeQuanzi">
+        <el-tag type="info">{{q.name}}</el-tag>
+      </div>
+      <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
+                 size="mini" icon="el-icon-remove"
+                 style="margin-left: 35%" @click="removeQuanzi = true">删除圈子</el-button>
+      <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
+                 size="mini" icon="el-icon-circle-plus"
+                 style="margin-left: 5%" @click="dialogFormVisible = true">创建圈子</el-button>
     </div>
-    <div class="body">
-      <div class="body-left">
-        <div class="content" v-for="(item, index) in category">
-          <div v-show="index === showIndex" v-for="it in category[index].contents">
-            <el-card>
-              <post :post="it" :key="it.id"></post>
-            </el-card>
-          </div>
+  </el-card>
+  </div>
+  <div class="choose">
+    <div class="button-wrap" v-for="(item,index) in category">
+      <el-button type="text" v-if="$store.state.username === $route.params.username || item.name === '动态'" :class="{ active: item.isActive }" @click="handleClick(index)">{{ item.name }}</el-button>
+    </div>
+  </div>
+  <div class="body">
+    <div class="body-left">
+      <div class="content" v-for="(item, index) in category">
+        <div v-show="item.isActive" v-for="it in category[index].contents">
+          <el-card>
+            <post :post="it" :key="it.id"></post>
+          </el-card>
         </div>
       </div>
     </div>
@@ -71,6 +90,43 @@
         </el-row>
       </span>
     </el-dialog>
+
+<!--  弹出层——创建圈子-->
+  <el-dialog title="新建圈子" :visible.sync="dialogFormVisible">
+    <el-form :model="quanzi">
+      <el-form-item label="圈子名称" :label-width="formLabelWidth">
+        <el-input v-model="quanzi.name" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="圈子描述" :label-width="formLabelWidth">
+        <el-input v-model="quanzi.description" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="添加学生" :label-width="formLabelWidth">
+        <el-tag
+            :key="tag"
+            v-for="tag in quanzi.dynamicTags"
+            closable
+            :disable-transitions="false"
+            @close="handleTagClose(tag)">
+          {{tag}}
+        </el-tag>
+        <el-input
+            class="input-new-tag"
+            v-if="quanzi.inputVisible"
+            v-model="quanzi.inputValue"
+            ref="saveTagInput"
+            size="small"
+            @keyup.enter.native="handleInputConfirm"
+            @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 学生</el-button>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="commitNewQuanzi(quanzi.name)">确 定</el-button>
+    </div>
+  </el-dialog>
   </div>
 </template>
 
@@ -108,34 +164,79 @@ export default {
       },
       category: [
         {
-          name: '我的笔记',
-          contents: []
+          name: '动态',
+          contents: [],
+          isActive: true
         },
         {
           name: '我的收藏',
-          contents: []
+          contents: [],
+          isActive: false
         }
       ],
       showIndex: 0,
-      bg: require('../assets/images/bg2.jpg')
+      bg: require('../assets/images/bg2.jpg'),
+      dialogFormVisible: false,
+      quanzi: {
+        dynamicTags: [],
+        inputVisible: false,
+        inputValue: '',
+        name: '',
+        description: '',
+      },
+      formLabelWidth: '120px',
+      removeQuanzi: false,
     }
   },
   methods: {
     getPersonInfo() {
-      if(this.$store.state.hasLogin){
+      if(this.$store.state.hasLogin  && this.$store.state.username === this.$route.params.username){
         this.$store.dispatch('getSiteInfo').then(data =>{
           this.websiteInfo = data
         })
-      }else{
+      }
+      else if (!this.$store.state.hasLogin){
         this.$store.dispatch('getSiteInfo0').then(data =>{
           this.websiteInfo = data
         })
       }
+      else {
+        this.$axios(
+            {
+              url: '/' + this.$route.params.username,
+              method: "get"
+            }
+        ).then(res => {
+          this.websiteInfo = res.data.data
+          console.log(res)
+        })
+      }
+    },
+    handleTagClose(tag) {
+      this.websiteInfo.quanzi.splice(this.websiteInfo.quanzi.indexOf(tag), 1);
+      this.commitDeleteQuanzi()
+    },
+
+    showInput() {
+      this.quanzi.inputVisible = true;
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
+    },
+
+    handleInputConfirm() {
+      let inputValue = this.quanzi.inputValue;
+      if (inputValue) {
+        this.quanzi.dynamicTags.push(inputValue);
+      }
+      this.quanzi.inputVisible = false;
+      this.quanzi.inputValue = '';
     },
     // 这里应该是从两个地方拿数据，但是类型相同，只是具体内容有差异。
     fetchList0() {
       fetchList().then(res => {
         this.category[0].contents = res.data.items || []
+
       }).catch(err => {
         console.log(err)
       })
@@ -152,8 +253,84 @@ export default {
       this.picture.dialogVisible = false;
     },
     handleClick(index) {
-      // console.log(tab, event);
-      this.showIndex = index
+      let anotherIndex = index?0:1
+      this.category[anotherIndex].isActive = false
+      this.category[index].isActive = true
+      // console.log(this.category)
+    },
+    titleClick() {
+      if (this.websiteInfo.title === '学生') {
+        this.$message('学生认证，有加入和退出圈子的权限')
+      }
+      else if (this.websiteInfo.title === '导师') {
+        this.$message('导师认证，有创建和删除圈子的权限')
+      }
+    },
+    renameClick() {
+      console.log("rename!!!")
+      this.$prompt('请输入您想更改的昵称', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(({value}) => {
+        this.$message({
+          type: 'success',
+          message: '你的昵称已更改为' + value
+        });
+        // this.$axios({
+        //   url: '/site1',
+        //   method: 'post',
+        //   data: {
+        //     username: this.websiteInfo.username
+        //   }
+        // })
+        // .then(res => {
+        //   console.log('/site1', res.data)
+        //   return res.data
+        // })
+        // .catch(err => {
+        //   console.log(err)
+        // })
+        // 数据这块没整明白，我先打个样
+        this.websiteInfo.username = value
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });
+      });
+    },
+    sloganClick() {
+      console.log("slogan!!!")
+      this.$prompt('请输入您想更改的个性签名', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(({value}) => {
+        this.$message({
+          type: 'success',
+          message: '你的昵称已更改为' + value
+        });
+        // this.$axios({
+        //   url: '/site1',
+        //   method: 'post',
+        //   data: {
+        //     username: this.websiteInfo.username
+        //   }
+        // })
+        // .then(res => {
+        //   console.log('/site1', res.data)
+        //   return res.data
+        // })
+        // .catch(err => {
+        //   console.log(err)
+        // })
+        // 数据这块没整明白，我先打个样
+        this.websiteInfo.slogan = value
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });
+      });
     },
     //实时预览
     realTime(data) {
@@ -186,47 +363,32 @@ export default {
     confirm(type) {
       this.$refs.cropper.getCropData(res => {
         console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
-        const self = this
-        self.$axios({
-          method: 'post',
-          url: '/api/upload/uploadAvatar/',
-          data: {
-            token: sessionStorage.getItem('Authorization'),
-            avatar: res
-          }
-        })
-            .then(Res => {
-              switch (Res.data.status) {
-                case 1:
-                  this.$Notice.open({
-                    title: '上传成功'
-                  })
-                  this.$router.push({
-                    path:`/personalCenter`}, onComplete => { }, onAbort => { })
-                  break
-                case -2:
-                  this.$Notice.open({
-                    title: '游客不能更改头像'
-                  })
-                  this.$router.push({
-                    path:`/personalCenter`}, onComplete => { }, onAbort => { })
-                  break
-                case -1:
-                  this.$Notice.open({
-                    title: '未登录'
-                  })
-                  break
-              }
-            })
-            .catch(err => {
-              console.log(err)
-            })
-      })
+      });
+    },
+    commitNewQuanzi(v) {
+      // 没有传到服务器！！！！
+      this.websiteInfo.quanzi.push({name: v})
+      console.log(this.websiteInfo.quanzi)
+      this.dialogFormVisible = false
+    },
+    commitDeleteQuanzi() {
+      // 具体的数据传输没搞明白呢，不着急
+      console.log(this.websiteInfo.quanzi)
     }
-},
-watch:{
-  '$store.state.hasLogin'(){
-    this.getWebSiteInfo()
+  },
+  watch:{
+    '$store.state.hasLogin'(){
+      this.getWebSiteInfo()
+    },
+    '$route.params'() {
+      this.getPersonInfo()
+    },
+  },
+  mounted() {
+    this.getPersonInfo();
+    this.fetchList0();
+    this.fetchList1();
+    // console.log(this.$route.params);
   }
 },
 mounted() {
@@ -294,13 +456,21 @@ img {
   padding-left: 5%;
   padding-top: 2%;
   color: #FFFFFF;
-  font-size: x-large;
+  font-size: xxx-large;
+  font-weight: bold;
+  font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+}
+.slogan {
+  padding-left: 5%;
+  padding-top: 2%;
+  color: #FFFFFF;
+  font-size: xx-large;
   font-weight: bold;
   font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
 }
 .header {
   width: 80%;
-  height: 40%;
+  height: 50%;
   margin-left: 10%;
   background-size: cover
 }
@@ -313,7 +483,7 @@ img {
 }
 .el-button{
   font-size: xx-large;
-  color: #1b1b1b;
+  color: #b9bec1;
   margin-left: 25%;
 }
 .button-wrap {
@@ -325,7 +495,25 @@ img {
   width: 80%;
   margin-top: 1%;
 }
-.body {
+.active {
+  color: black;
 }
-
+.button1{
+  color: #56c4b7
+}
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
 </style>

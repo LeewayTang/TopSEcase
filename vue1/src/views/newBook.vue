@@ -20,6 +20,7 @@
             <el-radio v-model="language" label="中文"></el-radio>
           </li>
           <li><el-radio v-model="language" label="English"></el-radio></li>
+          <li><el-radio v-model="language" label="其他"></el-radio></li>
         </ul>
         <ul class="inline-fields">
           <li>
