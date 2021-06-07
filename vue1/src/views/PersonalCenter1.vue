@@ -14,12 +14,18 @@
       <div class="el-icon-edit" style="color: white; cursor: pointer" @click="sloganClick" v-if="$store.state.username === $route.params.username"></div>
     </div>
     <div>
-      <div v-for="q in websiteInfo.quanzi" class="qz">
+      <div v-for="q in websiteInfo.quanzi" class="qz" v-show="removeQuanzi">
+        <el-tag closable type="info" @close="handleTagClose(q)">{{q.name}}</el-tag>
+      </div>
+      <div v-for="q in websiteInfo.quanzi" class="qz" v-show="!removeQuanzi">
         <el-tag type="info">{{q.name}}</el-tag>
       </div>
       <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
+                 size="mini" icon="el-icon-remove"
+                 style="margin-left: 35%" @click="removeQuanzi = true">删除圈子</el-button>
+      <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
                  size="mini" icon="el-icon-circle-plus"
-                 style="margin-left: 55%" @click="dialogFormVisible = true">创建圈子</el-button>
+                 style="margin-left: 5%" @click="dialogFormVisible = true">创建圈子</el-button>
     </div>
   </el-card>
   </div>
@@ -119,7 +125,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="commitQuanzi(quanzi.name)">确 定</el-button>
+      <el-button type="primary" @click="commitNewQuanzi(quanzi.name)">确 定</el-button>
     </div>
   </el-dialog>
   </div>
@@ -180,6 +186,7 @@ name: "PersonalCenter1",
         description: '',
       },
       formLabelWidth: '120px',
+      removeQuanzi: false,
     }
   },
   methods: {
@@ -207,7 +214,8 @@ name: "PersonalCenter1",
       }
     },
     handleTagClose(tag) {
-      this.quanzi.dynamicTags.splice(this.quanzi.dynamicTags.indexOf(tag), 1);
+      this.websiteInfo.quanzi.splice(this.websiteInfo.quanzi.indexOf(tag), 1);
+      this.commitDeleteQuanzi()
     },
 
     showInput() {
@@ -356,14 +364,17 @@ name: "PersonalCenter1",
     confirm(type) {
       this.$refs.cropper.getCropData(res => {
         console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
-
       });
     },
-    commitQuanzi(v) {
+    commitNewQuanzi(v) {
       // 没有传到服务器！！！！
       this.websiteInfo.quanzi.push({name: v})
       console.log(this.websiteInfo.quanzi)
       this.dialogFormVisible = false
+    },
+    commitDeleteQuanzi() {
+      // 具体的数据传输没搞明白呢，不着急
+      console.log(this.websiteInfo.quanzi)
     }
   },
   watch:{
@@ -372,7 +383,7 @@ name: "PersonalCenter1",
     },
     '$route.params'() {
       this.getPersonInfo()
-    }
+    },
   },
   mounted() {
     this.getPersonInfo();
