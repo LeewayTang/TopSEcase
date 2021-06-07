@@ -38,6 +38,23 @@ export default [
             }
         }
     },
+    {
+        url: '/cynic',
+        type: 'get',
+        response: () => {
+            return {
+                code: 20000,
+                data: {
+                    avatar: require('../assets/images/gg.jpg'),
+                    username: 'cynic',
+                    title:'学生',
+                    quanzi:[{name: 'BUAA'}, {name:'Software Engineer'}],
+                    slogan: '那年十八，母校舞会，站着如喽罗。',
+                    name: 'MoYun',
+                }
+            }
+        }
+    },
 
     // 这个没有用！！！
     // 站点社交信息

@@ -17,7 +17,7 @@
       <div v-for="q in websiteInfo.quanzi" class="qz">
         <el-tag type="info">{{q.name}}</el-tag>
       </div>
-      <el-button class="button1" v-if="websiteInfo.title === '导师'"
+      <el-button class="button1" v-if="websiteInfo.title === '导师' && this.$store.state.username === websiteInfo.username"
                  size="mini" icon="el-icon-circle-plus"
                  style="margin-left: 55%" @click="dialogFormVisible = true">创建圈子</el-button>
     </div>
@@ -184,13 +184,25 @@ name: "PersonalCenter1",
   },
   methods: {
     getPersonInfo() {
-      if(this.$store.state.hasLogin){
+      if(this.$store.state.hasLogin  && this.$store.state.username === this.$route.params.username){
         this.$store.dispatch('getSiteInfo').then(data =>{
           this.websiteInfo = data
         })
-      }else{
+      }
+      else if (!this.$store.state.hasLogin){
         this.$store.dispatch('getSiteInfo0').then(data =>{
           this.websiteInfo = data
+        })
+      }
+      else {
+        this.$axios(
+            {
+              url: '/cynic',
+              method: "get"
+            }
+        ).then(res => {
+          this.websiteInfo = res.data.data
+          console.log(res)
         })
       }
     },
@@ -241,10 +253,10 @@ name: "PersonalCenter1",
     },
     titleClick() {
       if (this.websiteInfo.title === '学生') {
-        this.$message('您是学生，有加入和退出圈子的权限')
+        this.$message('学生认证，有加入和退出圈子的权限')
       }
       else if (this.websiteInfo.title === '导师') {
-        this.$message('您是导师，有创建和删除圈子的权限')
+        this.$message('导师认证，有创建和删除圈子的权限')
       }
     },
     renameClick() {
@@ -363,6 +375,7 @@ name: "PersonalCenter1",
     this.getPersonInfo();
     this.fetchList0();
     this.fetchList1();
+    // console.log(this.$route.params);
   }
 }
 </script>

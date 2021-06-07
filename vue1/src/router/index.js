@@ -38,7 +38,7 @@ const routes = [
         meta: { title: '注册登录'}
     },
     {
-        path: '/personalCenter',
+        path: '/personalCenter/:username',
         name: 'personalCenter',
         component: () => import('../views/PersonalCenter1.vue'),
         meta: { title: '个人中心'}

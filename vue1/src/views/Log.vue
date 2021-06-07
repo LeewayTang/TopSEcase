@@ -7,7 +7,7 @@
   <div class="right">
     <div class="square-block" :style="{backgroundImage: 'url('+ bg+ ')'}">
       <div class="header">
-      <router-link to="/personalCenter">
+      <router-link :to="/personalCenter/ + $store.state.username">
         <img :src="webSiteInfo.avatar" alt="头像" class="circular">
         <div class="user-name">{{ webSiteInfo.username }}</div>
       </router-link>
@@ -19,7 +19,7 @@
       <div class="quanzi">
         <div class="title">你可能想follow的人</div>
         <ul v-for="item in sugList">
-        <li class="sug-item"><router-link to="/">{{item}}</router-link></li>
+        <li class="sug-item"><router-link :to="/personalCenter/ + item">{{item}}</router-link></li>
         </ul>
       </div>
     </div>
