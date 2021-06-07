@@ -4,6 +4,7 @@ import store from '@/store'
 
 import 'element-ui/lib/theme-chalk/index.css'
 import notLogin from '../views/NotLogin'
+import * as path from "path";
 
 Vue.use(VueRouter)
 
@@ -41,7 +42,7 @@ const routes = [
         path: '/personalCenter/:username',
         name: 'personalCenter',
         component: () => import('../views/PersonalCenter1.vue'),
-        meta: { title: '个人中心'}
+        meta: { title: '个人中心', params: 'username'}
     },
     {
         path: '/writeBlog',
@@ -113,7 +114,7 @@ const router = new VueRouter({
 router.beforeResolve(async (to, from, next) => {
     let title = 'MoYun'
     if (to.meta.params){
-        title = `${to.meta.title}:${to.params[to.meta.params] || ''} - ${title}`
+        title = `${to.meta.title}: ${to.params[to.meta.params] || ''} - ${title}`
     }else {
         title = `${to.meta.title} - ${title}`
     }

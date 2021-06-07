@@ -39,7 +39,7 @@ export default [
         }
     },
     {
-        url: '/cynic',
+        url: '/Cynic',
         type: 'get',
         response: () => {
             return {

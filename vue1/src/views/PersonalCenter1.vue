@@ -197,7 +197,7 @@ name: "PersonalCenter1",
       else {
         this.$axios(
             {
-              url: '/cynic',
+              url: '/' + this.$route.params.username,
               method: "get"
             }
         ).then(res => {
