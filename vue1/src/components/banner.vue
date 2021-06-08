@@ -49,6 +49,10 @@
                 default: false
             }
         },
+        activated() {
+          this.getWebSiteInfo()
+          this.getSocial()
+        },
         mounted(){
             this.getWebSiteInfo()
             this.getSocial()

@@ -287,6 +287,7 @@ class LoginRegister(viewsets.GenericViewSet):
     def logout(self, request):
         data_json = json.loads(request.body)
         token = data_json.get('token')
+        print(token)
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
             return Response({'msg': 'No token exists', 'status': -1})

@@ -76,10 +76,19 @@
           quit(v){
             if(v === '退出'){
               this.$confirm('你真的要退出吗？', '将要退出账号').then(()=>{
+                const self = this
+                self.$axios({
+                  method: 'post',
+                  url: 'api/login_register/logout/',
+                  data: {
+                    token: sessionStorage.getItem('Authorization'),
+                  }
+                }).then(res => {}).catch(err => {console.log(err)})
                 this.$store.commit('SET_LOG_STATE', false)
                 sessionStorage.removeItem('Authorization')
                 sessionStorage.removeItem('siteInfo')
               })
+
             }
           },
           travelerLogin(){
