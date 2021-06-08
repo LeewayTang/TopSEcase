@@ -5,13 +5,13 @@
     <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
     <div style="display: flex">
       <div class="username">{{websiteInfo.username}}</div>
-      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="renameClick" v-if="$store.state.username === $route.params.username"></div>
+      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="renameClick" v-if="$store.state.websiteInfo.username === $route.params.username"></div>
       <div style="width: 10%"></div>
       <el-button class="button1" icon="el-icon-success" @click="titleClick">{{websiteInfo.title}}</el-button>
     </div>
     <div style="display: flex">
       <div class="slogan">{{websiteInfo.slogan}}</div>
-      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="sloganClick" v-if="$store.state.username === $route.params.username"></div>
+      <div class="el-icon-edit" style="color: white; cursor: pointer" @click="sloganClick" v-if="$store.state.websiteInfo.username === $route.params.username"></div>
     </div>
     <div>
       <div v-for="q in websiteInfo.quanzi" class="qz" v-show="removeQuanzi">
@@ -191,7 +191,7 @@ export default {
   },
   methods: {
     getPersonInfo() {
-      if(this.$store.state.hasLogin  && this.$store.state.username === this.$route.params.username){
+      if(this.$store.state.hasLogin  && this.$store.state.websiteInfo.username === this.$route.params.username){
         const self = this
         self.$axios({
           method: 'post',
@@ -200,7 +200,7 @@ export default {
             token: sessionStorage.getItem('Authorization')
           }
         }).then(res => {
-          this.websiteInfo = res.data
+          this.websiteInfo = res.data.data
         })
       }
       else if (!this.$store.state.hasLogin){
@@ -209,14 +209,26 @@ export default {
         })
       }
       else {
-        this.$axios(
-            {
-              url: '/' + this.$route.params.username,
-              method: "get"
-            }
-        ).then(res => {
-          this.websiteInfo = res.data.data
-          console.log(res)
+        const self = this
+        self.$axios({
+          method: 'post',
+          url: 'api/user/getUserInfoByName/',
+          data: {
+            username: this.$route.params.username
+          }
+        }).then(res => {
+          switch (res.data.status) {
+            case -1:
+              this.$Notice.open({
+                title: '用户不存在'
+              })
+              this.$router.push({
+                path:`/`}, onComplete => { }, onAbort => { })
+              break
+            case 1:
+              this.websiteInfo = res.data.data
+              break
+          }
         })
       }
     },
@@ -306,6 +318,11 @@ export default {
           message: '取消输入'
         });
       });
+    },
+    created(){
+      this.getPersonInfo();
+      this.fetchList0();
+      this.fetchList1();
     },
     sloganClick() {
       console.log("slogan!!!")

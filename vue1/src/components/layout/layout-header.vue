@@ -40,7 +40,7 @@
                 <img class="menu-img" :src="$store.state.websiteInfo.avatar" >
                 <div class="childMenu" v-if="category.length">
                     <div class="sub-menu" v-for="item in profile" :key="item.title">
-                    <router-link :to="`${item.href + $store.state.username}`" @click.native="quit(item.title)"> {{item.title}}</router-link>
+                    <router-link :to="`${item.href + $store.state.websiteInfo.username}`" @click.native="quit(item.title)"> {{item.title}}</router-link>
                     </div>
                 </div>
             </div>
@@ -104,7 +104,6 @@
                   this.$store.commit('SET_LOG_STATE', true)
                   this.$store.commit('SET_SITE_INFO', res.data)
                   console.log(this.$store.state.websiteInfo.avatar)
-                  sessionStorage.setItem('Authorization', res.data)
                   sessionStorage.setItem('siteInfo', JSON.stringify(res.data))
                 }).catch(err => {
                   console.log(err)

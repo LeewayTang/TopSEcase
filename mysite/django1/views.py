@@ -140,7 +140,7 @@ class UserInfoView(viewsets.GenericViewSet):
         # data_json = json.loads(request.body)
         print(request.data)
         username = request.data.get('username')
-        queryset = User.objects.filter(key__exact=username)
+        queryset = User.objects.filter(username__exact=username)
         if queryset.count() == 0:
             return Response({'msg': 'User not exists', 'status': -1})
         user = User.objects.get(username__exact=username)
