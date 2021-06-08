@@ -14,18 +14,31 @@ const banners = [
     'https://s1.ax1x.com/2020/05/14/YDhoVg.jpg',
     'https://s1.ax1x.com/2020/05/14/YD4FR1.jpg'
 ]
-const List = [{
-    id: 0,
-    isTop: true,
-    banner: banners[0],
-    isHot: true,
-    pubTime: +Mock.Random.date('T'),
-    title: '岩王帝君一定很忙吧',
-    summary: '旅行者，要牛杂吗',
-    content: '',
-    viewsCount: 4045,
-    commentsCount: 99
-}]
+const List = [
+    {
+        id: 0,
+        isTop: true,
+        banner: banners[0],
+        isHot: true,
+        pubTime: +Mock.Random.date('T'),
+        title: '岩王帝君一定很忙吧',
+        summary: '旅行者，要牛杂吗',
+        content: '',
+        viewsCount: 4045,
+        commentsCount: 99
+    },
+    {
+        id: 1,
+        isTop: false,
+        banner: banners[0],
+        isHot: true,
+        pubTime: +Mock.Random.date('T'),
+        title: '从天台向下俯瞰暴力在原地打转',
+        summary: '被雨淋湿的唐装那股叹息很东方',
+        content: '',
+        viewsCount: 999,
+        commentsCount: 69
+    }]
 // for (let i = 0; i < count; i++) {
 //     List.push(Mock.mock({
 //         id: '@increment',

@@ -1,18 +1,21 @@
 <template>
 <div class="book-note-wrap">
   <div class="main-container">
-<!--    <new-info></new-info>-->
-    <log-page-main></log-page-main>
+    <div class="content" v-for="item in articles">
+      <el-card>
+        <post :post="item" :key="item.id"></post>
+      </el-card>
+    </div>
   </div>
   <div class="right">
     <div class="square-block" :style="{backgroundImage: 'url('+ bg+ ')'}">
       <div class="header">
       <router-link :to="/personalCenter/ + $store.state.username">
-        <img :src="webSiteInfo.avatar" alt="头像" class="circular">
-        <div class="user-name">{{ webSiteInfo.username }}</div>
+        <img :src="$store.state.websiteInfo.avatar" alt="头像" class="circular">
+        <div class="user-name">{{ $store.state.websiteInfo.username }}</div>
       </router-link>
         <div class="line"/>
-        <div class="slogan">{{webSiteInfo.slogan}}</div>
+        <div class="slogan">{{$store.state.websiteInfo.slogan}}</div>
       </div>
     </div>
     <div class="qz">
@@ -32,31 +35,44 @@ import LogPageMain from "../components/log/main";
 import NewInfo from "../components/log/newInfo";
 import SectionTitle from "../components/section-title";
 import {fetchSuggest} from "../api";
-
+import post from '../components/post'
 
 export default {
   name: "Log",
-  components: {SectionTitle, NewInfo, LogPageMain},
+  components: {SectionTitle, NewInfo, LogPageMain, post},
   data() {
     return {
-      webSiteInfo: {},
       bg: require('../assets/images/bg1.jpg'),
       sugList: [],
+      articles: [],
     }
   },
-  created() {
-    this.getWebSiteInfo()
+  mounted() {
     this.getSugList()
+    this.getArticles()
+    console.log(this.$store.state.websiteInfo)
   },
   methods:{
-    getWebSiteInfo(){
-      this.webSiteInfo = this.$store.state.websiteInfo
-    },
     getSugList() {
       fetchSuggest().then(res=>{
         this.sugList = res.follow || []
       })
-    }
+    },
+    getArticles() {
+      this.$axios(
+          {
+            url: '/post/list',
+            method: 'get'
+          }
+      ).then(res => {
+        // console.log(res)
+        this.articles = res.data.data.items || []
+        // console.log(this.articles)
+        // console.log('get articles ok')
+      }).catch(err => {
+        console.log(err)
+      })
+    },
   }
 }
 </script>
@@ -74,6 +90,7 @@ export default {
   margin-left: 10%;
   margin-right: 20%;
   margin-top: 10%;
+  color: #6cd0b9;
 }
 .book-note-wrap {
   width: 70%;
@@ -145,5 +162,8 @@ export default {
   padding: 20px;
   font-weight: bold;
   color: #3bb4f2;
+}
+.el-card{
+  margin-bottom: 10px;
 }
 </style>

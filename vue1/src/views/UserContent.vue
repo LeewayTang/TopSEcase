@@ -1,13 +1,21 @@
 <template>
   <div class="book-note-wrap">
     <div class="main-container">
-      <forum-page-main></forum-page-main>
+      <div class="body">
+        <div class="body-left">
+          <div class="content" v-for="item in articles">
+            <el-card>
+              <post :post="item" :key="item.id"></post>
+            </el-card>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="right">
       <el-card>
         <div class="title">圈内同学</div>
         <div class="sug-list" v-for="item in sugPeer">
-          <li class="sug-item"><router-link to="/">{{ item }}</router-link></li>
+          <li class="sug-item"><router-link :to="/personalCenter/ + item">{{ item }}</router-link></li>
         </div>
       </el-card>
 
@@ -32,13 +40,16 @@ import ForumList from "../components/forum/forumList"
 import ForumPageMain from "../components/forum/main";
 import Discussion from "./Discussion";
 import {fetchSuggest} from "../api";
+import post from '../components/post'
+
 export default {
   name: "UserContent",
-  components: {ForumPageMain, ForumList, SectionTitle, NewInfo, LogPageMain},
+  components: {ForumPageMain, ForumList, SectionTitle, NewInfo, LogPageMain, post},
   data() {
     return {
       sugPeer: [],
       sugQuanzi: [],
+      articles: [],
     }
   },
   methods: {
@@ -47,10 +58,26 @@ export default {
         this.sugPeer = res.peer || []
         this.sugQuanzi = res.quanzi || []
       })
-    }
+    },
+    getArticles() {
+      this.$axios(
+          {
+            url: '/post/list',
+            method: 'get'
+          }
+      ).then(res => {
+        // console.log(res)
+        this.articles = res.data.data.items || []
+        // console.log(this.articles)
+        // console.log('get articles ok')
+      }).catch(err => {
+        console.log(err)
+      })
+    },
   },
   mounted() {
-    this.getSugList()
+    this.getSugList();
+    this.getArticles()
   }
 }
 </script>
@@ -73,7 +100,7 @@ export default {
 }
 
 .s-block {
-  background-color: rgba(232,246,255,0.1);
+  background-color: rgba(232, 246, 255, 0.1);
   /*width: 30%;*/
   height: fit-content;
   margin-bottom: 50px;
@@ -103,6 +130,9 @@ export default {
   padding: 20px;
   font-weight: bold;
   color: #3bb4f2;
+}
+.el-card {
+  margin-bottom: 10px;
 }
 
 </style>
