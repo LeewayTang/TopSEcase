@@ -132,7 +132,6 @@ router.beforeResolve(async (to, from, next) => {
     }
     if (to.path !== from.path) {
         store.dispatch('setLoading', true);
-        console.log(to.path)
     }
     next();
 })

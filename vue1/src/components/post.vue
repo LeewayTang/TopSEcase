@@ -22,7 +22,7 @@
                     <div class="comnum">
                         <span>
                             <i class="iconfont iconcomment"></i>
-                            <a href="https://zhebk.cn/Web/Akina.html">{{post.commentsCount}} 条评论</a>
+                          <router-link :to="`/article/${post.id}`">{{post.commentsCount}} 条评论</router-link>>
                         </span>
                     </div>
                     <div class="views">
@@ -136,8 +136,8 @@
                 opacity: 0;
                 padding-top: 8px;
                 border-top: 1px solid #ddd;
-                -webkit-transform: translate3d(-150px, 0, 0);
-                transform: translate3d(-150px, 0, 0);
+                -webkit-transform: translate3d(-100px, 0, 0);
+                transform: translate3d(-100px, 0, 0);
                 visibility: hidden;
                 transition: .7s all ease;
                 -webkit-transition: .6s all ease;
@@ -165,8 +165,8 @@
     }
 
     .post-entry:hover footer.entry-footer .info-meta {
-        -webkit-transform: translate3d(-230px, 0, 0);
-        transform: translate3d(-230px, 0, 0);
+        -webkit-transform: translate3d(-100px, 110px, 0);
+        transform: translate3d(-100px, 110px, 0);
         opacity: 1;
         visibility: visible;
     }
