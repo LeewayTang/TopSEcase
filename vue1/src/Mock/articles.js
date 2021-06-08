@@ -96,7 +96,7 @@ export default [
                     '}\n' +
                     '```\n' +
                     '\n',
-                    comment: getComment()
+                    comments: getComment(count)
                 }
             }
         }
