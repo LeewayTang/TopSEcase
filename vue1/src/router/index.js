@@ -47,7 +47,7 @@ const routes = [
     {
         path: '/writeBlog',
         name: 'writeBlog',
-        component: () => import('../components/Write1.vue'),
+        component: () => import('../views/Write1.vue'),
         meta: { title: '创作笔记'}
     },
     {
