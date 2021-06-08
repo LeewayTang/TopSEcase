@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {getTimeInterval} from '../utils/index'
-import {fetchSiteInfo0,fetchSocial,fetchSiteInfo} from '@/api'
+import {fetchSiteInfo0,fetchSocial} from '@/api'
 import {fetchTravelerInfo} from "../api";
 
 Vue.use(Vuex)
@@ -56,17 +56,6 @@ const actions = {
     getSiteInfo0: ({commit,state}) =>{
         return new Promise(resolve => {
             fetchSiteInfo0().then(res => {
-                let data = res.data || {}
-                commit('SET_SITE_INFO',data);
-                resolve(data);
-            }).catch(err => {
-                resolve({});
-            })
-        })
-    },
-    getSiteInfo: ({commit,state}) =>{
-        return new Promise(resolve => {
-            fetchSiteInfo().then(res => {
                 let data = res.data || {}
                 commit('SET_SITE_INFO',data);
                 resolve(data);

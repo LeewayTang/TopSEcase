@@ -133,7 +133,7 @@
 
 <script>
 
-import {fetchList, fetchSiteInfo} from "../api";
+import {fetchList} from "../api";
 import post from '../components/post'
 export default {
   name: "PersonalCenter1",
