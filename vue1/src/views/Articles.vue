@@ -1,5 +1,8 @@
 <template>
     <div class="articles">
+      <div class="header" :style="{backgroundImage: 'url(' + articles.avatar + ')'}">
+        <div class="header-text">{{articles.header}}</div>
+      </div>
         <div class="site-content animate">
 <!--            &lt;!&ndash; 文章目录 &ndash;&gt;-->
 <!--            <div id="article-menus">-->
@@ -11,7 +14,7 @@
                 <article class="hentry">
                     <!-- 文章头部 -->
                   <div class="markdown-body">
-                    <VueMarkdown :source="value" v-highlight></VueMarkdown>
+                    <VueMarkdown :source="articles.content" v-highlight></VueMarkdown>
                   </div>
                     <!-- 文章底部 -->
                     <section-title>
@@ -36,7 +39,7 @@
                     </div>
                     <!--评论-->
                     <div class="comments">
-                        <comment v-for="item in comments" :key="item.comment.id" :comment="item.comment">
+                        <comment v-for="item in articles.comments" :key="item.comment.id" :comment="item.comment">
                             <template v-if="item.reply.length">
                                 <comment v-for="reply in item.reply" :key="reply.id" :comment="reply"></comment>
                             </template>
@@ -62,7 +65,8 @@
               showDonate: false,
               value: '',
               comments: [],
-              menus: []
+              menus: [],
+            articles: {}
           }
         },
         components: {
@@ -88,9 +92,14 @@
                 }
           },
           getArticle(){
-              fetchArticle().then(res =>{
-                this.value = res.data
-              }).catch(err=>{
+              this.$axios(
+                  {
+                    url: '/article/0',
+                  }
+              ).then(res => {
+                this.articles = res.data.data || []
+                console.log(res)
+              }).catch(err => {
                 console.log(err)
               })
           },
@@ -121,7 +130,7 @@
         //     this.createMenus()
         // },
         created() {
-            this.getComment()
+            // this.getComment()
             this.getArticle()
         }
     }
@@ -305,5 +314,16 @@
                 padding: 0 5px;
             }
         }
+    }
+    .header{
+      height: 400px;
+      width: 100%;
+      background-size: cover;
+    }
+    .header-text{
+      color: white;
+      font-size: xxx-large;
+      text-align: center;
+      padding-top: 200px;
     }
 </style>
