@@ -47,7 +47,7 @@ const routes = [
     {
         path: '/writeBlog',
         name: 'writeBlog',
-        component: () => import('../components/Write1.vue'),
+        component: () => import('../views/Write1.vue'),
         meta: { title: '创作笔记'}
     },
     {
@@ -132,6 +132,7 @@ router.beforeResolve(async (to, from, next) => {
     }
     if (to.path !== from.path) {
         store.dispatch('setLoading', true);
+        console.log(to.path)
     }
     next();
 })

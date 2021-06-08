@@ -24,15 +24,15 @@
       <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
     </div>
     </el-card>
-    <div id="editor">
+    <div id="editor" v-if="ready">
       <mavon-editor style="height: 100%"></mavon-editor>
+      <el-button type="primary" @click="saveTmp">
+        保存草稿
+      </el-button>
+      <el-button type="success" @click="submit">
+        提交笔记
+      </el-button>
     </div>
-    <el-button type="primary" @click="saveTmp">
-      保存草稿
-    </el-button>
-    <el-button type="success" @click="submit">
-      提交笔记
-    </el-button>
   </div>
 </template>
 <script>
@@ -47,11 +47,11 @@ export default {
   },
   data() {
     return {
-      dynamicTags: ['标签一', '标签二', '标签三'],
+      dynamicTags: [],
       inputVisible: false,
       inputValue: '',
-      // handbook: "#### how to use mavonEditor in nuxt.js"
-      title: ''
+      title: '',
+      ready: false,
     }
   },
   methods: {
@@ -81,7 +81,15 @@ export default {
     saveTmp() {
       // 同样不会
       // mavonEditor.save()
+    },
+    waitSomeTime() {
+      setTimeout(() => {
+        this.ready = true
+      }, 1500)
     }
+  },
+  mounted() {
+    this.waitSomeTime()
   }
 }
 </script>
