@@ -59,6 +59,16 @@ class TokenSerializer(serializers.ModelSerializer):
         )
 
 
+class UsernameSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=True, max_length=16)
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+        )
+
+
 class RegisterInfoSerializer(serializers.ModelSerializer):
     uid = serializers.CharField(required=True, max_length=16)
     pwd = serializers.CharField(required=True, max_length=16)

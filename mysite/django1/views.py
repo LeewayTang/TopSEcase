@@ -133,6 +133,26 @@ class UserInfoView(viewsets.GenericViewSet):
         return Response(Ret)
 
 
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=UsernameSerializer)
+    @action(methods=['POST'], detail=False)
+    def getUserInfoByName(self, request):
+        # data_json = json.loads(request.body)
+        print(request.data)
+        username = request.data.get('username')
+        queryset = User.objects.filter(key__exact=username)
+        if queryset.count() == 0:
+            return Response({'msg': 'User not exists', 'status': -1})
+        user = User.objects.get(username__exact=username)
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title}
+        Ret = {}
+        Ret.update({'msg': 'success'})
+        Ret.update({'data': ret})
+        Ret.update({'status': 1})
+        return Response(Ret)
+
+
 #
 #     @swagger_auto_schema(responses={200: ""},
 #                          request_body=UidInfoSerializer)
@@ -254,6 +274,12 @@ class LoginRegister(viewsets.GenericViewSet):
         key = generate_random_str()
         Token.objects.create(key=key, usr=user)
         ret = {'msg': 'success', 'status': 1, 'token': key}
+        ret.update({'avatar': user.avatar})
+        ret.update({'username': user.username})
+        ret.update({'title': user.title})
+        ret.update({'quanzi': [{'name': 'BUAA'}]})
+        ret.update({'slogan': user.slogan})
+        ret.update({'name': 'MoYun'})
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""})
