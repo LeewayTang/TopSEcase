@@ -83,14 +83,23 @@
             }
           },
           travelerLogin(){
-            this.$store.dispatch('getTravelerInfo').then(data =>{
-              this.$store.commit('SET_LOG_STATE', true)
-              this.$store.commit('SET_SITE_INFO', data)
-              sessionStorage.setItem('Authorization', 'I_am_a_traveler.')
-              sessionStorage.setItem('token', data.token)
-              sessionStorage.setItem('siteInfo', JSON.stringify(data))
-              //localStorage.setItem('Authorization', "data.token")
-            })
+            const self = this
+            self.$axios({
+                method: 'get',
+                url: 'api/login_register/loginTraveler/',
+                data: {}
+              }).then(res => {
+                  sessionStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
+                  console.log(res.data.token)
+                  console.log(res.data.avatar)
+                  this.$store.commit('SET_LOG_STATE', true)
+                  this.$store.commit('SET_SITE_INFO', res.data)
+                  console.log(this.$store.state.websiteInfo.avatar)
+                  sessionStorage.setItem('Authorization', res.data)
+                  sessionStorage.setItem('siteInfo', JSON.stringify(res.data))
+                }).catch(err => {
+                  console.log(err)
+                })
             this.$Notice.open({
               title: '游客成功登录'
             })

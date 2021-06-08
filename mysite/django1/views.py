@@ -261,6 +261,11 @@ class LoginRegister(viewsets.GenericViewSet):
     def loginTraveler(self, request):
         Uid = 'traveler'
         Pwd = 'traveler'
+        queryset = User.objects.filter(username__exact=Uid)
+        if queryset.count() == 0:
+            time = datetime.date.today()
+            Mail = 'travel@example.com'
+            User.objects.create(username=Uid, pwd=Pwd, mail=Mail, createTime=time)
         user = User.objects.get(username__exact=Uid, pwd__exact=Pwd)
         token = Token.objects.filter(usr__exact=user)
         if token.count() == 0:

@@ -93,13 +93,14 @@ export default{
                 this.$Notice.open({
                   title: '成功登录'
                 })
-                localStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
                 sessionStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
                 this.$store.commit('setUser', res.data.user)
+                this.$store.commit('SET_LOG_STATE', true)
                 this.$router.push({
                    path:`/`}, onComplete => { }, onAbort => { })
                 break
               case -1:
+                this.$store.commit('SET_LOG_STATE', false)
                 this.$Notice.open({
                   title: '用户名或密码错误'
                 })

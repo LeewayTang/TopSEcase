@@ -6,16 +6,16 @@
                 <div class="focusinfo">
                     <!-- 头像 -->
                     <div class="header-tou">
-                      <router-link :to="/personalCenter/ + this.$store.state.username"><img :src="websiteInfo.avatar"></router-link>
+                      <router-link :to="/personalCenter/ + this.$store.state.username"><img :src="this.$store.state.websiteInfo.avatar"></router-link>
                       <div class="header-name">
-                        {{websiteInfo.username}}  |  {{websiteInfo.title}}
+                        {{this.$store.state.websiteInfo.username}}  |  {{this.$store.state.websiteInfo.title}}
                       </div>
 
-                      <div class="qz"><div class="qz" v-for="qz in websiteInfo.quanzi">|  {{qz.name}}  </div> |</div>
+                      <div class="qz"><div class="qz" v-for="qz in this.$store.state.websiteInfo.quanzi">|  {{qz.name}}  </div> |</div>
                     </div>
                     <!-- 简介 -->
                     <div class="header-info">
-                        <p>{{websiteInfo.slogan}}</p>
+                        <p>{{this.$store.state.websiteInfo.slogan}}</p>
                     </div>
                     <!-- 社交信息 -->
 <!--                    <div class="top-social">-->
@@ -66,8 +66,15 @@
             },
             getWebSiteInfo(){
                 if(this.$store.state.hasLogin){
-                  this.$store.dispatch('getSiteInfo').then(data =>{
-                    this.websiteInfo = data
+                  const self = this
+                  self.$axios({
+                    method: 'post',
+                    url: 'api/user/getUserInfo/',
+                    data: {
+                      token: sessionStorage.getItem('Authorization')
+                    }
+                  }).then(res => {
+                    this.websiteInfo = res.data
                   })
                 }else{
                   this.$store.dispatch('getSiteInfo0').then(data =>{

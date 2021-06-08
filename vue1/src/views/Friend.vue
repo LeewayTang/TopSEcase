@@ -51,9 +51,16 @@
                 })
             },
             getWebSiteInfo(){
-                this.$store.dispatch('getSiteInfo').then(data =>{
-                    this.websiteInfo = data
-                })
+              const self = this
+              self.$axios({
+                method: 'post',
+                url: 'api/user/getUserInfo/',
+                data: {
+                  token: sessionStorage.getItem('Authorization')
+                }
+              }).then(res => {
+                this.websiteInfo = res.data
+              })
             }
         },
       mounted() {

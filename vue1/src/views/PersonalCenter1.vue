@@ -128,6 +128,7 @@
     </div>
   </el-dialog>
   </div>
+</div>
 </template>
 
 <script>
@@ -191,8 +192,15 @@ export default {
   methods: {
     getPersonInfo() {
       if(this.$store.state.hasLogin  && this.$store.state.username === this.$route.params.username){
-        this.$store.dispatch('getSiteInfo').then(data =>{
-          this.websiteInfo = data
+        const self = this
+        self.$axios({
+          method: 'post',
+          url: 'api/user/getUserInfo/',
+          data: {
+            token: sessionStorage.getItem('Authorization')
+          }
+        }).then(res => {
+          this.websiteInfo = res.data
         })
       }
       else if (!this.$store.state.hasLogin){
@@ -390,12 +398,6 @@ export default {
     this.fetchList1();
     // console.log(this.$route.params);
   }
-},
-mounted() {
-  this.getPersonInfo();
-  this.fetchList0();
-  this.fetchList1();
-}
 }
 </script>
 
