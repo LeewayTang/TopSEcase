@@ -77,7 +77,7 @@ export default{
       this.existed = false
     },
     login () {
-      const self = this
+      let self = this;
       if (self.form.useremail !== '' && self.form.userpwd !== '') {
         self.$axios({
           method: 'post',
@@ -96,6 +96,7 @@ export default{
                 sessionStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
                 this.$store.commit('SET_LOG_STATE', true)
                 this.$store.commit('SET_SITE_INFO', res.data)
+                sessionStorage.setItem('siteInfo', JSON.stringify(res.data))
                 this.$router.push({
                    path:`/`}, onComplete => { }, onAbort => { })
                 break
@@ -117,7 +118,7 @@ export default{
       }
     },
     register () {
-      const self = this
+      let self = this;
       if (self.form.username !== '' && self.form.useremail !== '' && self.form.userpwd !== '') {
         self.$axios({
           method: 'post',

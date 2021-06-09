@@ -70,7 +70,7 @@
             },
             getWebSiteInfo(){
                 if(this.$store.state.hasLogin){
-                  const self = this
+                  let self = this
                   self.$axios({
                     method: 'post',
                     url: 'api/user/getUserInfo/',

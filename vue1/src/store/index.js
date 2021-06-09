@@ -64,17 +64,6 @@ const actions = {
             })
         })
     },
-    getTravelerInfo: ({commit,state}) =>{
-        return new Promise(resolve => {
-            fetchTravelerInfo().then(res => {
-                let data = res.data || {}
-                commit('SET_SITE_INFO',data);
-                resolve(data);
-            }).catch(err => {
-                resolve({});
-            })
-        })
-    },
     getSocials: ({commit,state}) =>{
         return new Promise((resolve => {
             if (state.socials){

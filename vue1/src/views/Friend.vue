@@ -51,7 +51,7 @@
                 })
             },
             getWebSiteInfo(){
-              const self = this
+              let self = this
               self.$axios({
                 method: 'post',
                 url: 'api/user/getUserInfo/',

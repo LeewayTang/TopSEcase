@@ -64,22 +64,22 @@
       }
     },
     //监听功能，优秀
-    // computed:{
-    //   userInfo(){
-    //     return this.$store.state.websiteInfo;
-    //   },
-    //   token(){
-    //     return sessionStorage.getItem('Authorization');
-    //   }
-    // },
-    // watch:{
-    //   userInfo(x){
-    //     console.log('userInfo changed: '+x.username);
-    //   },
-    //   token(x){
-    //     console.log('token changed: '+x);
-    //   }
-    // },
+    computed:{
+      userInfo(){
+        return this.$store.state.websiteInfo;
+      },
+      token(){
+        return sessionStorage.getItem('Authorization');
+      }
+    },
+    watch:{
+      userInfo(x){
+        console.log('userInfo changed: '+x.username);
+      },
+      token(x){
+        console.log('token changed: '+x);
+      }
+    },
     created(){
       window.addEventListener('scroll', this.watchScroll)
       this.fetchCategory()
@@ -93,7 +93,7 @@
       quit(v){
         if(v === '退出'){
           this.$confirm('你真的要退出吗？', '将要退出账号').then(()=>{
-            const self = this
+            let self = this
             self.$axios({
               method: 'post',
               url: 'api/login_register/logout/',
@@ -116,7 +116,7 @@
         }
       },
       travelerLogin(){
-        const self = this
+        let self = this
         self.$axios({
             method: 'get',
             url: 'api/login_register/loginTraveler/',
@@ -150,6 +150,7 @@
           })
         }else{
           this.$store.commit('SET_LOG_STATE',true)
+          this.$store.commit('SET_SITE_INFO', JSON.parse(sessionStorage.getItem('siteInfo')))
         }
       },
       watchScroll() {

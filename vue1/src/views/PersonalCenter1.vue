@@ -191,8 +191,8 @@ export default {
   },
   methods: {
     getPersonInfo() {
-      const self = this
-      if(self.$store.state.hasLogin  && self.$store.state.websiteInfo.username === self.$route.params.username){
+      if(this.$store.state.hasLogin  && this.$store.state.websiteInfo.username === this.$route.params.username){
+        let self = this
         self.$axios({
           method: 'post',
           url: 'api/user/getUserInfo/',
@@ -203,13 +203,15 @@ export default {
           self.websiteInfo = res.data.data
         })
       }
-      else if (!self.$store.state.hasLogin){
-        self.$store.dispatch('getSiteInfo0').then(data =>{
-          self.websiteInfo = data
+      else if (!this.$store.state.hasLogin){
+        this.$store.dispatch('getSiteInfo0').then(data =>{
+          this.websiteInfo = data
         })
       }
       else {
+        let self = this
         console.log('getPersonInfo = ' + self.$route.params.username)
+        console.log('websiteInfo = ' + self.$store.state.websiteInfo.username)
         self.$axios({
           method: 'post',
           url: 'api/user/getUserInfoByName/',
@@ -288,7 +290,7 @@ export default {
     },
     renameClick() {
       console.log("rename!!!")
-      const self = this
+      let self = this
       self.$prompt('请输入您想更改的昵称', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -305,6 +307,7 @@ export default {
           switch (res.data.status){
             case 1:
               self.$store.commit('SET_SITE_INFO', res.data.data)
+              sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
               self.$message({
                 type: 'success',
                 message: '你的昵称已更改为' + value
