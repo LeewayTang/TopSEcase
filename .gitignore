@@ -1,4 +1,4 @@
 
 .DS_Store
-.cpython-39.pyc
+*.cpython-39.pyc
 vue1/src/Mock/articles.js
