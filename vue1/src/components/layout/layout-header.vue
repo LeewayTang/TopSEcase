@@ -50,132 +50,138 @@
 </template>
 
 <script>
-    import HeaderSearch from '@/components/header-search'
-    import {fetchCategory, fetchProfile} from '../../api'
-    export default {
-        name: "layout-header",
-        components: {HeaderSearch},
-        data() {
-            return {
-                lastScrollTop: 0,
-                category: [],
-                profile:[],
-                mobileShow: false
-            }
-        },
-        //监听功能，优秀
-        // computed:{
-        //   userInfo(){
-        //     return this.$store.state.websiteInfo;
-        //   },
-        //   token(){
-        //     return sessionStorage.getItem('Authorization');
-        //   }
-        // },
-        // watch:{
-        //   userInfo(x){
-        //     console.log('userInfo changed: '+x.username);
-        //   },
-        //   token(x){
-        //     console.log('token changed: '+x);
-        //   }
-        // },
-        created(){
-            window.addEventListener('scroll', this.watchScroll)
-            this.fetchCategory()
-            this.fetchProfile()
-            this.checkLogin()
-        },
-        beforeDestroy () {
-            window.removeEventListener("scroll", this.watchScroll)
-        },
-        methods: {
-          quit(v){
-            if(v === '退出'){
-              this.$confirm('你真的要退出吗？', '将要退出账号').then(()=>{
-                const self = this
-                self.$axios({
-                  method: 'post',
-                  url: 'api/login_register/logout/',
-                  data: {
-                    token: sessionStorage.getItem('Authorization'),
-                  }
-                }).then(res => {}).catch(err => {console.log(err)})
-                this.$store.commit('SET_LOG_STATE', false)
-                sessionStorage.removeItem('Authorization')
-                sessionStorage.removeItem('siteInfo')
-              })
-
-            }
-          },
-          travelerLogin(){
+  import HeaderSearch from '@/components/header-search'
+  import {fetchCategory, fetchProfile} from '../../api'
+  export default {
+    name: "layout-header",
+    components: {HeaderSearch},
+    data() {
+      return {
+        lastScrollTop: 0,
+        category: [],
+        profile:[],
+        mobileShow: false
+      }
+    },
+    //监听功能，优秀
+    // computed:{
+    //   userInfo(){
+    //     return this.$store.state.websiteInfo;
+    //   },
+    //   token(){
+    //     return sessionStorage.getItem('Authorization');
+    //   }
+    // },
+    // watch:{
+    //   userInfo(x){
+    //     console.log('userInfo changed: '+x.username);
+    //   },
+    //   token(x){
+    //     console.log('token changed: '+x);
+    //   }
+    // },
+    created(){
+      window.addEventListener('scroll', this.watchScroll)
+      this.fetchCategory()
+      this.fetchProfile()
+      this.checkLogin()
+    },
+    beforeDestroy () {
+        window.removeEventListener("scroll", this.watchScroll)
+    },
+    methods: {
+      quit(v){
+        if(v === '退出'){
+          this.$confirm('你真的要退出吗？', '将要退出账号').then(()=>{
             const self = this
             self.$axios({
-                method: 'get',
-                url: 'api/login_register/loginTraveler/',
-                data: {}
-              }).then(res => {
-                  sessionStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
-                  this.$store.commit('SET_LOG_STATE', true)
-                  this.$store.commit('SET_SITE_INFO', res.data)
-                  sessionStorage.setItem('siteInfo', JSON.stringify(res.data))
-                  return;//这个可能有用可能没用
-                }).then(()=>{
-              // this.$store.state.hasLogin = true
-                  self.$router.push({
-                        path:'/'
-                      },
-                      // 没有这两句会Uncaught (in promise) undefined
-                      onComplete => {},
-                      onAbort => {}
-                  )
-                }).catch(err => {
-                  console.log(err)
-                })
-            this.$Notice.open({
-              title: '游客成功登录'
-            })
-          },
-          checkLogin(){
-            if(sessionStorage.getItem('Authorization')===null||sessionStorage.getItem('Authorization')===''){
-              this.$store.commit('SET_LOG_STATE',false)
-              this.$store.dispatch('getSiteInfo0').then(data =>{
-                this.$store.commit('SET_SITE_INFO', data)
-              })
-            }else{
-              this.$store.commit('SET_LOG_STATE',true)
-              this.$store.commit('SET_SITE_INFO', JSON.parse(sessionStorage.getItem('siteInfo')))
-            }
-          },
-          watchScroll() {
-              let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-              if (scrollTop===0){
-                  this.fixed = false;
-              } else if (scrollTop>=this.lastScrollTop){
-                  this.fixed = false;
-                  this.hidden = true;
-              } else {
-                  this.fixed = true
-                  this.hidden = false
+              method: 'post',
+              url: 'api/login_register/logout/',
+              data: {
+                token: sessionStorage.getItem('Authorization'),
               }
-              this.lastScrollTop = scrollTop
-            },
-            fetchCategory() {
-                fetchCategory().then(res => {
-                    this.category = res.data
-                }).catch(err => {
-                    console.log(err)
-                })
-            },
-            fetchProfile(){
-              fetchProfile().then(res=>{
-                  this.profile = res.data
-              }).catch(err => {
-                console.log(err)
-              })
-            }
+            }).then(res => {
+              self.$store.commit('SET_LOG_STATE', false)
+              sessionStorage.removeItem('Authorization')
+              sessionStorage.removeItem('siteInfo')
+              self.$router.push({
+                path:'/'
+              },
+              // 没有这两句会Uncaught (in promise) undefined
+              onComplete => {},
+              onAbort => {}
+              )
+            }).catch(err => {console.log(err)})
+          })
         }
+      },
+      travelerLogin(){
+        const self = this
+        self.$axios({
+            method: 'get',
+            url: 'api/login_register/loginTraveler/',
+            data: {}
+        }).then(res => {
+              sessionStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
+              this.$store.commit('SET_LOG_STATE', true)
+              this.$store.commit('SET_SITE_INFO', res.data)
+              sessionStorage.setItem('siteInfo', JSON.stringify(res.data))
+              return;//这个可能有用可能没用
+        }).then(()=>{
+          self.$router.push({
+                path:'/'
+              },
+              // 没有这两句会Uncaught (in promise) undefined
+              onComplete => {},
+              onAbort => {}
+          )
+        }).catch(err => {
+          console.log(err)
+        })
+        this.$Notice.open({
+          title: '游客成功登录'
+        })
+      },
+      checkLogin(){
+        if(sessionStorage.getItem('Authorization')===null||sessionStorage.getItem('Authorization')===''){
+          this.$store.commit('SET_LOG_STATE',false)
+          this.$store.dispatch('getSiteInfo0').then(data =>{
+            this.$store.commit('SET_SITE_INFO', data)
+          })
+        }else{
+          this.$store.commit('SET_LOG_STATE',true)
+          this.$store.commit('SET_SITE_INFO', JSON.parse(sessionStorage.getItem('siteInfo')))
+        }
+      },
+      watchScroll() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        if (scrollTop===0){
+          this.fixed = false;
+        } else if (scrollTop>=this.lastScrollTop){
+          this.fixed = false;
+          this.hidden = true;
+        } else {
+          this.fixed = true
+          this.hidden = false
+        }
+        this.lastScrollTop = scrollTop
+      },
+      fetchCategory() {
+        fetchCategory().then(res => {
+          this.category = res.data
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      fetchProfile(){
+        fetchProfile().then(res=>{
+          this.profile = res.data
+        }).catch(err => {
+          console.log(err)
+        })
+      }
     }
+  }
 </script>
 
 <style scoped lang="less">
