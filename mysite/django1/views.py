@@ -180,6 +180,29 @@ class UserInfoView(viewsets.GenericViewSet):
         Ret.update({'status': 1})
         return Response(Ret)
 
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=SetUserSloganSerializer)
+    @action(methods=['POST'], detail=False)
+    def setUserSlogan(self, request):
+        token = request.data.get('token')
+        slogan = request.data.get('slogan')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'status': -1})
+        queryset = Token.objects.get(key__exact=token)
+        user = queryset.usr
+        if user.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -3})
+        user.slogan = slogan
+        user.save()
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
+        print(ret)
+        Ret = {}
+        Ret.update({'msg': 'success'})
+        Ret.update({'data': ret})
+        Ret.update({'status': 1})
+        return Response(Ret)
 #
 #     @swagger_auto_schema(responses={200: ""},
 #                          request_body=UidInfoSerializer)

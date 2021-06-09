@@ -343,7 +343,6 @@ export default {
         .catch(err => {
           console.log(err)
         })
-        // 数据这块没整明白，我先打个样
       }).catch(() => {
         self.$message({
           type: 'info',
@@ -358,30 +357,52 @@ export default {
     },
     sloganClick() {
       console.log("slogan!!!")
-      this.$prompt('请输入您想更改的个性签名', '提示', {
+      let self = this
+      self.$prompt('请输入您想更改的个性签名', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(({value}) => {
-        this.$message({
-          type: 'success',
-          message: '你的昵称已更改为' + value
-        });
-        // this.$axios({
-        //   url: '/site1',
-        //   method: 'post',
-        //   data: {
-        //     username: this.websiteInfo.username
-        //   }
-        // })
-        // .then(res => {
-        //   console.log('/site1', res.data)
-        //   return res.data
-        // })
-        // .catch(err => {
-        //   console.log(err)
-        // })
-        // 数据这块没整明白，我先打个样
-        this.websiteInfo.slogan = value
+        self.$axios({
+          url: 'api/user/setUserSlogan/',
+          method: 'post',
+          data: {
+            token: sessionStorage.getItem('Authorization'),
+            slogan: value
+          }
+        })
+          .then(res => {
+            switch (res.data.status){
+              case 1:
+                self.$store.commit('SET_SITE_INFO', res.data.data)
+                sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
+                self.$message({
+                  type: 'success',
+                  message: '你的签名已更改为' + value
+                });
+                self.websiteInfo = self.$store.state.websiteInfo
+                self.$router.push({
+                  path: '/personalCenter/' + self.websiteInfo.username
+                })
+                break
+              case -1:
+                self.$message({
+                  type: 'error',
+                  message: '请登录'
+                });
+                self.$router.push(
+                    {path:`/login`}, onComplete => { }, onAbort => { })
+                break
+              case -3:
+                self.$message({
+                  type: 'error',
+                  message: '游客账号禁止修改签名'
+                });
+                break
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }).catch(() => {
         this.$message({
           type: 'info',
