@@ -1,28 +1,17 @@
+import base64
 import datetime
-
-from django.core.mail import send_mail
-from django.db.models import Max
-from django.http import JsonResponse
-from drf_yasg.openapi import Parameter, IN_PATH, TYPE_STRING, IN_QUERY
-from rest_framework import viewsets
-from rest_framework import generics
-from django1.models import *
-from django1.serializers import *
-from django.core import serializers
-from drf_yasg import openapi
-import random
-import string
 import json
-from django.utils.decorators import method_decorator
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from mysite.settings import MEDIA_ROOT
-from rest_framework import status
-from rest_framework import mixins
-from rest_framework.decorators import action
-import mysite.settings
+import random
 import re
+import string
+
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from django1.serializers import *
+from mysite.settings import MEDIA_ROOT, MEDIA_URL
 
 
 # Create your views here.
@@ -123,7 +112,7 @@ class UserInfoView(viewsets.GenericViewSet):
         if queryset.count() == 0:
             return Response({'msg': 'Token not exists', 'status': -1})
         user = Token.objects.get(key__exact=token).usr
-        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
         print(ret)
         Ret = {}
@@ -144,7 +133,7 @@ class UserInfoView(viewsets.GenericViewSet):
         if queryset.count() == 0:
             return Response({'msg': 'User not exists', 'status': -1})
         user = User.objects.get(username__exact=username)
-        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
         Ret = {}
         Ret.update({'msg': 'success'})
@@ -171,7 +160,7 @@ class UserInfoView(viewsets.GenericViewSet):
             return Response({'msg': 'You can\'t do this', 'status': -3})
         user.username = username
         user.save()
-        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
         print(ret)
         Ret = {}
@@ -195,7 +184,38 @@ class UserInfoView(viewsets.GenericViewSet):
             return Response({'msg': 'You can\'t do this', 'status': -3})
         user.slogan = slogan
         user.save()
-        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
+        print(ret)
+        Ret = {}
+        Ret.update({'msg': 'success'})
+        Ret.update({'data': ret})
+        Ret.update({'status': 1})
+        return Response(Ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=SetUserAvatarSerializer)
+    @action(methods=['POST'], detail=False)
+    def setUserAvatar(self, request):
+        token = request.data.get('token')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'status': -1})
+        queryset = Token.objects.get(key__exact=token)
+        user = queryset.usr
+        if user.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -3})
+        avB = request.data.get('avatarBase64')
+        avatarBase64 = base64.b64decode(re.sub('^data:image/.*;base64,', '', avB))
+        key = generate_random_str()
+        form = avB.split(';')[0][11:]
+        print(form)
+        file = open(MEDIA_ROOT + '/' + str(user.id) + '/avatar/' + key + '.' + form, 'wb')
+        file.write(avatarBase64)
+        file.close()
+        user.avatar = MEDIA_URL + str(user.id) + '/avatar/' + key + '.' + form
+        user.save()
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
         print(ret)
         Ret = {}

@@ -439,7 +439,50 @@ export default {
     },
     //确认截图,上传
     confirm(type) {
-      this.$refs.cropper.getCropData(res => {
+      let self = this
+      self.$refs.cropper.getCropData(res => {
+        self.$axios({
+          url: 'api/user/setUserAvatar/',
+          method: 'post',
+          data: {
+            token: sessionStorage.getItem('Authorization'),
+            avatarBase64: res
+          }
+        })
+          .then(res => {
+            switch (res.data.status){
+              case 1:
+                self.$store.commit('SET_SITE_INFO', res.data.data)
+                sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
+                console.log(res.data.data.avatar)
+                self.$message({
+                  type: 'success',
+                  message: '你的头像已更改'
+                });
+                self.websiteInfo = self.$store.state.websiteInfo
+                self.$router.push({
+                  path: '/personalCenter/' + self.websiteInfo.username
+                })
+                break
+              case -1:
+                self.$message({
+                  type: 'error',
+                  message: '请登录'
+                });
+                self.$router.push(
+                    {path:`/login`}, onComplete => { }, onAbort => { })
+                break
+              case -3:
+                self.$message({
+                  type: 'error',
+                  message: '游客账号禁止修改头像'
+                });
+                break
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
         console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
       });
     },

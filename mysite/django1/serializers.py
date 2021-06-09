@@ -83,6 +83,16 @@ class SetUserSloganSerializer(serializers.ModelSerializer):
         )
 
 
+class SetUserAvatarSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True, max_length=16)
+
+    class Meta:
+        model = User
+        fields = (
+            'token',
+        )
+
+
 
 class UsernameSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True, max_length=16)
