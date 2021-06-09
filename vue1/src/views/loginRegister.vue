@@ -94,8 +94,8 @@ export default{
                   title: '成功登录'
                 })
                 sessionStorage.setItem('Authorization', /* "Bearer " + */ res.data.token)
-                this.$store.commit('setUser', res.data.user)
                 this.$store.commit('SET_LOG_STATE', true)
+                this.$store.commit('SET_SITE_INFO', res.data)
                 this.$router.push({
                    path:`/`}, onComplete => { }, onAbort => { })
                 break
