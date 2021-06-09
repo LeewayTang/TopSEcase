@@ -102,7 +102,7 @@ export default{
               case -1:
                 this.$store.commit('SET_LOG_STATE', false)
                 this.$Notice.open({
-                  title: '用户名或密码错误'
+                  title: '邮箱或密码错误'
                 })
                 break
             }

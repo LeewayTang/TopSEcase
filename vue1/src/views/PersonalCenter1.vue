@@ -191,8 +191,8 @@ export default {
   },
   methods: {
     getPersonInfo() {
-      if(this.$store.state.hasLogin  && this.$store.state.websiteInfo.username === this.$route.params.username){
-        const self = this
+      const self = this
+      if(self.$store.state.hasLogin  && self.$store.state.websiteInfo.username === self.$route.params.username){
         self.$axios({
           method: 'post',
           url: 'api/user/getUserInfo/',
@@ -200,33 +200,33 @@ export default {
             token: sessionStorage.getItem('Authorization')
           }
         }).then(res => {
-          this.websiteInfo = res.data.data
+          self.websiteInfo = res.data.data
         })
       }
-      else if (!this.$store.state.hasLogin){
-        this.$store.dispatch('getSiteInfo0').then(data =>{
-          this.websiteInfo = data
+      else if (!self.$store.state.hasLogin){
+        self.$store.dispatch('getSiteInfo0').then(data =>{
+          self.websiteInfo = data
         })
       }
       else {
-        const self = this
+        console.log('getPersonInfo = ' + self.$route.params.username)
         self.$axios({
           method: 'post',
           url: 'api/user/getUserInfoByName/',
           data: {
-            username: this.$route.params.username
+            username: self.$route.params.username
           }
         }).then(res => {
           switch (res.data.status) {
             case -1:
-              this.$Notice.open({
+              self.$Notice.open({
                 title: '用户不存在'
               })
-              this.$router.push({
+              self.$router.push({
                 path:`/`}, onComplete => { }, onAbort => { })
               break
             case 1:
-              this.websiteInfo = res.data.data
+              self.websiteInfo = res.data.data
               break
           }
         })
@@ -288,32 +288,61 @@ export default {
     },
     renameClick() {
       console.log("rename!!!")
-      this.$prompt('请输入您想更改的昵称', '提示', {
+      const self = this
+      self.$prompt('请输入您想更改的昵称', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(({value}) => {
-        this.$message({
-          type: 'success',
-          message: '你的昵称已更改为' + value
-        });
-        // this.$axios({
-        //   url: '/site1',
-        //   method: 'post',
-        //   data: {
-        //     username: this.websiteInfo.username
-        //   }
-        // })
-        // .then(res => {
-        //   console.log('/site1', res.data)
-        //   return res.data
-        // })
-        // .catch(err => {
-        //   console.log(err)
-        // })
+        self.$axios({
+          url: 'api/user/setUserName/',
+          method: 'post',
+          data: {
+            token: sessionStorage.getItem('Authorization'),
+            username: value
+          }
+        })
+        .then(res => {
+          switch (res.data.status){
+            case 1:
+              self.$store.commit('SET_SITE_INFO', res.data.data)
+              self.$message({
+                type: 'success',
+                message: '你的昵称已更改为' + value
+              });
+              self.websiteInfo = self.$store.state.websiteInfo
+              self.$router.push({
+                path: '/personalCenter/' + self.websiteInfo.username
+              })
+              break
+            case -1:
+              self.$message({
+                type: 'error',
+                message: '请登录'
+              });
+              self.$router.push(
+                  {path:`/login`}, onComplete => { }, onAbort => { })
+              break
+            case -2:
+              self.$message({
+                type: 'error',
+                message: '用户名已存在'
+              });
+              break
+            case -3:
+              self.$message({
+                type: 'error',
+                message: '游客账号禁止修改姓名'
+              });
+              break
+          }
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
         // 数据这块没整明白，我先打个样
-        this.websiteInfo.username = value
       }).catch(() => {
-        this.$message({
+        self.$message({
           type: 'info',
           message: '取消输入'
         });

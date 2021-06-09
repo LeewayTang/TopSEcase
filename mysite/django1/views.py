@@ -124,7 +124,7 @@ class UserInfoView(viewsets.GenericViewSet):
             return Response({'msg': 'Token not exists', 'status': -1})
         user = Token.objects.get(key__exact=token).usr
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
-               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title}
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
         print(ret)
         Ret = {}
         Ret.update({'msg': 'success'})
@@ -145,13 +145,40 @@ class UserInfoView(viewsets.GenericViewSet):
             return Response({'msg': 'User not exists', 'status': -1})
         user = User.objects.get(username__exact=username)
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
-               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title}
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
         Ret.update({'status': 1})
         return Response(Ret)
 
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=SetUserNameSerializer)
+    @action(methods=['POST'], detail=False)
+    def setUserName(self, request):
+        token = request.data.get('token')
+        username = request.data.get('username')
+        print(token)
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'status': -1})
+        queryset = User.objects.filter(username__exact=username)
+        if queryset.count() != 0:
+            return Response({'msg': 'Username exists', 'status': -2})
+
+        user = Token.objects.get(key__exact=token).usr
+        if user.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -3})
+        user.username = username
+        user.save()
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': '/media/1/file/dbf2c6b8.jpeg',
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
+        print(ret)
+        Ret = {}
+        Ret.update({'msg': 'success'})
+        Ret.update({'data': ret})
+        Ret.update({'status': 1})
+        return Response(Ret)
 
 #
 #     @swagger_auto_schema(responses={200: ""},
@@ -257,16 +284,14 @@ class LoginRegister(viewsets.GenericViewSet):
         data_json = json.loads(request.body, strict=False)
         Uid = data_json.get('uid')
         Pwd = data_json.get('pwd')
-        queryset = User.objects.filter(username__exact=Uid)  # .filter(uid=Uid, mail=Mail, pwd=Pwd)
         queryset_mail = User.objects.filter(mail__exact=Uid)
-        if queryset.count() == 0 and queryset_mail.count() == 0:
-            return Response({'msg': '用户名或邮箱不正确', 'status': -1})
-        queryset = User.objects.filter(username__exact=Uid, pwd__exact=Pwd)
+        if queryset_mail.count() == 0:
+            return Response({'msg': '邮箱不正确', 'status': -1})
         queryset_mail = User.objects.filter(mail__exact=Uid, pwd__exact=Pwd)
-        if queryset.count() == 0 and queryset_mail.count() == 0:
+        if queryset_mail.count() == 0:
             return Response({'msg': '密码不正确', 'status': -1})
         # (user_list, many=True)
-        user = User.objects.get(username__exact=Uid, pwd__exact=Pwd)
+        user = User.objects.get(mail__exact=Uid, pwd__exact=Pwd)
         token = Token.objects.filter(usr__exact=user)
         if token.count() != 0:
             print('exists')

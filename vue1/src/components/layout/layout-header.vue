@@ -150,7 +150,6 @@
           })
         }else{
           this.$store.commit('SET_LOG_STATE',true)
-          this.$store.commit('SET_SITE_INFO', JSON.parse(sessionStorage.getItem('siteInfo')))
         }
       },
       watchScroll() {

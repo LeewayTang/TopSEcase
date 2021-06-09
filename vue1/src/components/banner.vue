@@ -6,12 +6,12 @@
                 <div class="focusinfo">
                     <!-- 头像 -->
                     <div class="header-tou">
-                      <router-link :to="/personalCenter/ + this.$store.state.username"><img :src="this.$store.state.websiteInfo.avatar"></router-link>
+                      <router-link :to="/personalCenter/ + $store.state.websiteInfo.username"><img :src="$store.state.websiteInfo.avatar"></router-link>
                       <div class="header-name">
-                        {{this.$store.state.websiteInfo.username}}  |  {{this.$store.state.websiteInfo.title}}
+                        {{$store.state.websiteInfo.username}}  |  {{$store.state.websiteInfo.title}}
                       </div>
 
-                      <div class="qz"><div class="qz" v-for="qz in this.$store.state.websiteInfo.quanzi">|  {{qz.name}}  </div> |</div>
+                      <div class="qz"><div class="qz" v-for="qz in $store.state.websiteInfo.quanzi">|  {{qz.name}}  </div> |</div>
                     </div>
                     <!-- 简介 -->
                     <div class="header-info">
