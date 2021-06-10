@@ -187,6 +187,8 @@ export default {
       },
       formLabelWidth: '120px',
       removeQuanzi: false,
+      currentPage: 1,
+      hasNextPage: false,
     }
   },
   methods: {
@@ -256,16 +258,29 @@ export default {
     },
     // 这里应该是从两个地方拿数据，但是类型相同，只是具体内容有差异。
     fetchList0() {
-      fetchList().then(res => {
-        this.category[0].contents = res.data.items || []
-
+      let self = this;
+      self.$axios({
+        url: 'api/articleTag/getUsernameArticle/',
+        method: 'post',
+        data: {
+          username: self.$route.params.username
+        }
+      }).then(res => {
+        self.category[0].contents = res.data.data || [];
       }).catch(err => {
         console.log(err)
       })
     },
     fetchList1() {
-      fetchList().then(res => {
-        this.category[1].contents = res.data.items || []
+      let self = this;
+      self.$axios({
+        url: 'api/articleTag/getUsernameArticle/',
+        method: 'post',
+        data: {
+          username: self.$route.params.username
+        }
+      }).then(res => {
+        self.category[1].contents = res.data.data || [];
       }).catch(err => {
         console.log(err)
       })

@@ -94,9 +94,12 @@
               self.$axios({
                 url: 'api/articleTag/getArticle/',
                 method: 'post',
-                data: {}
+                data: {
+                  'page': 1,
+                  'size': 10
+                }
               }).then(res => {
-                self.postList1 = res.data.data;
+                self.postList1 = res.data.data || [];
                 self.currPage = res.data.page;
                 self.hasNextPage = res.data.hasNextPage
               }).catch(err => {

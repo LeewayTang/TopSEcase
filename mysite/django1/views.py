@@ -570,6 +570,16 @@ class ArticleTagInfo(viewsets.GenericViewSet):
         ret = {'msg': 'success', 'data': queryset, 'status': 1, 'page': page, 'hasNextPage': hasNextPage}
         return Response(ret)
 
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=TokenSerializer)
+    @action(methods=['POST'], detail=False)
+    def getUsernameArticle(self, request):
+        username = request.data.get('username')
+        user = User.objects.get(username__exact=username)
+        queryset = Article.objects.filter(user=user).order_by('-pubTime', '-viewsCount').values()
+        ret = {'msg': 'success', 'data': queryset, 'status': 1}
+        return Response(ret)
+
 
 #
 #     @swagger_auto_schema(responses={200: ""})
