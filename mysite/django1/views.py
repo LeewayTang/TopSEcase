@@ -259,7 +259,7 @@ class Upload(viewsets.GenericViewSet):
         print(title)
         print(content)
         print(summary)
-        article = Article.objects.create(title=title, content=content, summary=summary, user=user)
+        article = Article.objects.create(title=title, content=content, summary=summary, user=user, banner=user.avatar)
         article.banner = user.avatar
         self.UploadTag(tag, article)
         # ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
@@ -480,7 +480,7 @@ class LoginRegister(viewsets.GenericViewSet):
 
 
 # 等待重新写
-class BookTagInfo(viewsets.GenericViewSet):
+class ArticleTagInfo(viewsets.GenericViewSet):
     queryset = ArticleTag.objects.all()
 
     #
@@ -549,6 +549,25 @@ class BookTagInfo(viewsets.GenericViewSet):
     def getTag(self, request):
         queryset = ArticleTag.objects.all().values()
         ret = {'msg': 'success', 'data': queryset, 'status': 1}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=ArticleListSerializer)
+    @action(methods=['POST'], detail=False)
+    def getArticle(self, request):
+        page = 1
+        size = 10
+        if request.data.get('page') is not None:
+            page = request.data.get('page')
+        if request.data.get('size') is not None:
+            size = request.data.get('size')
+        lNum = (page - 1) * size + 1
+        rNum = min(page * size, Article.objects.all().count())
+        queryset = Article.objects.order_by('-isTop', '-viewsCount').values()[lNum - 1:rNum]
+        hasNextPage = False
+        if rNum < Article.objects.all().count():
+            hasNextPage = True
+        ret = {'msg': 'success', 'data': queryset, 'status': 1, 'page': page, 'hasNextPage': hasNextPage}
         return Response(ret)
 
 

@@ -103,12 +103,24 @@ class UsernameSerializer(serializers.ModelSerializer):
         )
 
 
+class ArticleListSerializer(serializers.ModelSerializer):
+    page = serializers.IntegerField(required=True)
+    size = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = Article
+        fields = (
+            'page',
+            'size'
+        )
+
+
 class ArticleUploadSerializer(serializers.ModelSerializer):
     token = serializers.CharField(required=True, max_length=16)
     title = serializers.CharField(required=True, max_length=64)
     summary = serializers.CharField(required=True, max_length=256)
     content = serializers.CharField(required=True, max_length=16384)
-    tag= serializers.ListField(required=True)
+    tag = serializers.ListField(required=True)
 
     class Meta:
         model = Article

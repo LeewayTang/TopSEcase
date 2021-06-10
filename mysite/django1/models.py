@@ -63,12 +63,12 @@ class Article(models.Model):
     commentsCount = models.IntegerField(verbose_name='评论数', default=0)
     title = models.CharField(verbose_name='标题', max_length=64)
     summary = models.CharField(verbose_name='文章简介', max_length=256)
-    isTop = models.BooleanField(verbose_name='置顶', default=False)
-    isHot = models.BooleanField(verbose_name='不知道干啥的', default=False)
+    isTop = models.IntegerField(verbose_name='置顶', default=0)
+    isHot = models.IntegerField(verbose_name='不知道干啥的', default=0)
     content = models.TextField(verbose_name='正文')
     user = models.ForeignKey(verbose_name='发布人', to='User', on_delete=models.CASCADE)
     pubTime = models.DateField(verbose_name='文章创建时间', auto_now_add=True)
-    banner = models.CharField(verbose_name='文章头像', default='0', max_length=1024)
+    banner = models.CharField(verbose_name='文章头像', max_length=1024)
 
 
 # 等待重新写

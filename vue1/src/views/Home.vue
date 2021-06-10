@@ -90,13 +90,18 @@
                 })
             },
             fetchList() {
-                fetchList().then(res => {
-                    this.postList1 = res.data.items || []
-                    this.currPage = res.data.page
-                    this.hasNextPage = res.data.hasNextPage
-                }).catch(err => {
-                    console.log(err)
-                })
+              let self = this;
+              self.$axios({
+                url: 'api/articleTag/getArticle/',
+                method: 'post',
+                data: {}
+              }).then(res => {
+                self.postList1 = res.data.data;
+                self.currPage = res.data.page;
+                self.hasNextPage = res.data.hasNextPage
+              }).catch(err => {
+                console.log(err)
+              })
             },
             loadMore() {
                 fetchList({page:this.currPage+1}).then(res => {
