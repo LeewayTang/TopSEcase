@@ -223,6 +223,36 @@ class UserInfoView(viewsets.GenericViewSet):
         Ret.update({'data': ret})
         Ret.update({'status': 1})
         return Response(Ret)
+
+
+class Upload(viewsets.GenericViewSet):
+    queryset = Article.objects.all()
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=ArticleUploadSerializer)
+    @action(methods=['POST'], detail=False)
+    def UploadArticle(self, request):
+        token = request.data.get('token')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'status': -1})
+        queryset = Token.objects.get(key__exact=token)
+        user = queryset.usr
+        if user.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -3})
+        title = request.data.get('title')
+        comment = request.data.get('comment')
+        summary = request.data.get('summary')
+        article = Article.objects.create(title=title, comment=comment, summary=summary, user=user)
+        article.banner = user.avatar
+        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
+        print(ret)
+        Ret = {}
+        Ret.update({'msg': 'success'})
+        Ret.update({'data': ret})
+        Ret.update({'status': 1})
+        return Response(Ret)
 #
 #     @swagger_auto_schema(responses={200: ""},
 #                          request_body=UidInfoSerializer)
@@ -372,7 +402,6 @@ class LoginRegister(viewsets.GenericViewSet):
         ret.update({'quanzi': [{'name': 'BUAA'}]})
         ret.update({'slogan': user.slogan})
         ret.update({'name': 'MoYun'})
-        print(key.key)
         return Response(ret)
 
     @swagger_auto_schema(responses={200: ""},

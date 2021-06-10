@@ -295,54 +295,63 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(({value}) => {
-        self.$axios({
-          url: 'api/user/setUserName/',
-          method: 'post',
-          data: {
-            token: sessionStorage.getItem('Authorization'),
-            username: value
-          }
-        })
-        .then(res => {
-          switch (res.data.status){
-            case 1:
-              self.$store.commit('SET_SITE_INFO', res.data.data)
-              sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
-              self.$message({
-                type: 'success',
-                message: '你的昵称已更改为' + value
-              });
-              self.websiteInfo = self.$store.state.websiteInfo
-              self.$router.push({
-                path: '/personalCenter/' + self.websiteInfo.username
-              })
-              break
-            case -1:
-              self.$message({
-                type: 'error',
-                message: '请登录'
-              });
-              self.$router.push(
-                  {path:`/login`}, onComplete => { }, onAbort => { })
-              break
-            case -2:
-              self.$message({
-                type: 'error',
-                message: '用户名已存在'
-              });
-              break
-            case -3:
-              self.$message({
-                type: 'error',
-                message: '游客账号禁止修改姓名'
-              });
-              break
-          }
+        if(value === '' || value === null){
+          self.$message({
+            type: 'error',
+            message: '输入不能为空'
+          })
+        }else {
+          self.$axios({
+            url: 'api/user/setUserName/',
+            method: 'post',
+            data: {
+              token: sessionStorage.getItem('Authorization'),
+              username: value
+            }
+          })
+              .then(res => {
+                switch (res.data.status) {
+                  case 1:
+                    self.$store.commit('SET_SITE_INFO', res.data.data)
+                    sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
+                    self.$message({
+                      type: 'success',
+                      message: '你的昵称已更改为' + value
+                    });
+                    self.websiteInfo = self.$store.state.websiteInfo
+                    self.$router.push({
+                      path: '/personalCenter/' + self.websiteInfo.username
+                    })
+                    break
+                  case -1:
+                    self.$message({
+                      type: 'error',
+                      message: '请登录'
+                    });
+                    self.$router.push(
+                        {path: `/login`}, onComplete => {
+                        }, onAbort => {
+                        })
+                    break
+                  case -2:
+                    self.$message({
+                      type: 'error',
+                      message: '用户名已存在'
+                    });
+                    break
+                  case -3:
+                    self.$message({
+                      type: 'error',
+                      message: '游客账号禁止修改姓名'
+                    });
+                    break
+                }
 
-        })
-        .catch(err => {
-          console.log(err)
-        })
+              })
+              .catch(err => {
+                console.log(err)
+              })
+        }
       }).catch(() => {
         self.$message({
           type: 'info',
@@ -362,47 +371,56 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       }).then(({value}) => {
-        self.$axios({
-          url: 'api/user/setUserSlogan/',
-          method: 'post',
-          data: {
-            token: sessionStorage.getItem('Authorization'),
-            slogan: value
-          }
-        })
-          .then(res => {
-            switch (res.data.status){
-              case 1:
-                self.$store.commit('SET_SITE_INFO', res.data.data)
-                sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
-                self.$message({
-                  type: 'success',
-                  message: '你的签名已更改为' + value
-                });
-                self.websiteInfo = self.$store.state.websiteInfo
-                self.$router.push({
-                  path: '/personalCenter/' + self.websiteInfo.username
-                })
-                break
-              case -1:
-                self.$message({
-                  type: 'error',
-                  message: '请登录'
-                });
-                self.$router.push(
-                    {path:`/login`}, onComplete => { }, onAbort => { })
-                break
-              case -3:
-                self.$message({
-                  type: 'error',
-                  message: '游客账号禁止修改签名'
-                });
-                break
+        if(value === '' || value === null){
+          self.$message({
+            type: 'error',
+            message: '输入不能为空'
+          })
+        }else {
+          self.$axios({
+            url: 'api/user/setUserSlogan/',
+            method: 'post',
+            data: {
+              token: sessionStorage.getItem('Authorization'),
+              slogan: value
             }
           })
-          .catch(err => {
-            console.log(err)
-          })
+              .then(res => {
+                switch (res.data.status) {
+                  case 1:
+                    self.$store.commit('SET_SITE_INFO', res.data.data)
+                    sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
+                    self.$message({
+                      type: 'success',
+                      message: '你的签名已更改为' + value
+                    });
+                    self.websiteInfo = self.$store.state.websiteInfo
+                    self.$router.push({
+                      path: '/personalCenter/' + self.websiteInfo.username
+                    })
+                    break
+                  case -1:
+                    self.$message({
+                      type: 'error',
+                      message: '请登录'
+                    });
+                    self.$router.push(
+                        {path: `/login`}, onComplete => {
+                        }, onAbort => {
+                        })
+                    break
+                  case -3:
+                    self.$message({
+                      type: 'error',
+                      message: '游客账号禁止修改签名'
+                    });
+                    break
+                }
+              })
+              .catch(err => {
+                console.log(err)
+              })
+        }
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -441,49 +459,58 @@ export default {
     confirm(type) {
       let self = this
       self.$refs.cropper.getCropData(res => {
-        self.$axios({
-          url: 'api/user/setUserAvatar/',
-          method: 'post',
-          data: {
-            token: sessionStorage.getItem('Authorization'),
-            avatarBase64: res
-          }
-        })
-          .then(res => {
-            switch (res.data.status){
-              case 1:
-                self.$store.commit('SET_SITE_INFO', res.data.data)
-                sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
-                console.log(res.data.data.avatar)
-                self.$message({
-                  type: 'success',
-                  message: '你的头像已更改'
-                });
-                self.websiteInfo = self.$store.state.websiteInfo
-                self.$router.push({
-                  path: '/personalCenter/' + self.websiteInfo.username
-                })
-                break
-              case -1:
-                self.$message({
-                  type: 'error',
-                  message: '请登录'
-                });
-                self.$router.push(
-                    {path:`/login`}, onComplete => { }, onAbort => { })
-                break
-              case -3:
-                self.$message({
-                  type: 'error',
-                  message: '游客账号禁止修改头像'
-                });
-                break
+        if(res === '' || res === null){
+          self.$message({
+            type: 'error',
+            message: '输入不能为空'
+          })
+        }else {
+          self.$axios({
+            url: 'api/user/setUserAvatar/',
+            method: 'post',
+            data: {
+              token: sessionStorage.getItem('Authorization'),
+              avatarBase64: res
             }
           })
-          .catch(err => {
-            console.log(err)
-          })
-        console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
+              .then(res => {
+                switch (res.data.status) {
+                  case 1:
+                    self.$store.commit('SET_SITE_INFO', res.data.data)
+                    sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
+                    console.log(res.data.data.avatar)
+                    self.$message({
+                      type: 'success',
+                      message: '你的头像已更改'
+                    });
+                    self.websiteInfo = self.$store.state.websiteInfo
+                    self.$router.push({
+                      path: '/personalCenter/' + self.websiteInfo.username
+                    })
+                    break
+                  case -1:
+                    self.$message({
+                      type: 'error',
+                      message: '请登录'
+                    });
+                    self.$router.push(
+                        {path: `/login`}, onComplete => {
+                        }, onAbort => {
+                        })
+                    break
+                  case -3:
+                    self.$message({
+                      type: 'error',
+                      message: '游客账号禁止修改头像'
+                    });
+                    break
+                }
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
+        }
       });
     },
     commitNewQuanzi(v) {

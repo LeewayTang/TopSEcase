@@ -25,7 +25,7 @@
     </div>
     </el-card>
     <div id="editor" v-if="ready">
-      <mavon-editor style="height: 100%"></mavon-editor>
+      <mavon-editor style="height: 100%"  id="mavon-editor"></mavon-editor>
       <el-button type="primary" @click="saveTmp">
         保存草稿
       </el-button>
@@ -76,6 +76,8 @@ export default {
     },
 
     submit() {
+      let meditor=document.getElementById('mavon-editor');
+      console.log(meditor.innerText);
       // 这咋把markdown编辑器里的内容传出去啊，俺也不会，俺也不敢问
     },
     saveTmp() {

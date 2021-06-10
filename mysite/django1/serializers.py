@@ -93,7 +93,6 @@ class SetUserAvatarSerializer(serializers.ModelSerializer):
         )
 
 
-
 class UsernameSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True, max_length=16)
 
@@ -101,6 +100,22 @@ class UsernameSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'username',
+        )
+
+
+class ArticleUploadSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True, max_length=16)
+    title = serializers.CharField(required=True, max_length=64)
+    summary = serializers.CharField(required=True, max_length=256)
+    content = serializers.CharField(required=True, max_length=16384)
+
+    class Meta:
+        model = Article
+        fields = (
+            'token',
+            'title',
+            'summary',
+            'content'
         )
 
 
