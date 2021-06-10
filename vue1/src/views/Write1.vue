@@ -82,11 +82,11 @@ export default {
       // let meditor=document.getElementById('mavon-editor');
       // console.log(meditor.innerText);
       let self = this
-      console.log(this.text);
+      console.log(this.content);
       console.log(this.title);
       console.log(this.summary);
       console.log(this.dynamicTags)
-      if(self.text !== '' && self.title !== '' && self.summary !== '' && self.dynamicTags !== []){
+      if(self.content !== '' && self.title !== '' && self.summary !== '' && self.dynamicTags !== []){
         self.$axios({
           url: 'api/upload/UploadArticle/',
           method: 'post',
@@ -97,6 +97,22 @@ export default {
             content: self.content,
             tag: self.dynamicTags
           }
+        })
+      }else if (self.content === ''){
+        self.$Notice.open({
+          title: '正文不能为空'
+        })
+      }else if (self.title === ''){
+        self.$Notice.open({
+          title: '标题不能为空'
+        })
+      }else if (self.summary === ''){
+        self.$Notice.open({
+          title: '摘要不能为空'
+        })
+      }else if (self.dynamicTags === []){
+        self.$Notice.open({
+          title: '标签不能为空'
         })
       }
     },
