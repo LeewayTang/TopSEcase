@@ -108,6 +108,7 @@ class ArticleUploadSerializer(serializers.ModelSerializer):
     title = serializers.CharField(required=True, max_length=64)
     summary = serializers.CharField(required=True, max_length=256)
     content = serializers.CharField(required=True, max_length=16384)
+    tag= serializers.ListField(required=True)
 
     class Meta:
         model = Article
@@ -115,7 +116,8 @@ class ArticleUploadSerializer(serializers.ModelSerializer):
             'token',
             'title',
             'summary',
-            'content'
+            'content',
+            'tag'
         )
 
 

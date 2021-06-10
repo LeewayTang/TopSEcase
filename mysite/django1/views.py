@@ -210,6 +210,8 @@ class UserInfoView(viewsets.GenericViewSet):
         key = generate_random_str()
         form = avB.split(';')[0][11:]
         print(form)
+        if not os.path.exists(MEDIA_ROOT + '/' + str(user.id) + '/avatar/'):
+            os.makedirs(MEDIA_ROOT + '/' + str(user.id) + '/avatar/')
         file = open(MEDIA_ROOT + '/' + str(user.id) + '/avatar/' + key + '.' + form, 'wb')
         file.write(avatarBase64)
         file.close()
@@ -228,6 +230,16 @@ class UserInfoView(viewsets.GenericViewSet):
 class Upload(viewsets.GenericViewSet):
     queryset = Article.objects.all()
 
+    def UploadTag(self, tag, article):
+        for i in tag:
+            print(i)
+            queryset = ArticleTag.objects.filter(tag__exact=i)
+            if queryset.count() == 0:
+                ArticleTag.objects.create(tag=i)
+            queryset = ArticleTag.objects.get(tag__exact=i)
+            queryset.book.add(article)
+        pass
+
     @swagger_auto_schema(responses={200: ""},
                          request_body=ArticleUploadSerializer)
     @action(methods=['POST'], detail=False)
@@ -241,17 +253,23 @@ class Upload(viewsets.GenericViewSet):
         if user.username == 'traveler':
             return Response({'msg': 'You can\'t do this', 'status': -3})
         title = request.data.get('title')
-        comment = request.data.get('comment')
+        content = request.data.get('content')
         summary = request.data.get('summary')
-        article = Article.objects.create(title=title, comment=comment, summary=summary, user=user)
+        tag = request.data.get('tag')
+        print(tag)
+        print(title)
+        print(content)
+        print(summary)
+        article = Article.objects.create(title=title, content=content, summary=summary, user=user)
         article.banner = user.avatar
-        ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
-        print(ret)
+        self.UploadTag(tag, article)
+        # ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
+        #        'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
+        # print(ret)
         Ret = {}
-        Ret.update({'msg': 'success'})
-        Ret.update({'data': ret})
-        Ret.update({'status': 1})
+        Ret.update({'msg': 'success', 'status': 1})
+        # Ret.update({'data': ret})
+        # Ret.update({'status': 1})
         return Response(Ret)
 #
 #     @swagger_auto_schema(responses={200: ""},

@@ -2,6 +2,7 @@
   <div id="editor-wrap">
     <el-card class="titleTag">
     <el-input placeholder="请输入标题" v-model="title" clearable></el-input>
+    <el-input placeholder="文章摘要" v-model="summary" clearable></el-input>
     <div id="edit-tag">
       <el-tag
           :key="tag"
@@ -25,7 +26,7 @@
     </div>
     </el-card>
     <div id="editor" v-if="ready">
-      <mavon-editor style="height: 100%"  id="mavon-editor"></mavon-editor>
+      <mavon-editor style="height: 100%" v-model="content"></mavon-editor>
       <el-button type="primary" @click="saveTmp">
         保存草稿
       </el-button>
@@ -49,9 +50,11 @@ export default {
     return {
       dynamicTags: [],
       inputVisible: false,
+      summary: '',
       inputValue: '',
       title: '',
       ready: false,
+      content: ''
     }
   },
   methods: {
@@ -76,9 +79,26 @@ export default {
     },
 
     submit() {
-      let meditor=document.getElementById('mavon-editor');
-      console.log(meditor.innerText);
-      // 这咋把markdown编辑器里的内容传出去啊，俺也不会，俺也不敢问
+      // let meditor=document.getElementById('mavon-editor');
+      // console.log(meditor.innerText);
+      let self = this
+      console.log(this.text);
+      console.log(this.title);
+      console.log(this.summary);
+      console.log(this.dynamicTags)
+      if(self.text !== '' && self.title !== '' && self.summary !== '' && self.dynamicTags !== []){
+        self.$axios({
+          url: 'api/upload/UploadArticle/',
+          method: 'post',
+          data: {
+            token: sessionStorage.getItem('Authorization'),
+            title: self.title,
+            summary: self.summary,
+            content: self.content,
+            tag: self.dynamicTags
+          }
+        })
+      }
     },
     saveTmp() {
       // 同样不会

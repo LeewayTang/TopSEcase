@@ -65,7 +65,7 @@ class Article(models.Model):
     summary = models.CharField(verbose_name='文章简介', max_length=256)
     isTop = models.BooleanField(verbose_name='置顶', default=False)
     isHot = models.BooleanField(verbose_name='不知道干啥的', default=False)
-    content = models.CharField(verbose_name='正文', max_length=16384)
+    content = models.TextField(verbose_name='正文')
     user = models.ForeignKey(verbose_name='发布人', to='User', on_delete=models.CASCADE)
     pubTime = models.DateField(verbose_name='文章创建时间', auto_now_add=True)
     banner = models.CharField(verbose_name='文章头像', default='0', max_length=1024)
@@ -152,15 +152,12 @@ class Article(models.Model):
 
 
 # 等待重新写
-# 书与标签对应
-class ArticleTag(models.Model):
-    article = models.ForeignKey(to='Article', on_delete=models.CASCADE)
-    tag = models.ForeignKey(to='Tag', on_delete=models.CASCADE)
 
 
 # 等待重新写
 # 标签
-class Tag(models.Model):
-    tag = models.CharField(verbose_name='标签内容', max_length=32, default='0')
+class ArticleTag(models.Model):
+    tag = models.CharField(verbose_name='标签内容', max_length=32)
+    book = models.ManyToManyField('Article')
 
 # 信息

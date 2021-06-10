@@ -69,7 +69,7 @@ urlpatterns = [
 router.register('token', views.TokenInfo)
 router.register('login_register', views.LoginRegister)
 router.register('user', views.UserInfoView)
-# router.register('upload', views.FileUpload)
+router.register('upload', views.Upload)
 # router.register('bookTag', views.BookTagInfo)
 # router.register('circle', views.CircleInfo)
 # router.register('comment', views.BookCommentInfo)
