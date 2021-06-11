@@ -19,7 +19,7 @@
                     <!-- 文章底部 -->
                     <section-title>
                         <footer class="post-footer">
-                            <!-- 阅读次数 -->
+                          <!-- 阅读次数 -->
                             <div class="post-like">
                                 <i class="iconfont iconeyes"></i>
                                 <span class="count">685</span>
@@ -30,8 +30,23 @@
                                 <router-link to="/category/web">Web</router-link>
                             </div>
                         </footer>
+                      <el-button @click.stop="showCommentEditor=true">回复</el-button>
                     </section-title>
-
+                  <div v-if="showCommentEditor" @click.stop="">
+                      <mavon-editor :toolbars="{
+                  bold: true, // 粗体
+                  italic: true,// 斜体
+                  header: true,// 标题
+                  quote: true, // 引用
+                  code: true, // code
+                  table: true, // 表格
+                  imagelink: true, // 图片链接
+                  fullscreen: true, // 全屏编辑
+                  subfield: true, // 单双栏模式
+                  preview: true, // 预览
+                }"></mavon-editor>
+                    <el-button type="success" @click="submitReply">提交</el-button>
+                  </div>
                     <!--声明-->
                     <div class="open-message">
                         <p>声明：Gblog博客|版权所有，违者必究|如未注明，均为原创|本网站采用<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">BY-NC-SA</a>协议进行授权</p>
@@ -66,7 +81,8 @@
               value: '',
               comments: [],
               menus: [],
-            articles: {}
+            articles: {},
+            showCommentEditor: false,
           }
         },
         components: {
@@ -103,6 +119,16 @@
                 console.log(err)
               })
           },
+          reply(id){
+            const ref = `comment${id}`
+          },
+          submitReply(v){
+            console.log(v)
+          },
+          close(){
+            this.showCommentEditor = false
+          }
+
           // // 生成目录
           // createMenus(){
           //     let arr = []
@@ -132,7 +158,16 @@
         created() {
             // this.getComment()
             this.getArticle()
+        },
+      watch:{
+        showCommentEditor(value) {
+          if (value) {
+            document.body.addEventListener('click', this.close)
+          } else {
+            document.body.removeEventListener('click', this.close)
+          }
         }
+      },
     }
 </script>
 <style scoped lang="less">
