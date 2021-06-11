@@ -78,15 +78,13 @@
         >所有热门标签»</a>
       </span>
       </h2>
-
-
       <ul class="hot-tags-col5 s" data-dstat-areaid="54" data-dstat-mode="click,expose" v-for="title in tagTitle">
         <ul class="tag_title">
           {{ title }}
         </ul>
         <ul>
-        <router-link v-for="item in tags" :to="{ path : '/tag-detail/' + item.path }" active-class="active" :key="item.id">
-        <li class="tag">{{item.name}}</li>
+        <router-link v-for="item in tags" :to="{ path : '/books/tag/' + item.name }" active-class="active" :key="item.id">
+        <el-tag class="tag">{{item.name}}</el-tag>
         </router-link>
       </ul>
       </ul>
@@ -192,7 +190,6 @@ export default {
 .tag {
   font-size: 20px;
   display: inline;
-  padding: 10px 10px;
   margin-right: 10px;
   margin-top: 10px;
   background-color: #eef1f3;

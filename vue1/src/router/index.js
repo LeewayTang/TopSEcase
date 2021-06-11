@@ -103,6 +103,12 @@ const routes = [
         name: 'article',
         component: () => import('../views/Articles.vue'),
         meta: { title: '文章', params: 'id'}
+    },
+    {
+        path: '/books/tag/:tag',
+        name: 'tag',
+        component: () => import('../views/book-sort'),
+        meta: { title: '书籍分类', params: 'tag'}
     }
 ]
 
