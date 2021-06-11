@@ -19,7 +19,7 @@
       <div v-for="q in websiteInfo.quanzi" class="qz" v-show="removeQuanzi">
         <el-tag closable type="info" @close="handleTagClose(q)" :class="{deleting:removeQuanzi}">{{q.name}}</el-tag>
       </div>
-      <div v-for="q in websiteInfo.quanzi" class="qz" v-show="!removeQuanzi">
+      <div v-for="q in websiteInfo.quanzi" class="qz" v-show="!removeQuanzi" @click="q.dialogVisible = true">
         <el-tag type="info">{{q.name}}</el-tag>
       </div>
       <div class="button-wrap">
@@ -95,6 +95,23 @@
         </el-row>
       </span>
     </el-dialog>
+
+  <!--  弹出层——圈子信息-->
+  <div v-for="item in websiteInfo.quanzi">
+    <el-dialog
+        title="圈子信息"
+        :visible.sync="item.dialogVisible"
+        width="30%"
+        >
+      <span>{{item.name}}</span>
+      <span>还应该包括导师信息，圈内同学等信息</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="item.dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="item.dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
+  </div>
+
 
 <!--  弹出层——创建圈子-->
   <el-dialog title="新建圈子" :visible.sync="dialogFormVisible">
@@ -188,6 +205,7 @@ name: "PersonalCenter1",
         inputValue: '',
         name: '',
         description: '',
+        dialogVisible: false
       },
       formLabelWidth: '120px',
       removeQuanzi: false,
@@ -198,6 +216,7 @@ name: "PersonalCenter1",
       if(this.$store.state.hasLogin  && this.$store.state.username === this.$route.params.username){
         this.$store.dispatch('getSiteInfo').then(data =>{
           this.websiteInfo = data
+          console.log(this.websiteInfo)
         })
       }
       else if (!this.$store.state.hasLogin){
@@ -257,6 +276,11 @@ name: "PersonalCenter1",
     handleClose(v) {
       this.picture.dialogVisible = false;
     },
+    // 控制展示圈子信息的弹出层关闭
+    handleQZInfoClose(qz) {
+      qz.dialogVisible = false;
+    },
+
     handleClick(index) {
       let anotherIndex = index?0:1
       this.category[anotherIndex].isActive = false
@@ -534,5 +558,8 @@ img {
   30%, 50%, 70% {transform: translate3d(-4px, 0, 0);}
 
   40%, 60% {transform: translate3d(4px, 0, 0);}
+}
+.el-tag {
+  cursor: pointer;
 }
 </style>
