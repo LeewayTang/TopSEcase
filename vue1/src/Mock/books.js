@@ -8,7 +8,7 @@ export default [
         response: () => {
             return{
                 code: 2000,
-                data: [
+                data:
                 {
                     id: 1,
                     img: require("./../assets/images/1.png"),
@@ -39,7 +39,7 @@ export default [
                     downloadCount: '',
                     viewsCount: '',
                 },
-                ]
+
             }
         }
     }
