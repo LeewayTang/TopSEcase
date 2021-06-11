@@ -120,9 +120,6 @@ router.beforeResolve(async (to, from, next) => {
     }
     document.title = title
     let token = sessionStorage.getItem('Authorization')
-    console.log(store.state.websiteInfo)
-    console.log(store.state.websiteInfo.avatar)
-    console.log(store.state.websiteInfo.username)
     if(to.path === '/login' || to.path === '/' || to.path === '/book-ground' || to.path === '/home')
         // alert(token),
         next();

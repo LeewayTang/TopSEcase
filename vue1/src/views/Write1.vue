@@ -82,10 +82,6 @@ export default {
       // let meditor=document.getElementById('mavon-editor');
       // console.log(meditor.innerText);
       let self = this
-      console.log(this.content);
-      console.log(this.title);
-      console.log(this.summary);
-      console.log(this.dynamicTags)
       if(self.content !== '' && self.title !== '' && self.summary !== '' && self.dynamicTags !== []){
         self.$axios({
           url: 'api/upload/UploadArticle/',

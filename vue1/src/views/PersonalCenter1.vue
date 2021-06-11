@@ -212,8 +212,6 @@ export default {
       }
       else {
         let self = this
-        console.log('getPersonInfo = ' + self.$route.params.username)
-        console.log('websiteInfo = ' + self.$store.state.websiteInfo.username)
         self.$axios({
           method: 'post',
           url: 'api/user/getUserInfoByName/',
@@ -493,7 +491,6 @@ export default {
                   case 1:
                     self.$store.commit('SET_SITE_INFO', res.data.data)
                     sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
-                    console.log(res.data.data.avatar)
                     self.$message({
                       type: 'success',
                       message: '你的头像已更改'
@@ -544,7 +541,9 @@ export default {
       this.getWebSiteInfo()
     },
     '$route.params'() {
-      this.getPersonInfo()
+      this.getPersonInfo();
+      this.fetchList0();
+      this.fetchList1();
     },
   },
   mounted() {
