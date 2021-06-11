@@ -113,8 +113,8 @@ export default {
 .circular {
   margin-left: 20px;
   margin-top: 75px;
-  width: 85px;
-  height: 85px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   border: 3px solid rgba(255,255,255,0.4);
 }
