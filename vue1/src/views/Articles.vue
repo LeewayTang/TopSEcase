@@ -19,6 +19,7 @@
                     <!-- 文章底部 -->
                     <section-title>
                         <footer class="post-footer">
+                          <el-button @click.stop="showCommentEditor=true">评论</el-button>
                           <!-- 阅读次数 -->
                             <div class="post-like">
                                 <i class="iconfont iconeyes"></i>
@@ -30,7 +31,6 @@
                                 <router-link to="/category/web">Web</router-link>
                             </div>
                         </footer>
-                      <el-button @click.stop="showCommentEditor=true">回复</el-button>
                     </section-title>
                   <div v-if="showCommentEditor" @click.stop="">
                       <mavon-editor v-model="myComment" :toolbars="{
@@ -128,38 +128,12 @@
           },
           close(){
             this.showCommentEditor = false
-          }
-
-          // // 生成目录
-          // createMenus(){
-          //     let arr = []
-          //     for(let i=6;i>0;i--){
-          //         let temp = []
-          //         let e = document.querySelector(".entry-content").querySelectorAll(`#+ `)
-          //         for (let j=0;j<e.length;j++){
-          //             let child = this.fetchH(arr,e[j].offsetTop,(j+1 === e.length)?undefined:e[j+1].offsetTop)
-          //             temp.push({
-          //                 h: i,
-          //                 title: e[j].innerText,
-          //                 id: e[j].id,
-          //                 offsetTop: e[j].offsetTop,
-          //                 child
-          //             })
-          //         }
-          //         if (temp.length){
-          //             arr = temp
-          //         }
-          //     }
-          //     this.menus = arr
-          // }
-        },
-        // mounted(){
-        //     this.createMenus()
-        // },
-        created() {
-            // this.getComment()
-            this.getArticle()
-        },
+          },
+    },
+      created() {
+        // this.getComment()
+        this.getArticle()
+      },
       watch:{
         showCommentEditor(value) {
           if (value) {
@@ -169,7 +143,7 @@
           }
         }
       },
-    }
+}
 </script>
 <style scoped lang="less">
     .site-content {
@@ -321,6 +295,11 @@
                     color: #ff6d6d;
                 }
             }
+          .el-button {
+            margin-left: 50px;
+            float: right;
+            color: #199c86;
+          }
         }
         .open-message {
             margin: 50px 0;
