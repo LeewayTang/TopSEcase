@@ -33,7 +33,7 @@
                       <el-button @click.stop="showCommentEditor=true">回复</el-button>
                     </section-title>
                   <div v-if="showCommentEditor" @click.stop="">
-                      <mavon-editor :toolbars="{
+                      <mavon-editor v-model="myComment" :toolbars="{
                   bold: true, // 粗体
                   italic: true,// 斜体
                   header: true,// 标题
@@ -77,10 +77,11 @@
         name: 'articles',
         data(){
           return{
-              showDonate: false,
-              value: '',
-              comments: [],
-              menus: [],
+            showDonate: false,
+            value: '',
+            comments: [],
+            myComment: '',
+            menus: [],
             articles: {},
             showCommentEditor: false,
           }
