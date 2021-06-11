@@ -10,7 +10,7 @@
   <div class="right">
     <div class="square-block" :style="{backgroundImage: 'url('+ bg+ ')'}">
       <div class="header">
-      <router-link :to="/personalCenter/ + $store.state.username">
+      <router-link :to="/personalCenter/ + $store.state.websiteInfo.username">
         <img :src="$store.state.websiteInfo.avatar" alt="头像" class="circular">
         <div class="user-name">{{ $store.state.websiteInfo.username }}</div>
       </router-link>
@@ -59,16 +59,12 @@ export default {
       })
     },
     getArticles() {
-      this.$axios(
-          {
-            url: '/post/list',
-            method: 'get'
-          }
-      ).then(res => {
-        // console.log(res)
-        this.articles = res.data.data.items || []
-        // console.log(this.articles)
-        // console.log('get articles ok')
+      let self = this;
+      self.$axios({
+        url: '/api/articleTag/getAllArticle/',
+        method: 'get'
+      }).then(res => {
+        this.articles = res.data.data || []
       }).catch(err => {
         console.log(err)
       })

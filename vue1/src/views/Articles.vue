@@ -105,11 +105,23 @@
                   }
                 }
             ).then(res => {
-              self.articles = res.data.data || []
-              self.views = res.data.data.views
-              self.category = res.data.data.tag
-              self.firstCategory = res.data.data.tag[0]
-              console.log(res)
+              switch (res.data.status){
+                case -1:
+                  self.$Notice.open({
+                    title: '文章不存在'
+                  });
+                  self.$router.push({
+                    path: '/home'
+                  });
+                  break;
+                case 1:
+                  self.articles = res.data.data || []
+                  self.views = res.data.data.views
+                  self.category = res.data.data.tag
+                  self.firstCategory = res.data.data.tag[0]
+                  console.log(res)
+                  break;
+              }
             }).catch(err => {
               console.log(err)
             })

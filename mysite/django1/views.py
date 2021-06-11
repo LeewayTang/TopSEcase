@@ -581,12 +581,22 @@ class ArticleTagInfo(viewsets.GenericViewSet):
         ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
 
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['GET'], detail=False)
+    def getAllArticle(self, request):
+        queryset = Article.objects.all().order_by('-pubTime', '-viewsCount').values()
+        ret = {'msg': 'success', 'data': queryset, 'status': 1}
+        return Response(ret)
+
     @swagger_auto_schema(responses={200: ""},
                          request_body=TokenSerializer)
     @action(methods=['POST'], detail=False)
     def getIdArticle(self, request):
         Id = request.data.get('id')
         print(Id)
+        queryset = Article.objects.filter(id__exact=Id)
+        if queryset.count() == 0:
+            return Response({'status': -1})
         article = Article.objects.get(id__exact=Id)
         article.viewsCount += 1
         article.save()
