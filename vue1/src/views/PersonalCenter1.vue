@@ -7,7 +7,9 @@
       <div class="username">{{websiteInfo.username}}</div>
       <div class="el-icon-edit" style="color: white; cursor: pointer" @click="renameClick" v-if="$store.state.username === $route.params.username"></div>
       <div style="width: 10%"></div>
-      <el-button class="button1" icon="el-icon-success" @click="titleClick">{{websiteInfo.title}}</el-button>
+      <div class="button-wrap" style="margin-left: 25%">
+        <el-button class="button1" icon="el-icon-success" @click="titleClick">{{websiteInfo.title}}</el-button>
+      </div>
     </div>
     <div style="display: flex">
       <div class="slogan">{{websiteInfo.slogan}}</div>
@@ -15,22 +17,24 @@
     </div>
     <div>
       <div v-for="q in websiteInfo.quanzi" class="qz" v-show="removeQuanzi">
-        <el-tag closable type="info" @close="handleTagClose(q)">{{q.name}}</el-tag>
+        <el-tag closable type="info" @close="handleTagClose(q)" :class="{deleting:removeQuanzi}">{{q.name}}</el-tag>
       </div>
       <div v-for="q in websiteInfo.quanzi" class="qz" v-show="!removeQuanzi">
         <el-tag type="info">{{q.name}}</el-tag>
       </div>
-      <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
-                 size="mini" icon="el-icon-remove"
-                 style="margin-left: 35%" @click="removeQuanzi = true">删除圈子</el-button>
-      <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
-                 size="mini" icon="el-icon-circle-plus"
-                 style="margin-left: 5%" @click="dialogFormVisible = true">创建圈子</el-button>
+      <div class="button-wrap">
+        <el-button :class="{deleting:removeQuanzi}" class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
+                   size="mini" icon="el-icon-remove"
+                   @click="removeQuanzi = !removeQuanzi">删除圈子</el-button>
+        <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
+                   size="mini" icon="el-icon-circle-plus"
+                   @click="dialogFormVisible = true">创建圈子</el-button>
+      </div>
     </div>
   </el-card>
   </div>
   <div class="choose">
-    <div class="button-wrap" v-for="(item,index) in category">
+    <div class="choose-button-wrap" v-for="(item,index) in category">
       <el-button type="text" v-if="$store.state.username === $route.params.username || item.name === '动态'" :class="{ active: item.isActive }" @click="handleClick(index)">{{ item.name }}</el-button>
     </div>
   </div>
@@ -476,14 +480,19 @@ img {
   background-color: #FFFFFF;
   color: #1b1b1b;
 }
-.el-button{
+.el-button {
   font-size: xx-large;
   color: #b9bec1;
-  margin-left: 25%;
+}
+.choose-button-wrap {
+  display: inline-block;
+  padding-left: 25%;
 }
 .button-wrap {
+  position: absolute;
+  right: 12%;
+  /*float: right;*/
   display: inline-block;
-  margin-left: 25%;
 }
 .el-card {
   margin-left: 10%;
@@ -494,7 +503,8 @@ img {
   color: black;
 }
 .button1{
-  color: #56c4b7
+  /*float: right;*/
+  color: #56c4b7;
 }
 .el-tag + .el-tag {
   margin-left: 10px;
@@ -510,5 +520,19 @@ img {
   width: 90px;
   margin-left: 10px;
   vertical-align: bottom;
+}
+.deleting {
+  color: red;
+  animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both infinite;
+}
+
+@keyframes shake {
+  10%, 90% {transform: translate3d(-1px, 0, 0);}
+
+  20%, 80% {transform: translate3d(2px, 0, 0);}
+
+  30%, 50%, 70% {transform: translate3d(-4px, 0, 0);}
+
+  40%, 60% {transform: translate3d(4px, 0, 0);}
 }
 </style>
