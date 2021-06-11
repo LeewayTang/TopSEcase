@@ -22,12 +22,12 @@
                             <!-- 阅读次数 -->
                             <div class="post-like">
                                 <i class="iconfont iconeyes"></i>
-                                <span class="count">685</span>
+                                <span class="count">{{views}}</span>
                             </div>
                             <!-- 文章标签 -->
-                            <div class="post-tags">
-                                <i class="iconfont iconcategory"></i>
-                                <router-link to="/category/web">Web</router-link>
+                            <div class="post-tags" v-for="(tag) in category">
+                                <i class="iconfont iconcategory" v-if="firstCategory.id === tag.id"></i>
+                                <router-link :to="/category/ + tag.tag">{{tag.tag}}</router-link>
                             </div>
                         </footer>
                     </section-title>
@@ -62,11 +62,14 @@
         name: 'articles',
         data(){
           return{
-              showDonate: false,
-              value: '',
-              comments: [],
-              menus: [],
-            articles: {}
+            showDonate: false,
+            value: '',
+            comments: [],
+            menus: [],
+            articles: {},
+            views: 0,
+            category: [],
+            firstCategory: '',
           }
         },
         components: {
@@ -92,16 +95,24 @@
                 }
           },
           getArticle(){
-              this.$axios(
-                  {
-                    url: '/article/0',
+            let self = this;
+            self.$axios(
+                {
+                  url: '/api/articleTag/getIdArticle/',
+                  method: 'post',
+                  data:{
+                    id: self.$route.params.id,
                   }
-              ).then(res => {
-                this.articles = res.data.data || []
-                console.log(res)
-              }).catch(err => {
-                console.log(err)
-              })
+                }
+            ).then(res => {
+              self.articles = res.data.data || []
+              self.views = res.data.data.views
+              self.category = res.data.data.tag
+              self.firstCategory = res.data.data.tag[0]
+              console.log(res)
+            }).catch(err => {
+              console.log(err)
+            })
           },
           // // 生成目录
           // createMenus(){

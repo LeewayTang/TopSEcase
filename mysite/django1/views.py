@@ -216,6 +216,7 @@ class UserInfoView(viewsets.GenericViewSet):
         file.close()
         user.avatar = MEDIA_URL + str(user.id) + '/avatar/' + key + '.' + form
         user.save()
+        queryset = Article.objects.filter(user__exact=user).update(banner=user.avatar)
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
         print(ret)
@@ -578,6 +579,28 @@ class ArticleTagInfo(viewsets.GenericViewSet):
         user = User.objects.get(username__exact=username)
         queryset = Article.objects.filter(user=user).order_by('-pubTime', '-viewsCount').values()
         ret = {'msg': 'success', 'data': queryset, 'status': 1}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=TokenSerializer)
+    @action(methods=['POST'], detail=False)
+    def getIdArticle(self, request):
+        Id = request.data.get('id')
+        print(Id)
+        article = Article.objects.get(id__exact=Id)
+        article.viewsCount += 1
+        article.save()
+        Ret = {}
+        Ret.update({'username': article.user.username})
+        Ret.update({'avatar': article.user.avatar})
+        Ret.update({'header': article.title})
+        Ret.update({'content': article.content})
+        Ret.update({'views': article.viewsCount})
+        Ret.update({'comments': article.commentsCount})
+        tag = article.articletag_set.values()
+        print(tag)
+        Ret.update({'tag': tag})
+        ret = {'msg': 'success', 'data': Ret, 'status': 1}
         return Response(ret)
 
 
