@@ -19,7 +19,8 @@
                     <!-- 文章底部 -->
                     <section-title>
                         <footer class="post-footer">
-                            <!-- 阅读次数 -->
+                          <el-button @click.stop="showCommentEditor=true">评论</el-button>
+                          <!-- 阅读次数 -->
                             <div class="post-like">
                                 <i class="iconfont iconeyes"></i>
                                 <span class="count">{{views}}</span>
@@ -31,7 +32,21 @@
                             </div>
                         </footer>
                     </section-title>
-
+                  <div v-if="showCommentEditor" @click.stop="">
+                      <mavon-editor v-model="myComment" :toolbars="{
+                  bold: true, // 粗体
+                  italic: true,// 斜体
+                  header: true,// 标题
+                  quote: true, // 引用
+                  code: true, // code
+                  table: true, // 表格
+                  imagelink: true, // 图片链接
+                  fullscreen: true, // 全屏编辑
+                  subfield: true, // 单双栏模式
+                  preview: true, // 预览
+                }"></mavon-editor>
+                    <el-button type="success" @click="submitReply">提交</el-button>
+                  </div>
                     <!--声明-->
                     <div class="open-message">
                         <p>声明：Gblog博客|版权所有，违者必究|如未注明，均为原创|本网站采用<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">BY-NC-SA</a>协议进行授权</p>
@@ -70,6 +85,8 @@
             views: 0,
             category: [],
             firstCategory: '',
+            myComment: '',
+            showCommentEditor: false,
           }
         },
         components: {
@@ -126,37 +143,30 @@
               console.log(err)
             })
           },
-          // // 生成目录
-          // createMenus(){
-          //     let arr = []
-          //     for(let i=6;i>0;i--){
-          //         let temp = []
-          //         let e = document.querySelector(".entry-content").querySelectorAll(`#+ `)
-          //         for (let j=0;j<e.length;j++){
-          //             let child = this.fetchH(arr,e[j].offsetTop,(j+1 === e.length)?undefined:e[j+1].offsetTop)
-          //             temp.push({
-          //                 h: i,
-          //                 title: e[j].innerText,
-          //                 id: e[j].id,
-          //                 offsetTop: e[j].offsetTop,
-          //                 child
-          //             })
-          //         }
-          //         if (temp.length){
-          //             arr = temp
-          //         }
-          //     }
-          //     this.menus = arr
-          // }
-        },
-        // mounted(){
-        //     this.createMenus()
-        // },
-        created() {
-            // this.getComment()
-            this.getArticle()
+          reply(id){
+            const ref = `comment${id}`
+          },
+          submitReply(v){
+            console.log(v)
+          },
+          close(){
+            this.showCommentEditor = false
+          },
+    },
+      created() {
+        // this.getComment()
+        this.getArticle()
+      },
+      watch:{
+        showCommentEditor(value) {
+          if (value) {
+            document.body.addEventListener('click', this.close)
+          } else {
+            document.body.removeEventListener('click', this.close)
+          }
         }
-    }
+      },
+}
 </script>
 <style scoped lang="less">
     .site-content {
@@ -308,6 +318,11 @@
                     color: #ff6d6d;
                 }
             }
+          .el-button {
+            margin-left: 50px;
+            float: right;
+            color: #199c86;
+          }
         }
         .open-message {
             margin: 50px 0;

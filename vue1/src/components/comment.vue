@@ -54,6 +54,7 @@
         data(){
           return{
               showCommentEditor: false,
+
           }
         },
         watch:{

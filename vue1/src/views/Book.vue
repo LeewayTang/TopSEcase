@@ -1,51 +1,50 @@
 <template>
   <div class="book-wrap">
     <div class="book-left">
-      <div class="product-board">
-        <img :src="productIcon" width="220px;">
-        <ul>
-          <el-button type='text' class='switch' v-for="item in bookList" @click="bookClick(item.id)" :key="item.id">
-            {{ item.name }}
-          </el-button>
-        </ul>
-      </div>
+<!--      <el-card>-->
+        <img :src="productIcon" class="image" width="220px" :alt="this.bookInfo.title">
+<!--      </el-card>-->
     </div>
     <div class="book-right">
       <div class="sales-board">
-        <div class="sales-board-intro">
-          <h1>{{this.bookInfo.title}}</h1>
-          <p>{{this.bookInfo.introduction}}</p>
-        </div>
-        <div class="sales-board-form">
-          <div class="sales-board-line">
-            <div class="sales-board-line-left">
-              作者：{{ this.bookInfo.author }} ｜ {{ this.bookInfo.press }}
+        <el-card>
+          <div class="sales-board-intro">
+            <h1>{{this.bookInfo.title}}</h1>
+            <p>{{this.bookInfo.introduction}}</p>
+          </div>
+          <div class="sales-board-form">
+            <div class="sales-board-line">
+              <div class="sales-board-line-left">
+                作者：{{ this.bookInfo.author }} ｜ {{ this.bookInfo.press }}
+              </div>
+            </div>
+            <div class="sales-board-line">
+              <div class="sales-board-line-left">
+                ISBN：{{ this.bookInfo.ISBN }}
+              </div>
+            </div>
+            <div class="sales-board-line">
+              <div class="sales-board-line-left">
+                <a :href="this.bookInfo.href">购买链接🔗</a>
+              </div>
+            </div>
+            <div class="sales-board-line">
+              <el-row type="flex" justify="end">
+                <el-button type="primary">获取电子书</el-button>
+              </el-row>
             </div>
           </div>
-          <div class="sales-board-line">
-            <div class="sales-board-line-left">
-              ISBN：{{ this.bookInfo.ISBN }}
-            </div>
+        </el-card>
+        <el-card>
+          <h1>精彩书评</h1>
+          <div class="sales-board-des">
+            <li v-for="item in bookInfo.comments">
+              {{item.says}}
+              <br>
+              <el-row type="flex" justify="end">—— {{item.username}}</el-row>
+            </li>
           </div>
-          <div class="sales-board-line">
-            <div class="sales-board-line-left">
-              <a :href="this.bookInfo.href">购买链接🔗</a>
-            </div>
-          </div>
-          <div class="sales-board-line">
-            <el-row type="flex" justify="end">
-              <el-button type="primary">获取电子书</el-button>
-            </el-row>
-          </div>
-        </div>
-        <h1>精彩书评</h1>
-        <div class="sales-board-des">
-          <li v-for="item in bookInfo.comments">
-            {{item.says}}
-            <br>
-            <el-row type="flex" justify="end">—— {{item.username}}</el-row>
-          </li>
-        </div>
+        </el-card>
       </div>
     </div>
   </div>
@@ -71,33 +70,7 @@ export default {
   },
   data () {
     return {
-      bookInfo:{
-        id: 1,
-        img: '',
-        items:[
-          {text:""},
-          {text:""},
-          {text:""},
-        ],
-        title: '',
-        introduction: '',
-        author: '',
-        press: '',
-        ISBN: '',
-        href:'',
-        comments:[{
-          username:'',
-          says: ''
-        },
-          {
-            username: '',
-            says: ''
-          },
-          {
-            username: '',
-            says: ''
-          }]
-      },
+      bookInfo:{},
       bookList: [],
     }
   },
@@ -111,7 +84,7 @@ export default {
   },
   created() {
     // this.fetchBookInfo(this.bookInfo.id);
-    this.fetchBookList();
+    // this.fetchBookList();
   },
   methods: {
     fetchBookInfo(){
@@ -123,12 +96,12 @@ export default {
         console.log(this.bookInfo);
       })
     },
-    fetchBookList() {
-      fetchBookList().then(res => {
-        this.bookList = res.data || [];
-        console.log(this.bookList);
-      })
-    },
+    // fetchBookList() {
+    //   fetchBookList().then(res => {
+    //     this.bookList = res.data || [];
+    //     console.log(this.bookList);
+    //   })
+    // },
     bookClick(id) {
       console.log(this.$route.path);
       this.$router.push('/books/' + id);
@@ -185,18 +158,12 @@ export default {
 .product-board li a {
   display: block;
 }
-.sales-board {
-  background: #fff;
-}
-.sales-board-form {
 
-}
 .sales-board-intro h2 {
   font-size: 20px;
   padding: 20px;
 }
 .sales-board-intro p {
-  background: #f7fcff;
   padding: 10px 20px;
   color: #999;
   line-height: 1.8;
@@ -253,5 +220,10 @@ export default {
   font-size: 20px;
   text-align: left
 }
-
+.el-card {
+  margin-bottom: 20px;
+}
+/*.image {*/
+/*  padding-right: 30px;*/
+/*}*/
 </style>

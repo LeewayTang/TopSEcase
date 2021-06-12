@@ -13,7 +13,7 @@ export default [
                     avatar: require('../assets/images/E2n0ya2UUAA2odS.jpg'),
                     username: '未登录',
                     title:'没有名分',
-                    quanzi:[{name: '没有圈子'}],
+                    quanzi:[{name: '没有圈子', dialogVisible: false}],
                     slogan: 'Who am I?',
                     name: 'MoYun'
                 }
@@ -31,7 +31,7 @@ export default [
                     avatar: require('../assets/images/rzdf.jpg'),
                     username: '没有共产党就没有新中国',
                     title:'导师',
-                    quanzi:[{name: 'BUAA'}, {name:'Software Engineer'}],
+                    quanzi:[{name: 'BUAA', dialogVisible: false}, {name:'Software Engineer', dialogVisible: false}],
                     slogan: '银鞍照白马，飒沓如流星。',
                     name: 'MoYun',
                 }
@@ -48,7 +48,7 @@ export default [
                     avatar: require('../assets/images/gg.jpg'),
                     username: 'cynic',
                     title:'学生',
-                    quanzi:[{name: 'BUAA'}, {name:'Software Engineer'}],
+                    quanzi:[{name: 'BUAA', dialogVisible: false}, {name:'Software Engineer', dialogVisible: false}],
                     slogan: '那年十八，母校舞会，站着如喽罗。',
                     name: 'MoYun',
                 }

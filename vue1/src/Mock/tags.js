@@ -11,7 +11,7 @@ export default [
                 data: [
                     {
                         id: 1,
-                        name: 'Java',
+                        name: 'CS',
                         path: 'Java'
                     },
                     {
