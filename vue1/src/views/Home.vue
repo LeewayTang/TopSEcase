@@ -82,52 +82,86 @@
             },
         },
         methods: {
-            fetchFocus() {
-                fetchFocus().then(res => {
-                    this.features = res.data || []
-                }).catch(err => {
-                    console.log(err)
-                })
-            },
-            fetchList() {
-              let self = this;
-              self.$axios({
-                url: 'api/articleTag/getArticle/',
-                method: 'post',
-                data: {
-                  'page': 1,
-                  'size': 10
-                }
-              }).then(res => {
-                self.postList1 = res.data.data || [];
-                self.currPage = res.data.page;
-                self.hasNextPage = res.data.hasNextPage
+          fetchFocus() {
+              fetchFocus().then(res => {
+                  this.features = res.data || []
               }).catch(err => {
-                console.log(err)
+                  console.log(err)
               })
-            },
-            loadMore() {
-              let self = this;
-              self.$axios({
-                url: 'api/articleTag/getArticle/',
-                method: 'post',
-                data: {
-                  'page': self.currPage + 1,
-                  'size': 10
-                }
-              }).then(res => {
-                self.postList1 = self.postList1.concat(res.data.data || []);
-                self.currPage = res.data.page;
-                self.hasNextPage = res.data.hasNextPage
-              }).catch(err => {
-                console.log(err)
-              })
-            }
+          },
+          fetchList() {
+            let self = this;
+            self.$axios({
+              url: 'api/articleTag/getArticle/',
+              method: 'post',
+              data: {
+                'page': 1,
+                'size': 10
+              }
+            }).then(res => {
+              self.postList1 = res.data.data || [];
+              self.currPage = res.data.page;
+              self.hasNextPage = res.data.hasNextPage
+            }).catch(err => {
+              console.log(err)
+            })
+          },
+          loadMore() {
+            let self = this;
+            self.$axios({
+              url: 'api/articleTag/getArticle/',
+              method: 'post',
+              data: {
+                'page': self.currPage + 1,
+                'size': 10
+              }
+            }).then(res => {
+              self.postList1 = self.postList1.concat(res.data.data || []);
+              self.currPage = res.data.page;
+              self.hasNextPage = res.data.hasNextPage
+            }).catch(err => {
+              console.log(err)
+            })
+          },
+          fetchSearchList(){
+            let self = this;
+            self.$axios({
+              url: 'api/search/searchArticle/',
+              method: 'post',
+              data: {
+                'key': self.$route.params.words
+              }
+            }).then(res => {
+              self.postList1 = res.data.data || [];
+              self.currPage = 1;
+              self.hasNextPage = false;
+            }).catch(err => {
+              console.log(err)
+            })
+          }
         },
         mounted() {
-            this.fetchFocus();
+          this.fetchFocus();
+          if(this.$route.params.words === '' ||
+              this.$route.params.words === null ||
+              this.$route.params.words === undefined){
             this.fetchList();
-        }
+          }else{
+            this.fetchSearchList();
+          }
+        },
+        watch:{
+          'searchWords'() {
+            console.log(this.$route.params.words)
+            if(this.$route.params.words === '' ||
+                this.$route.params.words === null ||
+                this.$route.params.words === undefined){
+              this.fetchList();
+            }else{
+              this.fetchSearchList();
+            }
+          },
+      }
     }
 </script>
 <style scoped lang="less">

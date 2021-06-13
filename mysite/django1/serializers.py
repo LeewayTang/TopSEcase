@@ -207,6 +207,16 @@ class SerchQuanziSerializer(serializers.ModelSerializer):
         )
 
 
+class SerchArticleSerializer(serializers.ModelSerializer):
+    key = serializers.CharField(required=True, max_length=32)
+
+    class Meta:
+        model = Article
+        fields = (
+            'key',
+        )
+
+
 # 等待重新写
 # class UploadBookSerializer(serializers.ModelSerializer):
 #     ISBN = serializers.CharField(required=True, max_length=16)

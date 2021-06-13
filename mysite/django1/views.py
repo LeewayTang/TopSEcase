@@ -9,6 +9,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db.models import Q
 
 from django1.serializers import *
 from mysite.settings import MEDIA_ROOT, MEDIA_URL
@@ -959,7 +960,7 @@ class Search(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: ""}, request_body=SerchQuanziSerializer)
     @action(methods=['POST'], detail=False)
-    def SearchQuanzi(self, request):
+    def searchQuanzi(self, request):
         qz = request.data.get('qz')
         queryset = Quanzi.objects.filter(name__exact=qz)
         if queryset.count() == 0:
@@ -967,3 +968,13 @@ class Search(viewsets.GenericViewSet):
         return Response(
             {'user': Quanzi.objects.get(name__exact=qz).member.all().order_by('username').values(),
              'status': 1})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SerchArticleSerializer)
+    @action(methods=['POST'], detail=False)
+    def searchArticle(self, request):
+        key = request.data.get('key')
+        print(key)
+        queryset = Article.objects.filter(Q(content__icontains=key) or
+                                          Q(summary__icontains=key) or
+                                          Q(title__icontains=key))
+        return Response({'data': queryset.values(), 'status': 1})
