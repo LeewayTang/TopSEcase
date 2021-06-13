@@ -27,9 +27,8 @@ class User(models.Model):
     avatar = models.CharField(verbose_name='头像', max_length=1024, default='/media/1/file/dbf2c6b8.jpeg')
     createTime = models.DateField(verbose_name='注册时间', auto_now_add=True)
     isTeacher = models.BooleanField(verbose_name='是否为导师', default=False)
-    # quanzi = models.ForeignKey(verbose_name='圈子', to='Quanzi', on_delete=models.CASCADE, null=True)
     slogan = models.CharField(verbose_name='签名', max_length=256, default="这个人很懒")
-    title = models.CharField(verbose_name='这tmd到底是个啥', max_length=256, default='BUAA')
+    title = models.CharField(verbose_name='这tmd到底是个啥', max_length=256, default='学生')
 
 
 # 被弃用的功能
@@ -73,7 +72,7 @@ class Article(models.Model):
 
 # 等待重新写
 # 日志评论
-# class Comment(models.Model):
+# class ArticleComment(models.Model):
 #     usr = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='评论人用户名', null=True)
 #     journal = models.ForeignKey(to='Journal', on_delete=models.CASCADE, verbose_name='评论日志', null=True)
 #     ctime = models.DateField(verbose_name='评论时间', auto_now_add=True)
@@ -83,22 +82,26 @@ class Article(models.Model):
 
 # 等待重新写
 # 讨论
-# class Discuss(models.Model):
-#     usr = models.ForeignKey(to='User', on_delete=models.CASCADE, null=True)
-#     circle = models.ForeignKey(to='Circle', on_delete=models.CASCADE, null=True)
-#     dtime = models.DateField(verbose_name='发布时间', auto_now_add=True)
-#     context = models.CharField(verbose_name='内容', max_length=256)
-#     floor = models.IntegerField(verbose_name='讨论楼层', default=0)
+class Discuss(models.Model):
+    viewsCount = models.IntegerField(verbose_name='阅读量', default=0)
+    commentsCount = models.IntegerField(verbose_name='评论数', default=0)
+    title = models.CharField(verbose_name='标题', max_length=64)
+    summary = models.CharField(verbose_name='文章简介', max_length=256)
+    isTop = models.IntegerField(verbose_name='置顶', default=0)
+    isHot = models.IntegerField(verbose_name='不知道干啥的', default=0)
+    user = models.ForeignKey(verbose_name='发布人', to='User', on_delete=models.CASCADE)
+    pubTime = models.DateField(verbose_name='文章创建时间', auto_now_add=True)
+    banner = models.CharField(verbose_name='文章头像', max_length=1024)
 
 
 # 等待重新写
 # 圈子
-# class Circle(models.Model):
-#     type = models.CharField(verbose_name='圈子类型', max_length=16, default="学习")
-#     name = models.CharField(verbose_name='圈子名字', max_length=32, default="root")
-#     ctime = models.DateField(verbose_name='发布时间', auto_now_add=True)
-#     number = models.IntegerField(verbose_name='圈子人数', default=1)
-#     creator = models.IntegerField(verbose_name='创建者id', default=1)
+class Quanzi(models.Model):
+    name = models.CharField(verbose_name='圈子名字', max_length=32)
+    ctime = models.DateField(verbose_name='发布时间', auto_now_add=True)
+    number = models.IntegerField(verbose_name='圈子人数', default=1)
+    member = models.ManyToManyField('User')
+    dialogVisible = models.BooleanField(verbose_name='鬼知道是啥', default=False)
 
 
 # 等待重新写
@@ -155,9 +158,13 @@ class Article(models.Model):
 
 
 # 等待重新写
-# 标签
+# 文章标签
 class ArticleTag(models.Model):
     tag = models.CharField(verbose_name='标签内容', max_length=32)
-    book = models.ManyToManyField('Article')
+    article = models.ManyToManyField('Article')
 
-# 信息
+
+# 讨论标签
+class DiscussTag(models.Model):
+    tag = models.CharField(verbose_name='标签内容', max_length=32)
+    discuss = models.ManyToManyField('Discuss')

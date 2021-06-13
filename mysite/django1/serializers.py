@@ -125,6 +125,18 @@ class ArticleListSerializer(serializers.ModelSerializer):
         )
 
 
+class DiscussListSerializer(serializers.ModelSerializer):
+    page = serializers.IntegerField(required=True)
+    size = serializers.IntegerField(required=True)
+
+    class Meta:
+        model = Article
+        fields = (
+            'page',
+            'size'
+        )
+
+
 class ArticleUploadSerializer(serializers.ModelSerializer):
     token = serializers.CharField(required=True, max_length=16)
     title = serializers.CharField(required=True, max_length=64)
@@ -139,6 +151,22 @@ class ArticleUploadSerializer(serializers.ModelSerializer):
             'title',
             'summary',
             'content',
+            'tag'
+        )
+
+
+class DiscussUploadSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(required=True, max_length=16)
+    title = serializers.CharField(required=True, max_length=64)
+    summary = serializers.CharField(required=True, max_length=256)
+    tag = serializers.ListField(required=True)
+
+    class Meta:
+        model = Article
+        fields = (
+            'token',
+            'title',
+            'summary',
             'tag'
         )
 
