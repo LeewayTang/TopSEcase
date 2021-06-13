@@ -209,6 +209,7 @@ name: "PersonalCenter1",
       },
       formLabelWidth: '120px',
       removeQuanzi: false,
+      studentList: [],
     }
   },
   methods: {
@@ -228,13 +229,22 @@ name: "PersonalCenter1",
         this.$axios(
             {
               url: '/' + this.$route.params.username,
-              method: "get"
             }
         ).then(res => {
           this.websiteInfo = res.data.data
           console.log(res)
         })
       }
+    },
+    getStudentList() {
+      this.$axios(
+          {
+        url: '/studentList',
+        }
+      ).then(res => {
+        this.studentList = res.data.data
+        console.log(this.studentList)
+      })
     },
     handleTagClose(tag) {
       this.websiteInfo.quanzi.splice(this.websiteInfo.quanzi.indexOf(tag), 1);
@@ -415,6 +425,7 @@ name: "PersonalCenter1",
   },
   mounted() {
     this.getPersonInfo();
+    this.getStudentList();
     this.fetchList0();
     this.fetchList1();
     // console.log(this.$route.params);

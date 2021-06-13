@@ -135,4 +135,7 @@
             margin-right: 10px;
         }
     }
+    .v-note-wrapper {
+      z-index: 0;
+    }
 </style>
