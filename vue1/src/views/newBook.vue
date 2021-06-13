@@ -105,6 +105,8 @@ export default {
     submit(){
       this.uploadUrl = ''
       this.$refs.upload.submit()
+      console.log(this.$refs.upload)
+      console.log(this.$refs.upload.uploadFiles)
       this.hasFile = false
     },
     onSuccess(res, file, fileList){

@@ -611,6 +611,42 @@ class ArticleTagInfo(viewsets.GenericViewSet):
         ret = {'msg': 'success', 'data': Ret, 'status': 1}
         return Response(ret)
 
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=IdSerializer)
+    @action(methods=['POST'], detail=False)
+    def getIdComment(self, request):
+        Id = request.data.get('id')
+        print("ID" + Id)
+        queryset = ArticleComment.objects.filter(article_id=Id).order_by('createTime')
+        ret = {'msg': 'success', 'data': queryset.values(), 'status': 1}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=TokenSerializer)
+    @action(methods=['POST'], detail=False)
+    def setComment(self, request):
+        Id = request.data.get('id')
+        content = request.data.get('content')
+        token = request.data.get('token')
+        fromUser = Token.objects.get(key__exact=token).usr
+        article = Article.objects.get(id=Id)
+        fromUserAvatar = fromUser.avatar
+        fromUserName = fromUser.username
+        toUser = None
+        toUserId = 0
+        toUserName = request.data.get('toUserName')
+        if toUserName is not None:
+            toUser = User.objects.get(username__exact=toUserName)
+            toUserId = toUser.id
+        else:
+            toUserName = ''
+        article.commentsCount += 1
+        ArticleComment.objects.create(content=content, article=article, fromUserAvatar=fromUserAvatar,
+                                      fromUserName=fromUserName, toUser=toUser, toUserId=toUserId,
+                                      toUserName=toUserName, fromUser=fromUser)
+        ret = {'msg': 'success', 'status': 1}
+        return Response(ret)
+
 
 # 讨论
 class DiscussTagInfo(viewsets.GenericViewSet):

@@ -1,5 +1,5 @@
 <template>
-    <div class="comment" :id="`comment${comment.id}`">
+    <div class="comment" :id="`comment`">
         <div class="comment-head">
             <div class="user-avatar"><img :src="comment.fromUserAvatar" alt=""></div>
             <div class="head-right">
@@ -80,7 +80,7 @@
             close(){
               this.showCommentEditor = false
             }
-        }
+        },
     }
 </script>
 

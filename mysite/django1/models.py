@@ -72,13 +72,17 @@ class Article(models.Model):
 
 
 # 等待重新写
-# 日志评论
-# class ArticleComment(models.Model):
-#     usr = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='评论人用户名', null=True)
-#     journal = models.ForeignKey(to='Journal', on_delete=models.CASCADE, verbose_name='评论日志', null=True)
-#     ctime = models.DateField(verbose_name='评论时间', auto_now_add=True)
-#     context = models.FileField(verbose_name='正文', max_length=2048, upload_to='comment/%Y/%m/%d/')
-#     floor = models.IntegerField(verbose_name='评论楼层', default=0)
+# 文章评论
+class ArticleComment(models.Model):
+    article = models.ForeignKey(to='Article', on_delete=models.CASCADE)
+    createTime = models.DateField(verbose_name='评论时间', auto_now_add=True)
+    content = models.TextField(verbose_name='正文')
+    fromUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='评论人', related_name='fromUser')
+    fromUserAvatar = models.CharField(verbose_name='评论者', max_length=512)
+    fromUserName = models.CharField(verbose_name='评论者名字', max_length=512)
+    toUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='回复人', default=None, related_name='toUser', null=True)
+    toUserId = models.IntegerField(verbose_name='回复者id', default=0)
+    toUserName = models.CharField(verbose_name='回复者名字', max_length=512, default='')
 
 
 # 等待重新写

@@ -10,58 +10,58 @@
 <!--              <br>-->
 <!--                <menu-tree :menus="menus" child-label="child"></menu-tree>-->
 <!--            </div>-->
-            <main class="site-main">
-                <article class="hentry">
-                    <!-- 文章头部 -->
-                  <div class="markdown-body">
-                    <VueMarkdown :source="articles.content" v-highlight></VueMarkdown>
-                  </div>
-                    <!-- 文章底部 -->
-                    <section-title>
-                        <footer class="post-footer">
-                          <el-button @click.stop="showCommentEditor=true">评论</el-button>
-                          <!-- 阅读次数 -->
-                            <div class="post-like">
-                                <i class="iconfont iconeyes"></i>
-                                <span class="count">{{views}}</span>
-                            </div>
-                            <!-- 文章标签 -->
-                            <div class="post-tags" v-for="(tag) in category">
-                                <i class="iconfont iconcategory" v-if="firstCategory.id === tag.id"></i>
-                                <router-link :to="/category/ + tag.tag">{{tag.tag}}</router-link>
-                            </div>
-                        </footer>
-                    </section-title>
-                  <div v-if="showCommentEditor" @click.stop="">
-                      <mavon-editor v-model="myComment" :toolbars="{
-                  bold: true, // 粗体
-                  italic: true,// 斜体
-                  header: true,// 标题
-                  quote: true, // 引用
-                  code: true, // code
-                  table: true, // 表格
-                  imagelink: true, // 图片链接
-                  fullscreen: true, // 全屏编辑
-                  subfield: true, // 单双栏模式
-                  preview: true, // 预览
-                }"></mavon-editor>
-                    <el-button type="success" @click="submitReply">提交</el-button>
-                  </div>
-                    <!--声明-->
-                    <div class="open-message">
-                        <p>声明：Gblog博客|版权所有，违者必究|如未注明，均为原创|本网站采用<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">BY-NC-SA</a>协议进行授权</p>
-                        <p>转载：转载请注明原文链接</p>
-                    </div>
-                    <!--评论-->
-                    <div class="comments">
-                        <comment v-for="item in articles.comments" :key="item.comment.id" :comment="item.comment">
-                            <template v-if="item.reply.length">
-                                <comment v-for="reply in item.reply" :key="reply.id" :comment="reply"></comment>
-                            </template>
-                        </comment>
-                    </div>
-                </article>
-            </main>
+          <main class="site-main">
+            <article class="hentry">
+                <!-- 文章头部 -->
+              <div class="markdown-body">
+                <VueMarkdown :source="articles.content" v-highlight></VueMarkdown>
+              </div>
+                <!-- 文章底部 -->
+                <section-title>
+                    <footer class="post-footer">
+                      <el-button @click.stop="showCommentEditor=true">评论</el-button>
+                      <!-- 阅读次数 -->
+                        <div class="post-like">
+                            <i class="iconfont iconeyes"></i>
+                            <span class="count">{{views}}</span>
+                        </div>
+                        <!-- 文章标签 -->
+                        <div class="post-tags" v-for="(tag) in category">
+                            <i class="iconfont iconcategory" v-if="firstCategory.id === tag.id"></i>
+                            <router-link :to="/category/ + tag.tag">{{tag.tag}}</router-link>
+                        </div>
+                    </footer>
+                </section-title>
+              <div v-if="showCommentEditor" @click.stop="">
+                  <mavon-editor v-model="myComment" :toolbars="{
+              bold: true, // 粗体
+              italic: true,// 斜体
+              header: true,// 标题
+              quote: true, // 引用
+              code: true, // code
+              table: true, // 表格
+              imagelink: true, // 图片链接
+              fullscreen: true, // 全屏编辑
+              subfield: true, // 单双栏模式
+              preview: true, // 预览
+            }"></mavon-editor>
+                <el-button type="success" @click="submitReply">提交</el-button>
+              </div>
+                <!--声明-->
+                <div class="open-message">
+                    <p>声明：Gblog博客|版权所有，违者必究|如未注明，均为原创|本网站采用<a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" target="_blank">BY-NC-SA</a>协议进行授权</p>
+                    <p>转载：转载请注明原文链接</p>
+                </div>
+                <!--评论-->
+                <div class="comments">
+                  <comment v-for="item in comments" :comment="item">
+<!--                    <template v-if="item.reply.length">
+                      <comment v-for="reply in item.reply" :key="reply.id" :comment="reply"></comment>
+                    </template>-->
+                  </comment>
+                </div>
+            </article>
+          </main>
         </div>
     </div>
 </template>
@@ -74,88 +74,113 @@
     import {fetchComment,fetchArticle} from '../api'
     import VueMarkdown from 'vue-markdown'
     export default {
-        name: 'articles',
-        data(){
-          return{
-            showDonate: false,
-            value: '',
-            comments: [],
-            menus: [],
-            articles: {},
-            views: 0,
-            category: [],
-            firstCategory: '',
-            myComment: '',
-            showCommentEditor: false,
-          }
+      name: 'articles',
+      data(){
+        return{
+          showDonate: false,
+          value: '',
+          comments: [],
+          menus: [],
+          articles: {},
+          views: 0,
+          category: [],
+          firstCategory: '',
+          myComment: '',
+          showCommentEditor: false,
+        }
+      },
+      components: {
+          Banner,
+          sectionTitle,
+          comment,
+          menuTree,
+          VueMarkdown
+      },
+      methods: {
+        getComment(){
+          let self = this;
+          self.$axios({
+            url: '/api/articleTag/getIdComment/',
+            method: 'post',
+            data:{
+              id: self.$route.params.id,
+            }
+          }).then(res => {
+            self.comments = res.data.data || [];
+          }).catch(err => {
+            console.log(err);
+          })
         },
-        components: {
-            Banner,
-            sectionTitle,
-            comment,
-            menuTree,
-            VueMarkdown
-        },
-        methods: {
-          getComment(){
-              fetchComment().then(res => {
-                  this.comments = res.data || []
-              }).catch(err => {
-                  console.log(err)
-              })
-          },
-          fetchH(arr,left,right){
-             if (right) {
-                  return arr.filter(item => item.offsetTop > left && item.offsetTop < right)
-                }else {
-                  return arr.filter(item => item.offsetTop > left)
-                }
-          },
-          getArticle(){
-            let self = this;
-            self.$axios(
-                {
-                  url: '/api/articleTag/getIdArticle/',
-                  method: 'post',
-                  data:{
-                    id: self.$route.params.id,
-                  }
-                }
-            ).then(res => {
-              switch (res.data.status){
-                case -1:
-                  self.$Notice.open({
-                    title: '文章不存在'
-                  });
-                  self.$router.push({
-                    path: '/home'
-                  });
-                  break;
-                case 1:
-                  self.articles = res.data.data || []
-                  self.views = res.data.data.views
-                  self.category = res.data.data.tag
-                  self.firstCategory = res.data.data.tag[0]
-                  console.log(res)
-                  break;
+        fetchH(arr,left,right){
+           if (right) {
+                return arr.filter(item => item.offsetTop > left && item.offsetTop < right)
+              }else {
+                return arr.filter(item => item.offsetTop > left)
               }
-            }).catch(err => {
-              console.log(err)
+        },
+        getArticle(){
+          let self = this;
+          self.$axios(
+              {
+                url: '/api/articleTag/getIdArticle/',
+                method: 'post',
+                data:{
+                  id: self.$route.params.id,
+                }
+              }
+          ).then(res => {
+            switch (res.data.status){
+              case -1:
+                self.$Notice.open({
+                  title: '文章不存在'
+                });
+                self.$router.push({
+                  path: '/home'
+                });
+                break;
+              case 1:
+                self.articles = res.data.data || []
+                self.views = res.data.data.views
+                self.category = res.data.data.tag
+                self.firstCategory = res.data.data.tag[0]
+                console.log(res)
+                break;
+            }
+          }).catch(err => {
+            console.log(err)
+          })
+        },
+        reply(id){
+          const ref = `comment${id}`
+        },
+        submitReply(){
+          let self = this
+          self.$axios({
+            url: '/api/articleTag/setComment/',
+            method: 'post',
+            data: {
+              id: self.$route.params.id,
+              content: self.myComment,
+              token: sessionStorage.getItem('Authorization'),
+              toUsername: '',
+            }
+          }).then(res => {
+            self.$Notice.open({
+              title: '评论成功'
             })
-          },
-          reply(id){
-            const ref = `comment${id}`
-          },
-          submitReply(){
-            let self = this
-            console.log(self.myComment)
-          },
-          close(){
-            this.showCommentEditor = false
-          },
+            self.$router.push({
+              path: '/home'
+            })
+          }).catch(err => {
+            console.log(err);
+          })
+        },
+        close(){
+          this.showCommentEditor = false
+        },
     },
       created() {
-        // this.getComment()
+        this.getComment()
         this.getArticle()
       },
       watch:{
