@@ -93,6 +93,30 @@ export default {
             content: self.content,
             tag: self.dynamicTags
           }
+        }).then(res => {
+          switch (res.data.status){
+            case -1:
+              self.$Notice.open({
+                title: '请登录',
+              });
+              self.$router.push({
+                path: '/login'
+              });
+              break;
+            case -3:
+              self.$Notice.open({
+                title: '游客禁止发布文章',
+              });
+              break;
+            case 1:
+              self.$Notice.open({
+                title: '发布成功',
+              });
+              self.$router.push({
+                path: '/home'
+              });
+              break;
+          }
         })
       }else if (self.content === ''){
         self.$Notice.open({

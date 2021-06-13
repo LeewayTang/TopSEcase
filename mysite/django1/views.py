@@ -216,8 +216,8 @@ class UserInfoView(viewsets.GenericViewSet):
         file.close()
         user.avatar = MEDIA_URL + str(user.id) + '/avatar/' + key + '.' + form
         user.save()
-        queryset = Article.objects.filter(user__exact=user).update(banner=user.avatar)
-        queryset = Discuss.objects.filter(user__exact=user).update(banner=user.avatar)
+        Article.objects.filter(user__exact=user).update(banner=user.avatar)
+        Discuss.objects.filter(user__exact=user).update(banner=user.avatar)
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': user.quanzi_set.values()}
         print(ret)
@@ -565,7 +565,6 @@ class ArticleTagInfo(viewsets.GenericViewSet):
     @action(methods=['GET'], detail=False)
     def getAllArticle(self, request):
         queryset = Article.objects.all().order_by('-pubTime', '-viewsCount').values()
-        print(queryset)
         ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
 
