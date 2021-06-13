@@ -1,5 +1,11 @@
 <template>
   <div id="editor-wrap">
+    <div class="chooseType">
+      <el-radio-group v-model="type" fill="#6cd0b9">
+        <el-radio-button label="笔记"></el-radio-button>
+        <el-radio-button label="讨论"></el-radio-button>
+      </el-radio-group>
+    </div>
     <el-card class="titleTag">
     <el-input placeholder="请输入标题" v-model="title" clearable></el-input>
     <el-input placeholder="文章摘要" v-model="summary" clearable></el-input>
@@ -26,12 +32,12 @@
     </div>
     </el-card>
     <div id="editor" v-if="ready">
-      <mavon-editor class="mvcss" style="height: 100%" v-model="content"></mavon-editor>
+      <mavon-editor placeholder="请输入详细内容" style="height: 100%" v-model="content"></mavon-editor>
       <el-button type="primary" @click="saveTmp">
         保存草稿
       </el-button>
       <el-button type="success" @click="submit">
-        提交笔记
+        确认提交
       </el-button>
     </div>
   </div>
@@ -56,6 +62,7 @@ export default {
       title: '',
       ready: false,
       content: ''
+      type: '笔记',
     }
   },
   methods: {
@@ -78,7 +85,6 @@ export default {
       this.inputVisible = false;
       this.inputValue = '';
     },
-
     submit() {
       // let meditor=document.getElementById('mavon-editor');
       // console.log(meditor.innerText);
@@ -185,5 +191,9 @@ export default {
 }
 .v-note-wrapper {
   z-index: 0;
+}
+.chooseType {
+  margin-bottom: 20px;
+  color: #6cd0b9;
 }
 </style>
