@@ -103,11 +103,27 @@
         :visible.sync="item.dialogVisible"
         width="30%"
         >
-      <span>{{item.name}}</span>
-      <span>还应该包括导师信息，圈内同学等信息</span>
+      <div class="qz-name">{{item.name}}</div>
+      <div class="tutorInfo">
+        <div class="title">导师信息</div>
+        <div class="infoInstance">
+          <img :src="item.tutorInfo.avatar" alt="导师头像">
+          <div class="tutorNameID">{{item.tutorInfo.trueName}} | {{item.tutorInfo.id}}</div>
+        </div>
+      </div>
+      <div class="studentInfo">
+        <div class="title">学生信息</div>
+        <div class="infoInstance" v-for="it in item.studentsInfo">
+          <div style="cursor:pointer;" @click="goToPC(it, item)">
+            <img :src="it.avatar" alt="学生头像">
+            <div class="studentNameID">{{it.trueName}} | {{it.id}}</div>
+          </div>
+        </div>
+      </div>
+<!--      <span>还应该包括导师信息，圈内同学等信息</span>-->
       <span slot="footer" class="dialog-footer">
-    <el-button @click="item.dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="item.dialogVisible = false">确 定</el-button>
+<!--    <el-button @click="item.dialogVisible = false">取 消</el-button>-->
+    <el-button type="success" @click="item.dialogVisible = false" size="mini">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -145,8 +161,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="commitNewQuanzi(quanzi.name)">确 定</el-button>
+      <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
+      <el-button type="primary" size="mini" @click="commitNewQuanzi(quanzi.name)">确 定</el-button>
     </div>
   </el-dialog>
   </div>
@@ -229,6 +245,7 @@ name: "PersonalCenter1",
         this.$axios(
             {
               url: '/' + this.$route.params.username,
+              method: 'get',
             }
         ).then(res => {
           this.websiteInfo = res.data.data
@@ -413,6 +430,10 @@ name: "PersonalCenter1",
     commitDeleteQuanzi() {
       // 具体的数据传输没搞明白呢，不着急
       console.log(this.websiteInfo.quanzi)
+    },
+    goToPC(v1, v2) {
+      v2.dialogVisible = false
+      this.$router.push('/personalCenter/' + v1.username)
     }
   },
   watch:{
@@ -433,7 +454,7 @@ name: "PersonalCenter1",
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .personal-center-wrap{
   padding-top: 20px;
 }
@@ -457,6 +478,36 @@ img {
 .el-dialog{
   width: 700px !important;
   height: auto;
+
+  .el-button {
+    font-size: x-large;
+    color: #e4eef5;
+  }
+
+  img {
+    margin-left: 5%;
+    margin-top: 5%;
+    border-radius: 50%;
+    width: 5vmin;
+    height: 5vmin;
+    object-fit: cover;
+    object-position: center;
+  }
+  .infoInstance {
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+  }
+
+  .qz-name {
+    font-size: xxx-large;
+    text-align: center;
+    color: #6cd0b9;
+  }
+  .title {
+    font-size: x-large;
+    margin-top: 10px;
+  }
 }
 .show-preview {
   display: flex;

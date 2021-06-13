@@ -12,8 +12,10 @@ export default [
                 data: {
                     avatar: require('../assets/images/E2n0ya2UUAA2odS.jpg'),
                     username: '未登录',
+                    truename: '匿名',
                     title:'没有名分',
-                    quanzi:[{name: '没有圈子', dialogVisible: false}],
+                    id: '19231061',
+                    quanzi:[{name: '没有圈子', dialogVisible: false, tutorInfo: {}, studentsInfo: []}],
                     slogan: 'Who am I?',
                     name: 'MoYun'
                 }
@@ -30,8 +32,59 @@ export default [
                 data: {
                     avatar: require('../assets/images/rzdf.jpg'),
                     username: '没有共产党就没有新中国',
+                    trueName: '徐惠彬',
+                    id: '00000001',
                     title:'导师',
-                    quanzi:[{name: 'BUAA', dialogVisible: false}, {name:'Software Engineer', dialogVisible: false}],
+                    quanzi:[{name: 'BUAA', dialogVisible: false, tutorInfo:
+                            {
+                                avatar: require('../assets/images/rzdf.jpg'),
+                                username: '没有共产党就没有新中国',
+                                trueName: '徐惠彬',
+                                id: '00000001',
+                                title:'导师',
+                            }, studentsInfo: [
+                            {
+                                avatar: require('../assets/images/gg.jpg'),
+                                username: 'Cynic',
+                                trueName: '宋永欣',
+                                id: '19231061',
+                                title:'学生',
+                                slogan: '那年十八，母校舞会，站着如喽罗。',
+                            },
+                            {
+                                avatar: require('../assets/images/E3MlNB0VEAoTyYl.png'),
+                                username: 'MJX',
+                                trueName: '闵家旭',
+                                id: '19231181',
+                                title:'学生',
+                                slogan: '寄！',
+                            }
+                        ]}, {name:'Software Engineer', dialogVisible: false, tutorInfo:
+                            {
+                                avatar: require('../assets/images/rzdf.jpg'),
+                                username: '没有共产党就没有新中国',
+                                trueName: '徐惠彬',
+                                id: '00000001',
+                                title:'导师',
+                            }, studentsInfo: [
+                            {
+                                avatar: require('../assets/images/E3MlNB0VEAoTyYl.png'),
+                                username: 'MJX',
+                                trueName: '闵家旭',
+                                id: '19231181',
+                                title:'学生',
+                                slogan: '寄！',
+                            },
+                            {
+                                avatar: require('../assets/images/gg.jpg'),
+                                username: 'Cynic',
+                                trueName: '宋永欣',
+                                id: '19231061',
+                                title:'学生',
+                                slogan: '那年十八，母校舞会，站着如喽罗。',
+                            },
+                        ]
+                    }],
                     slogan: '银鞍照白马，飒沓如流星。',
                     name: 'MoYun',
                 }
@@ -46,7 +99,9 @@ export default [
                 code: 20000,
                 data: {
                     avatar: require('../assets/images/gg.jpg'),
-                    username: 'cynic',
+                    username: 'Cynic',
+                    trueName: '宋永欣',
+                    id: '19231061',
                     title:'学生',
                     quanzi:[{name: 'BUAA', dialogVisible: false}, {name:'Software Engineer', dialogVisible: false}],
                     slogan: '那年十八，母校舞会，站着如喽罗。',
