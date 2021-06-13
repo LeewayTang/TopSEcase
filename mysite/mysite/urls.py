@@ -73,7 +73,7 @@ router.register('upload', views.Upload)
 router.register('articleTag', views.ArticleTagInfo)
 # router.register('circle', views.CircleInfo)
 # router.register('comment', views.BookCommentInfo)
-# router.register('search', views.Search)
+router.register('search', views.Search)
 # router.register('note', views.NoteInfo)
 urlpatterns += path('api/', include(router.urls)),
 

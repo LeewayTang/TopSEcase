@@ -197,6 +197,16 @@ class UploadAvatarSerializer(serializers.ModelSerializer):
         )
 
 
+class SerchQuanziSerializer(serializers.ModelSerializer):
+    qz = serializers.CharField(required=True, max_length=32)
+
+    class Meta:
+        model = Quanzi
+        fields = (
+            'qz',
+        )
+
+
 # 等待重新写
 # class UploadBookSerializer(serializers.ModelSerializer):
 #     ISBN = serializers.CharField(required=True, max_length=16)

@@ -105,25 +105,30 @@ class Quanzi(models.Model):
 
 
 # 等待重新写
-# def book_directory_path(instance, filename):
-#     ext = filename.split('.')[-1]
-#     filename = '{}.{}'.format(uuid.uuid4().hex[:8], ext)
-#     sub_folder = 'file'
-#     if ext.lower() in ["pdf", "docx"]:
-#         sub_folder = "document"
-#     # print(os.path.join(instance.id, sub_folder, filename))
-#     return os.path.join(instance.ISBN, sub_folder, filename)
+def book_directory_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = '{}.{}'.format(uuid.uuid4().hex[:8], ext)
+    sub_folder = 'file'
+    if ext.lower() in ["pdf", "docx"]:
+        sub_folder = "document"
+    # print(os.path.join(instance.id, sub_folder, filename))
+    return os.path.join(instance.ISBN, sub_folder, filename)
 
 
 # 等待重新写
 # 书本
-# class Book(models.Model):
-#     name = models.CharField(verbose_name='书名', max_length=256, default='No name')
-#     publishTime = models.DateField(verbose_name='出版时间', default='2000-01-01')
-#     ISBN = models.CharField(verbose_name='ISBN编号', max_length=32, primary_key=True)
-#     author = models.CharField(verbose_name='作者名字', max_length=32, default='author')
-#     comments = models.IntegerField(verbose_name='评论数', default=0)
-#     file = models.FileField(verbose_name='书', upload_to=book_directory_path, default="no")
+class Book(models.Model):
+    title = models.CharField(verbose_name='书名', max_length=256, default='No name')
+    introduction = models.TextField(verbose_name='简介')
+    ISBN = models.CharField(verbose_name='ISBN编号', max_length=32, primary_key=True)
+    author = models.CharField(verbose_name='作者名字', max_length=32)
+    press = models.CharField(verbose_name='出版社', max_length=32)
+    href = models.CharField(verbose_name='这个是一定要删掉的', max_length=1024, default='https://www.baidu.com/')
+    img = models.CharField(verbose_name='封面', max_length=1024)
+    downloadCount = models.IntegerField(verbose_name='下载数', default=0)
+    viewsCount = models.IntegerField(verbose_name='阅读数', default=0)
+    comments = models.IntegerField(verbose_name='评论数', default=0)
+    updater = models.ForeignKey(verbose_name='上传者', to='User', on_delete=models.CASCADE)
 
 
 # 等待重新写

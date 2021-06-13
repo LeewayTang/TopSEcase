@@ -238,7 +238,7 @@ class Upload(viewsets.GenericViewSet):
             if queryset.count() == 0:
                 ArticleTag.objects.create(tag=i)
             queryset = ArticleTag.objects.get(tag__exact=i)
-            queryset.book.add(article)
+            queryset.article.add(article)
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=ArticleUploadSerializer)
@@ -261,15 +261,9 @@ class Upload(viewsets.GenericViewSet):
         print(content)
         print(summary)
         article = Article.objects.create(title=title, content=content, summary=summary, user=user, banner=user.avatar)
-        article.banner = user.avatar
         self.UploadArticleTag(tag, article)
-        # ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-        #        'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
-        # print(ret)
         Ret = {}
         Ret.update({'msg': 'success', 'status': 1})
-        # Ret.update({'data': ret})
-        # Ret.update({'status': 1})
         return Response(Ret)
 
     def UploadDiscussTag(self, tag, discuss):
@@ -284,7 +278,7 @@ class Upload(viewsets.GenericViewSet):
     @swagger_auto_schema(responses={200: ""},
                          request_body=DiscussUploadSerializer)
     @action(methods=['POST'], detail=False)
-    def UploadArticle(self, request):
+    def UploadDiscuss(self, request):
         token = request.data.get('token')
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
@@ -301,10 +295,10 @@ class Upload(viewsets.GenericViewSet):
         print(summary)
         discuss = Discuss.objects.create(title=title, summary=summary, user=user, banner=user.avatar)
         discuss.banner = user.avatar
+        discuss.save()
         self.UploadDiscussTag(tag, discuss)
         # ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
         #        'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': [{'name': 'BUAA'}]}
-        # print(ret)
         Ret = {}
         Ret.update({'msg': 'success', 'status': 1})
         # Ret.update({'data': ret})
@@ -571,6 +565,7 @@ class ArticleTagInfo(viewsets.GenericViewSet):
     @action(methods=['GET'], detail=False)
     def getAllArticle(self, request):
         queryset = Article.objects.all().order_by('-pubTime', '-viewsCount').values()
+        print(queryset)
         ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
 
@@ -959,94 +954,17 @@ class TokenInfo(viewsets.GenericViewSet):
 #         # return Response({'msg': 'success', 'data': queryset, 'status': 1})
 
 
-# 等待重新写
-# class Search(viewsets.GenericViewSet):
-#     queryset = Book.objects.all()
-#
-#     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
-#     @action(methods=['POST'], detail=False)
-#     def SearchBook(self, request):
-#         context = json.loads(request.body).get('context')
-#         return Response(
-#             {'msg': 'success',
-#              'data': Book.objects.filter(name__icontains=context).order_by('ISBN').values(),
-#              'tag': 'Book',
-#              'status': '1'})
-#
-#     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
-#     @action(methods=['POST'], detail=False)
-#     def SearchUser(self, request):
-#         context = json.loads(request.body).get('context')
-#         return Response(
-#             {'msg': 'success',
-#              'data': User.objects.filter(uid__icontains=context).order_by('uid').values(),
-#              'tag': 'User',
-#              'status': '1'})
-#
-#     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
-#     @action(methods=['POST'], detail=False)
-#     def SearchComment(self, request):
-#         context = json.loads(request.body).get('context')
-#         return Response(
-#             {'msg': 'success',
-#              'data': Comment.objects.filter(context__icontains=context).order_by('ctime').values(),
-#              'tag': 'Comment',
-#              'status': '1'})
-#
-#     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
-#     @action(methods=['POST'], detail=False)
-#     def SearchDiscuss(self, request):
-#         context = json.loads(request.body).get('context')
-#         return Response(
-#             {'msg': 'success',
-#              'data': Discuss.objects.filter(context__icontains=context).order_by('dtime').values(),
-#              'tag': 'Discuss',
-#              'status': '1'})
-#
-#     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
-#     @action(methods=['POST'], detail=False)
-#     def SearchCircle(self, request):
-#         context = json.loads(request.body).get('context')
-#         return Response(
-#             {'msg': 'success',
-#              'data': Circle.objects.filter(type__icontains=context).order_by('id').values(),
-#              'tag': 'Circle',
-#              'status': '1'})
-#
-#     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
-#     @action(methods=['POST'], detail=False)
-#     def SearchNote(self, request):
-#         context = json.loads(request.body).get('context')
-#         return Response(
-#             {'msg': 'success',
-#              'data': Note.objects.filter(context__icontains=context).order_by('id').values(),
-#              'tag': 'Note',
-#              'status': '1'})
-#
-#     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
-#     @action(methods=['POST'], detail=False)
-#     def SearchBookComment(self, request):
-#         context = json.loads(request.body).get('context')
-#         return Response(
-#             {'msg': 'success',
-#              'data': BookComment.objects.filter(context__icontains=context).order_by('id').values(),
-#              'tag': 'BookComment',
-#              'status': '1'})
-#
-#     @swagger_auto_schema(responses={200: ""}, request_body=SearchInfo)
-#     @action(methods=['POST'], detail=False)
-#     def SearchAll(self, request):
-#         context = json.loads(request.body).get('context')
-#         Ret = {}
-#         Ret.update({'Book': Search.SearchBook(self, request=request).data})
-#         Ret.update({'User': Search.SearchUser(self, request=request).data})
-#         Ret.update({'Comment': Search.SearchComment(self, request=request).data})
-#         Ret.update({'Discuss': Search.SearchDiscuss(self, request=request).data})
-#         Ret.update({'Circle': Search.SearchCircle(self, request=request).data})
-#         Ret.update({'Note': Search.SearchNote(self, request=request).data})
-#         Ret.update({'BookComment': Search.SearchBookComment(self, request=request).data})
-#         return Response(
-#             {'msg': 'success',
-#              'data': Ret,
-#              'tag': 'All',
-#              'status': '1'})
+# 搜索
+class Search(viewsets.GenericViewSet):
+    queryset = User.objects.all()
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SerchQuanziSerializer)
+    @action(methods=['POST'], detail=False)
+    def SearchQuanzi(self, request):
+        qz = request.data.get('qz')
+        queryset = Quanzi.objects.filter(name__exact=qz)
+        if queryset.count() == 0:
+            return Response({'status': -1})
+        return Response(
+            {'user': Quanzi.objects.get(name__exact=qz).member.all().order_by('username').values(),
+             'status': 1})
