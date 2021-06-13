@@ -1,5 +1,11 @@
 <template>
   <div id="editor-wrap">
+    <div class="chooseType">
+      <el-radio-group v-model="type" fill="#6cd0b9">
+        <el-radio-button label="笔记"></el-radio-button>
+        <el-radio-button label="讨论"></el-radio-button>
+      </el-radio-group>
+    </div>
     <el-card class="titleTag">
     <el-input placeholder="请输入标题" v-model="title" clearable></el-input>
     <div id="edit-tag">
@@ -25,12 +31,12 @@
     </div>
     </el-card>
     <div id="editor" v-if="ready">
-      <mavon-editor class="mvcss" style="height: 100%"></mavon-editor>
+      <mavon-editor placeholder="请输入详细内容" style="height: 100%"></mavon-editor>
       <el-button type="primary" @click="saveTmp">
         保存草稿
       </el-button>
       <el-button type="success" @click="submit">
-        提交笔记
+        确认提交
       </el-button>
     </div>
   </div>
@@ -53,6 +59,7 @@ export default {
       inputValue: '',
       title: '',
       ready: false,
+      type: '笔记',
     }
   },
   methods: {
@@ -75,7 +82,6 @@ export default {
       this.inputVisible = false;
       this.inputValue = '';
     },
-
     submit() {
       // 这咋把markdown编辑器里的内容传出去啊，俺也不会，俺也不敢问
     },
@@ -127,5 +133,9 @@ export default {
 }
 .v-note-wrapper {
   z-index: 0;
+}
+.chooseType {
+  margin-bottom: 20px;
+  color: #6cd0b9;
 }
 </style>
