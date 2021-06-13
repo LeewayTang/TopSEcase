@@ -25,7 +25,7 @@
     </div>
     </el-card>
     <div id="editor" v-if="ready">
-      <mavon-editor style="height: 100%"></mavon-editor>
+      <mavon-editor class="mvcss" style="height: 100%"></mavon-editor>
       <el-button type="primary" @click="saveTmp">
         保存草稿
       </el-button>
@@ -39,6 +39,7 @@
 // Local Registration
 import { mavonEditor } from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+
 export default {
   name: 'editor',
   components: {
@@ -93,7 +94,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="less" scoped>
 #editor-wrap {
   /*margin-top: 100px;*/
   padding-top: 30px;
@@ -124,5 +125,7 @@ export default {
 .el-card{
   margin-bottom: 20px;
 }
-
+.v-note-wrapper {
+  z-index: 0;
+}
 </style>
