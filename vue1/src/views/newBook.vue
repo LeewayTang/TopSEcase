@@ -58,18 +58,21 @@
             accept=".pdf,.epub,.mobi"
             ref="upload"
             :limit=1
-            on-success="onSuccess"
-            on-fail="onFail"
+            :on-success="onSuccess"
+            :on-fail="onFail"
+            :on-change="printFuckingFileList"
+            :on-remove="onRemove"
             :auto-upload="false"
             :file-list="fileList"
-            :on-exceed="handleExceed">
+            :on-exceed="handleExceed"
+        prop="fileList">
           <el-button size="small" type="primary" style="margin: 10%">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">支持pdf, mobi, epub格式文件</div>
         </el-upload>
       </fieldset>
     </div>
     <div class="submit-holder">
-      <el-button type="success" v-if="this.fileList.length===0|| this.ISBN === ''" disabled>提交</el-button>
+      <el-button type="success" v-if="!hasFile || ISBN === ''" disabled>提交</el-button>
       <el-button type="success" v-else @click="submit">提交</el-button>
     </div>
   </div>
@@ -91,7 +94,8 @@ export default {
       topic: '',
       tags: '',
       cover_img_url: '',
-      fileList: []
+      fileList: [],
+      hasFile: false
     };
   },
   methods:{
@@ -101,16 +105,30 @@ export default {
     submit(){
       this.uploadUrl = ''
       this.$refs.upload.submit()
+      this.hasFile = false
     },
-    onSuccess(){
+    onSuccess(res, file, fileList){
       this.$Notice.open({
         title: '书帖上传成功！'
       })
+      this.hasFile = false
+    },
+    onRemove() {
+      this.hasFile = false
     },
     onFail(){
       alert('上传失败')
-    }
-  }
+      this.hasFile = false
+    },
+    // el-loader不是把选择了的文件和fileList动态绑定的，是文件传到后台之后通过回调绑定的
+    // 所以如果只选择但是没有传，那么fileList永远为空
+    // 传上去的书的数据被放在一个this.$refs.upload._data.uploadFiles
+    // 的地方，但是其实很难取到，只能在el-loader的接口里调出来
+    printFuckingFileList() {
+      this.hasFile = true
+      console.log(this.$refs.upload.uploadFiles)
+    },
+  },
 }
 </script>
 
