@@ -364,4 +364,7 @@
       text-align: center;
       padding-top: 200px;
     }
+    .v-note-wrapper {
+      z-index: 0;
+    }
 </style>
