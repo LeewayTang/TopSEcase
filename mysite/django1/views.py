@@ -228,6 +228,23 @@ class UserInfoView(viewsets.GenericViewSet):
         Ret.update({'status': 1})
         return Response(Ret)
 
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=TokenSerializer)
+    @action(methods=['POST'], detail=False)
+    def getUserQuanzi(self, request):
+        token = request.data.get('token')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'status': -1})
+        user = Token.objects.get(key__exact=token).usr
+        ret = {'quanzi': user.quanzi_set.values('name')}
+        print(ret)
+        Ret = {}
+        Ret.update({'msg': 'success'})
+        Ret.update({'data': ret})
+        Ret.update({'status': 1})
+        return Response(Ret)
+
 
 class Upload(viewsets.GenericViewSet):
     queryset = Article.objects.all()
@@ -658,7 +675,6 @@ class DiscussTagInfo(viewsets.GenericViewSet):
         Ret.update({'username': discuss.user.username})
         Ret.update({'avatar': discuss.user.avatar})
         Ret.update({'header': discuss.title})
-        Ret.update({'content': discuss.content})
         Ret.update({'views': discuss.viewsCount})
         Ret.update({'comments': discuss.commentsCount})
         tag = discuss.discusstag_set.values()
@@ -962,11 +978,12 @@ class Search(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def searchQuanzi(self, request):
         qz = request.data.get('qz')
+        print(qz)
         queryset = Quanzi.objects.filter(name__exact=qz)
         if queryset.count() == 0:
             return Response({'status': -1})
         return Response(
-            {'user': Quanzi.objects.get(name__exact=qz).member.all().order_by('username').values(),
+            {'user': Quanzi.objects.get(name__exact=qz).member.all().order_by('username').values('username'),
              'status': 1})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SerchArticleSerializer)

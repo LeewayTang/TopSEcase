@@ -2,12 +2,12 @@
     <article class="post post-list">
         <div class="post-entry">
             <div class="feature">
-                <router-link :to="`/article/${post.id}`">
+                <router-link :to="`/${post.type}/${post.id}`">
                     <img :src="post.banner"/>
                 </router-link>
             </div>
             <h1 class="entry-title">
-                <router-link :to="`/article/${post.id}`"><span v-if="post.isTop" style="color:#ff6d6d;font-weight:600">[置顶] </span>{{post.title}}</router-link>
+                <router-link :to="`/${post.type}/${post.id}`"><span v-if="post.isTop" style="color:#ff6d6d;font-weight:600">[置顶] </span>{{post.title}}</router-link>
 <!--              <router-link :to="`/markdown_test`"><span v-if="post.isTop" style="color:#ff6d6d;font-weight:600">[置顶] </span>{{post.title}}</router-link>-->
             </h1>
             <div class="p-time">
@@ -16,13 +16,13 @@
             <p class="summary">{{post.summary}}</p>
             <footer class="entry-footer">
                 <div class="post-more">
-                    <router-link :to="`/article/${post.id}`"><i class="iconfont iconfish-li" style="font-size: 25px;"></i></router-link>
+                    <router-link :to="`/${post.type}/${post.id}`"><i class="iconfont iconfish-li" style="font-size: 25px;"></i></router-link>
                 </div>
                 <div class="info-meta">
                     <div class="comnum">
                         <span>
                             <i class="iconfont iconcomment"></i>
-                          <router-link :to="`/article/${post.id}`">{{post.commentsCount}} 条评论</router-link>>
+                          <router-link :to="`/${post.type}/${post.id}`">{{post.commentsCount}} 条评论</router-link>>
                         </span>
                     </div>
                     <div class="views">

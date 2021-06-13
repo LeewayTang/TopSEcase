@@ -15,16 +15,9 @@
       <el-card>
         <div class="title">圈内同学</div>
         <div class="sug-list" v-for="item in sugPeer">
-          <li class="sug-item"><router-link :to="/personalCenter/ + item">{{ item }}</router-link></li>
+          <li class="sug-item"><router-link :to="/personalCenter/ + item.username">{{ item.username }}</router-link></li>
         </div>
       </el-card>
-
-        <el-card>
-        <div class="title">优秀圈子</div>
-        <div class="sug-list" v-for="item in sugQuanzi">
-          <li class="sug-item"><router-link to="/">{{ item }}</router-link></li>
-        </div>
-        </el-card>
       <div>
 <!--        <router-link to="/discussion">test</router-link>-->
       </div>
@@ -50,24 +43,69 @@ export default {
       sugPeer: [],
       sugQuanzi: [],
       articles: [],
+      Quanzi: [],
     }
   },
   methods: {
     getSugList() {
-      fetchSuggest().then(res=>{
-        this.sugPeer = res.peer || []
-        this.sugQuanzi = res.quanzi || []
+      let self = this
+      self.$axios({
+        url: '/api/user/getUserQuanzi/',
+        method: 'post',
+        data: {
+          token: sessionStorage.getItem('Authorization'),
+        },
+      }).then(res =>{
+        switch (res.data.status){
+          case -1:
+            self.$Notice.open({
+              title: '请登录',
+            });
+            self.$router.push({
+              path: '/login'
+            });
+            break;
+          case 1:
+            self.Quanzi = res.data.data.quanzi || [];
+            self.$axios({
+              url: '/api/search/searchQuanzi/',
+              method: 'post',
+              data: {
+                qz: self.Quanzi[0].name,
+              }
+            }).then(res =>{
+              switch (res.data.status){
+                case -1:
+                  self.$Notice.open({
+                    title: '请登录',
+                  });
+                  self.$router.push({
+                    path: '/login'
+                  });
+                  break;
+                case 1:
+                  self.sugPeer = res.data.user || [];
+                  console.log(self.sugPeer)
+                  break;
+              }
+            }).catch(err =>{
+              console.log(err);
+            })
+            break;
+        }
+      }).catch(err =>{
+        console.log(err);
       })
     },
     getArticles() {
       this.$axios(
           {
-            url: '/post/list',
+            url: '/api/discuss/getAllDiscuss/',
             method: 'get'
           }
       ).then(res => {
         // console.log(res)
-        this.articles = res.data.data.items || []
+        this.articles = res.data.data || []
         // console.log(this.articles)
         // console.log('get articles ok')
       }).catch(err => {
@@ -77,7 +115,7 @@ export default {
   },
   mounted() {
     this.getSugList();
-    this.getArticles()
+    this.getArticles();
   }
 }
 </script>

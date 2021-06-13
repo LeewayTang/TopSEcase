@@ -74,6 +74,7 @@ router.register('articleTag', views.ArticleTagInfo)
 # router.register('circle', views.CircleInfo)
 # router.register('comment', views.BookCommentInfo)
 router.register('search', views.Search)
+router.register('discuss', views.DiscussTagInfo)
 # router.register('note', views.NoteInfo)
 urlpatterns += path('api/', include(router.urls)),
 

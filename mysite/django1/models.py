@@ -68,6 +68,7 @@ class Article(models.Model):
     user = models.ForeignKey(verbose_name='发布人', to='User', on_delete=models.CASCADE)
     pubTime = models.DateField(verbose_name='文章创建时间', auto_now_add=True)
     banner = models.CharField(verbose_name='文章头像', max_length=1024)
+    type = models.CharField(verbose_name='type', max_length=32, default='article')
 
 
 # 等待重新写
@@ -92,6 +93,7 @@ class Discuss(models.Model):
     user = models.ForeignKey(verbose_name='发布人', to='User', on_delete=models.CASCADE)
     pubTime = models.DateField(verbose_name='文章创建时间', auto_now_add=True)
     banner = models.CharField(verbose_name='文章头像', max_length=1024)
+    type = models.CharField(verbose_name='type', max_length=32, default='discuss')
 
 
 # 等待重新写

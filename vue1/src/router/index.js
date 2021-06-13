@@ -105,6 +105,12 @@ const routes = [
         meta: { title: '文章', params: 'id'}
     },
     {
+        path: '/discuss/:id',
+        name: 'discuss',
+        component: () => import('../views/Discuss.vue'),
+        meta: { title: '讨论', params: 'id'}
+    },
+    {
         path: '/books/tag/:tag',
         name: 'tag',
         component: () => import('../views/book-sort'),

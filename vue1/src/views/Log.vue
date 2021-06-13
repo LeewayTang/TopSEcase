@@ -1,33 +1,33 @@
 <template>
-<div class="book-note-wrap">
-  <div class="main-container">
-    <div class="content" v-for="item in articles">
-      <el-card>
-        <post :post="item" :key="item.id"></post>
-      </el-card>
-    </div>
-  </div>
-  <div class="right">
-    <div class="square-block" :style="{backgroundImage: 'url('+ bg+ ')'}">
-      <div class="header">
-      <router-link :to="/personalCenter/ + $store.state.websiteInfo.username">
-        <img :src="$store.state.websiteInfo.avatar" alt="头像" class="circular">
-        <div class="user-name">{{ $store.state.websiteInfo.username }}</div>
-      </router-link>
-        <div class="line"/>
-        <div class="slogan">{{$store.state.websiteInfo.slogan}}</div>
+  <div class="book-note-wrap">
+    <div class="main-container">
+      <div class="content" v-for="item in articles">
+        <el-card>
+          <post :post="item" :key="item.id"></post>
+        </el-card>
       </div>
     </div>
-    <div class="qz">
-      <div class="quanzi">
-        <div class="title">你可能想follow的人</div>
-        <ul v-for="item in sugList">
-        <li class="sug-item"><router-link :to="/personalCenter/ + item">{{item}}</router-link></li>
-        </ul>
+    <div class="right">
+      <div class="square-block" :style="{backgroundImage: 'url('+ bg+ ')'}">
+        <div class="header">
+        <router-link :to="/personalCenter/ + $store.state.websiteInfo.username">
+          <img :src="$store.state.websiteInfo.avatar" alt="头像" class="circular">
+          <div class="user-name">{{ $store.state.websiteInfo.username }}</div>
+        </router-link>
+          <div class="line"/>
+          <div class="slogan">{{$store.state.websiteInfo.slogan}}</div>
+        </div>
+      </div>
+      <div class="qz">
+        <div class="quanzi">
+          <div class="title">你可能想follow的人</div>
+          <ul v-for="item in sugList">
+          <li class="sug-item"><router-link :to="/personalCenter/ + item">{{item}}</router-link></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
