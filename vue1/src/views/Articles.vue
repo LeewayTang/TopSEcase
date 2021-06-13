@@ -146,8 +146,9 @@
           reply(id){
             const ref = `comment${id}`
           },
-          submitReply(v){
-            console.log(v)
+          submitReply(){
+            let self = this
+            console.log(self.myComment)
           },
           close(){
             this.showCommentEditor = false
