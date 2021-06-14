@@ -6,8 +6,8 @@
       <div class='sector'>
       <section-title>导师推荐</section-title>
       <span class="link-more">
-        <a class="" href="/latest?icn=index-latestbook-all"
-        > 更多»</a>
+        <router-link to="/books/tag/导师推荐"
+        > 更多»</router-link>
       </span>
     <div class="book-bubble">
       <ul class="books">
@@ -30,8 +30,8 @@
         <div class='sector'>
           <section-title>同学推荐</section-title>
           <span class="link-more">
-        <a class="" href="/latest?icn=index-latestbook-all"
-        > 更多»</a>
+        <router-link to="/books/tag/同学推荐"
+        > 更多»</router-link>
       </span>
           <div class="book-bubble">
             <ul class="books">
@@ -74,17 +74,12 @@
       <h2 class=''>
         <section-title>热门标签</section-title>
         <span class="link-more">
-        <a class="" href="/tag/?view=type&amp;icn=index-sorttags-all"
-        >所有热门标签»</a>
-      </span>
+        </span>
       </h2>
-      <ul class="hot-tags-col5 s" data-dstat-areaid="54" data-dstat-mode="click,expose" v-for="title in tagTitle">
-        <ul class="tag_title">
-          {{ title }}
-        </ul>
+      <ul class="hot-tags-col5 s" data-dstat-areaid="54" data-dstat-mode="click,expose">
         <ul>
-        <router-link v-for="item in tags" :to="{ path : '/books/tag/' + item.name }" active-class="active" :key="item.id">
-        <el-tag class="tag">{{item.name}}</el-tag>
+        <router-link v-for="item in tags" :to="{ path : '/books/tag/' + item }" active-class="active" :key="item">
+        <el-tag class="tag">{{item}}</el-tag>
         </router-link>
       </ul>
       </ul>
@@ -130,7 +125,7 @@ export default {
     },
     fetchTags(){
       fetchTags().then(res=>{
-        this.tags = res.data || []
+        this.tags = res.data
       })
     }
     // fetchPSB() {
