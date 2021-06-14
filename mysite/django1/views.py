@@ -115,7 +115,18 @@ class UserInfoView(viewsets.GenericViewSet):
         user = Token.objects.get(key__exact=token).usr
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': user.quanzi_set.values()}
-        print(ret)
+        for i in ret['quanzi']:
+            print(i)
+            qz = Quanzi.objects.get(name__exact=i['name'])
+            creator = qz.creator
+            i.update({'tutorInfo': {
+                'avatar': creator.avatar,
+                'trueName': creator.trueName,
+                'iid': creator.iid,
+            }
+            })
+            i.update({'studentsInfo': qz.member.exclude(username__exact=creator.username).values()})
+            print(qz.member.exclude(username__exact=creator.username).values())
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -134,7 +145,20 @@ class UserInfoView(viewsets.GenericViewSet):
             return Response({'msg': 'User not exists', 'status': -1})
         user = User.objects.get(username__exact=username)
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': user.quanzi_set.values()}
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
+               'quanzi': user.quanzi_set.values()}
+        for i in ret['quanzi']:
+            print(i)
+            qz = Quanzi.objects.get(name__exact=i['name'])
+            creator = qz.creator
+            i.update({'tutorInfo': {
+                'avatar': creator.avatar,
+                'trueName': creator.trueName,
+                'iid': creator.iid,
+            }
+            })
+            i.update({'studentsInfo': qz.member.exclude(username__exact=creator.username).values()})
+            print(qz.member.exclude(username__exact=creator.username).values())
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})

@@ -23,10 +23,10 @@
         <el-tag type="info">{{q.name}}</el-tag>
       </div>
       <div class="button-wrap">
-        <el-button :class="{deleting:removeQuanzi}" class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
+        <el-button :class="{deleting:removeQuanzi}" class="button1" v-if="websiteInfo.title === '导师' && $store.state.websiteInfo.username === websiteInfo.username"
                    size="mini" icon="el-icon-remove"
                    @click="removeQuanzi = !removeQuanzi">删除圈子</el-button>
-        <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.username === websiteInfo.username"
+        <el-button class="button1" v-if="websiteInfo.title === '导师' && $store.state.websiteInfo.username === websiteInfo.username"
                    size="mini" icon="el-icon-circle-plus"
                    @click="dialogFormVisible = true">创建圈子</el-button>
       </div>
@@ -107,7 +107,7 @@
         <div class="title">导师信息</div>
         <div class="infoInstance">
           <img :src="item.tutorInfo.avatar" alt="导师头像">
-          <div class="tutorNameID">{{item.tutorInfo.trueName}} | {{item.tutorInfo.id}}</div>
+          <div class="tutorNameID">{{item.tutorInfo.trueName}} | {{item.tutorInfo.iid}}</div>
         </div>
       </div>
       <div class="studentInfo">
@@ -115,7 +115,7 @@
         <div class="infoInstance" v-for="it in item.studentsInfo">
           <div style="cursor:pointer;" @click="goToPC(it, item)">
             <img :src="it.avatar" alt="学生头像">
-            <div class="studentNameID">{{it.trueName}} | {{it.id}}</div>
+            <div class="studentNameID">{{it.trueName}} | {{it.iid}}</div>
           </div>
         </div>
       </div>

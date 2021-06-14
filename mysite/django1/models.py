@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from django.db import models
@@ -29,6 +30,8 @@ class User(models.Model):
     isTeacher = models.BooleanField(verbose_name='是否为导师', default=False)
     slogan = models.CharField(verbose_name='签名', max_length=256, default="这个人很懒")
     title = models.CharField(verbose_name='这tmd到底是个啥', max_length=256, default='学生')
+    trueName = models.CharField(verbose_name='姓名', max_length=16, default='游客')
+    iid = models.CharField(verbose_name='学号', max_length=16, default='00000000')
 
 
 # 被弃用的功能
@@ -80,7 +83,8 @@ class ArticleComment(models.Model):
     fromUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='评论人', related_name='fromUser')
     fromUserAvatar = models.CharField(verbose_name='评论者', max_length=512)
     fromUserName = models.CharField(verbose_name='评论者名字', max_length=512)
-    toUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='回复人', default=None, related_name='toUser', null=True)
+    toUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='回复人', default=None,
+                               related_name='toUser', null=True)
     toUserId = models.IntegerField(verbose_name='回复者id', default=0)
     toUserName = models.CharField(verbose_name='回复者名字', max_length=512, default='')
 
@@ -105,12 +109,26 @@ class DiscussComment(models.Model):
     discuss = models.ForeignKey(to='Discuss', on_delete=models.CASCADE)
     createTime = models.DateField(verbose_name='评论时间', auto_now_add=True)
     content = models.TextField(verbose_name='正文')
-    fromUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='评论人', related_name='discussFromUser')
+    fromUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='评论人',
+                                 related_name='discussFromUser')
     fromUserAvatar = models.CharField(verbose_name='评论者', max_length=512)
     fromUserName = models.CharField(verbose_name='评论者名字', max_length=512)
-    toUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='回复人', default=None, related_name='discussToUser', null=True)
+    toUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='回复人', default=None,
+                               related_name='discussToUser', null=True)
     toUserId = models.IntegerField(verbose_name='回复者id', default=0)
     toUserName = models.CharField(verbose_name='回复者名字', max_length=512, default='')
+
+
+def getTraveler():
+    queryset = User.objects.filter(username__exact='traveler')
+    if queryset.count() == 0:
+        time = datetime.date.today()
+        Mail = 'travel@example.com'
+        Uid = 'traveler'
+        Pwd = 'traveler'
+        User.objects.create(username=Uid, pwd=Pwd, mail=Mail, createTime=time)
+    user = User.objects.get(username__exact='traveler')
+    return user
 
 
 # 等待重新写
@@ -119,6 +137,8 @@ class Quanzi(models.Model):
     name = models.CharField(verbose_name='圈子名字', max_length=32)
     ctime = models.DateField(verbose_name='发布时间', auto_now_add=True)
     number = models.IntegerField(verbose_name='圈子人数', default=1)
+    creator = models.ForeignKey(verbose_name='创建者', to='User', on_delete=models.CASCADE,
+                                related_name='creator', default=getTraveler)
     member = models.ManyToManyField('User')
     dialogVisible = models.BooleanField(verbose_name='鬼知道是啥', default=False)
 
