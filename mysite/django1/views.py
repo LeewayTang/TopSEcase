@@ -850,6 +850,18 @@ class BookTagInfo(viewsets.GenericViewSet):
         queryset = Book.objects.filter(id=Id).values()
         if queryset.count() == 0:
             return Response({'status': -1})
+        book = Book.objects.get(id=Id)
+        book.viewsCount += 1
+        book.save()
+        print(queryset)
+        ret = {'msg': 'success', 'data': queryset, 'status': 1}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['GET'], detail=False)
+    def getTag(self, request):
+        queryset = BookTag.objects.exclude(Q(tag__exact='student') |
+                                           Q(tag__exact='tutor')).values()
         ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
 #
@@ -1181,7 +1193,7 @@ class Search(viewsets.GenericViewSet):
         queryset = BookTag.objects.filter(tag__exact=tag).count()
         print(number)
         if queryset == 0:
-            return Response({'status': -1})
+            return Response({'status': -1, 'data': []})
         queryset = BookTag.objects.get(tag__exact=tag).book.values()[:number]
         print(queryset)
         return Response({'data': queryset, 'status': 1})

@@ -13,8 +13,8 @@
           <section-title>相关热门标签</section-title>
         </h2>
         <ul>
-            <router-link v-for="tag in tags" :to="{ path : '/books/tag/' + tag }" :key="tag">
-              <el-tag class="tag">{{tag}}</el-tag>
+            <router-link v-for="tag in tags" :to="{ path : '/books/tag/' + tag.tag }" :key="tag.tag">
+              <el-tag class="tag">{{tag.tag}}</el-tag>
             </router-link>
         </ul>
       </el-card>
@@ -54,10 +54,22 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    getTag(){
+      let self = this;
+      self.$axios({
+        url: '/api/book/getTag',
+        method: 'get'
+      }).then(res => {
+        this.tags = res.data.data;
+      }).catch(err => {
+        console.log(err)
+      })
     }
   },
   mounted() {
     this.getBook()
+    this.getTag()
   }
 }
 </script>

@@ -25,7 +25,7 @@
             </div>
             <div class="sales-board-line">
               <el-row type="flex" justify="end">
-                <el-button type="primary">获取电子书</el-button>
+                <el-button type="primary" @click="handleGetBook">获取电子书</el-button>
               </el-row>
             </div>
           </div>
@@ -82,6 +82,9 @@ export default {
     this.fetchBookInfo();
   },
   methods: {
+    handleGetBook(){
+      window.location.href = 'http://127.0.0.1:8000/media/' + this.bookInfo.file
+    },
     fetchBookInfo(){
       let self = this;
       let id = self.$route.params.id;

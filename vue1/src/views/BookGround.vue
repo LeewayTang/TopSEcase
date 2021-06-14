@@ -80,8 +80,8 @@
       </h2>
       <ul class="hot-tags-col5 s" data-dstat-areaid="54" data-dstat-mode="click,expose">
         <ul>
-        <router-link v-for="item in tags" :to="{ path : '/books/tag/' + item }" active-class="active" :key="item">
-        <el-tag class="tag">{{item}}</el-tag>
+        <router-link v-for="item in tags" :to="{ path : '/books/tag/' + item.tag }" active-class="active" :key="item.tag">
+        <el-tag class="tag">{{item.tag}}</el-tag>
         </router-link>
       </ul>
       </ul>
@@ -144,8 +144,14 @@ export default {
       })
     },
     fetchTags(){
-      fetchTags().then(res=>{
-        this.tags = res.data
+      let self = this;
+      self.$axios({
+        url: '/api/book/getTag',
+        method: 'get'
+      }).then(res => {
+        this.tags = res.data.data;
+      }).catch(err => {
+        console.log(err)
       })
     }
     // fetchPSB() {
