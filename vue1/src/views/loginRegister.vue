@@ -17,6 +17,9 @@
           <div class="bform">
             <input type="text" placeholder="用户名" v-model="form.username">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
+            <input type="text" placeholder="真实姓名" v-model="form.trueName">
+            <input type="text" placeholder="学号" v-model="form.studentID">
+            <span class="errTips" v-if="existed">* 姓名学号验证失败！ *</span>
             <input type="email" placeholder="邮箱" v-model="form.useremail">
             <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>
             <input type="password" placeholder="密码" v-model="form.userpwd">
@@ -52,6 +55,8 @@ export default{
       existed: false,
       form: {
         username: '',
+        trueName: '',
+        studentID: '',
         useremail: '',
         userpwd: ''
       }
@@ -70,11 +75,14 @@ export default{
     changeType () {
       this.isLogin = !this.isLogin
       this.form.username = ''
+      this.form.trueName = ''
+      this.form.stuentID = ''
       this.form.useremail = ''
       this.form.userpwd = ''
       this.emailError = false
       this.passwordError = false
       this.existed = false
+      this.confirmError = false
     },
     login () {
       let self = this;
@@ -159,6 +167,15 @@ export default{
                 this.existed = false
                 this.emailError = true
                 break
+              case -3: {
+                this.$Notice.open({
+                      title: '学号姓名验证失败'
+                    }
+                )
+                this.confirmError = true
+                break
+              }
+
             }
           })
           .catch(err => {
@@ -233,7 +250,7 @@ export default{
 }
 .bform input{
   width: 50%;
-  height: 40px;
+  height: 15%;
   border: none;
   outline: none;
   border-radius: 10px;
