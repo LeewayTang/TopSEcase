@@ -387,9 +387,9 @@ class Upload(viewsets.GenericViewSet):
         file = request.FILES.getlist('file')
         tags = tags.split('#')
         if user.title == '导师':
-            tags.append('导师推荐')
+            tags.append('tutor')
         else:
-            tags.append('同学推荐')
+            tags.append('student')
         print(tags)
         book = Book.objects.create(title=title, author=author, language=language, ISBN=ISBN, introduction=description,
                                    press=press, img='/media/1/file/dbf2c6b8.jpeg', file=file[0], updater=user)
@@ -1173,10 +1173,13 @@ class Search(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def searchBook(self, request):
         tag = request.data.get('tag')
+        print(tag)
+        number = -1
         number = request.data.get('number')
-        if number is None:
-            number = -1
+        if request.data.get('number') is None:
+            number = request.data.get('number')
         queryset = BookTag.objects.filter(tag__exact=tag).count()
+        print(number)
         if queryset == 0:
             return Response({'status': -1})
         queryset = BookTag.objects.get(tag__exact=tag).book.values()[:number]

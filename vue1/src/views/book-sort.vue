@@ -40,12 +40,13 @@ export default {
   },
   methods: {
     getBook() {
-      this.$axios(
-          {
-            url: this.$route.path,
-            method: 'get'
-          }
-      ).then(res => {
+      this.$axios({
+            url: '/api/search/searchBook/',
+            method: 'post',
+            data:{
+              tag: this.$route.params.tag
+            }
+      }).then(res => {
         // console.log(res)
         this.books = res.data.data || []
         // console.log(this.articles)

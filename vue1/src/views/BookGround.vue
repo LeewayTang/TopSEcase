@@ -6,7 +6,7 @@
       <div class='sector'>
       <section-title>导师推荐</section-title>
       <span class="link-more">
-        <router-link to="/books/tag/导师推荐"
+        <router-link :to="{path: '/books/tag/tutor'}"
         > 更多»</router-link>
       </span>
     <div class="book-bubble">
@@ -31,7 +31,7 @@
         <div class='sector'>
           <section-title>同学推荐</section-title>
           <span class="link-more">
-        <router-link to="/books/tag/同学推荐"
+        <router-link :to="{path: '/books/tag/student'}"
         > 更多»</router-link>
       </span>
           <div class="book-bubble">
@@ -114,7 +114,7 @@ export default {
         url: '/api/search/searchBook/',
         method: 'post',
         data:{
-          tag: '导师推荐',
+          tag: 'tutor',
           number: 4
         }
       }).then(res => {
@@ -129,7 +129,7 @@ export default {
         url: '/api/search/searchBook/',
         method: 'post',
         data:{
-          tag: '同学推荐',
+          tag: 'student',
           number: 4
         }
       }).then(res => {
