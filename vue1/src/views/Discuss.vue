@@ -49,10 +49,10 @@
           </div>
           <!--评论-->
           <div class="comments">
-            <comment v-for="item in articles.comments" :key="item.comment.id" :comment="item.comment">
-              <template v-if="item.reply.length">
-                <comment v-for="reply in item.reply" :key="reply.id" :comment="reply"></comment>
-              </template>
+            <comment v-for="item in comments" :comment="item">
+<!--              <template v-if="item.reply.length">-->
+<!--                <comment v-for="reply in item.reply" :key="reply.id" :comment="reply"></comment>-->
+<!--              </template>-->
             </comment>
           </div>
         </article>
@@ -93,10 +93,17 @@ export default {
   },
   methods: {
     getComment(){
-      fetchComment().then(res => {
-        this.comments = res.data || []
+      let self = this;
+      self.$axios({
+        url: '/api/discuss/getIdComment/',
+        method: 'post',
+        data:{
+          id: self.$route.params.id,
+        }
+      }).then(res => {
+        self.comments = res.data.data || [];
       }).catch(err => {
-        console.log(err)
+        console.log(err);
       })
     },
     fetchH(arr,left,right){
@@ -143,14 +150,41 @@ export default {
     },
     submitReply(){
       let self = this
-      console.log(self.myComment)
+      self.$axios({
+        url: '/api/discuss/setComment/',
+        method: 'post',
+        data: {
+          id: self.$route.params.id,
+          content: self.myComment,
+          token: sessionStorage.getItem('Authorization'),
+          toUsername: '',
+        }
+      }).then(res => {
+        switch (res.data.status){
+          case -3:
+            self.$Notice.open({
+              title: '游客禁止发布评论',
+            });
+            break;
+          case 1:
+            self.$Notice.open({
+              title: '评论成功'
+            })
+            self.$router.push({
+              path: '/discussion'
+            });
+            break;
+        }
+      }).catch(err => {
+        console.log(err);
+      })
     },
     close(){
       this.showCommentEditor = false
     },
   },
   created() {
-    // this.getComment()
+    this.getComment()
     this.getArticle()
   },
   watch:{

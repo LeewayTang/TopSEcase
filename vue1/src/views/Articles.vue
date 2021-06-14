@@ -135,7 +135,7 @@
                   title: '文章不存在'
                 });
                 self.$router.push({
-                  path: '/home'
+                  path: '/log'
                 });
                 break;
               case 1:
@@ -165,12 +165,21 @@
               toUsername: '',
             }
           }).then(res => {
-            self.$Notice.open({
-              title: '评论成功'
-            })
-            self.$router.push({
-              path: '/home'
-            })
+            switch (res.data.status){
+              case -3:
+                self.$Notice.open({
+                  title: '游客禁止发布评论',
+                });
+                break;
+              case 1:
+                self.$Notice.open({
+                  title: '评论成功'
+                })
+                self.$router.push({
+                  path: '/log'
+                });
+                break;
+            }
           }).catch(err => {
             console.log(err);
           })

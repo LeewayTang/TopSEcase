@@ -11,7 +11,7 @@
                         </div>
                         <div style="font-size: 13px;">
                             <span style="color: #9c9c9c;margin-right: 20px;">{{comment.createTime | parseTime}}</span>
-                            <span @click.stop="showCommentEditor=true" style="cursor: pointer;">回复</span>
+<!--                            <span @click.stop="showCommentEditor=true" style="cursor: pointer;">回复</span>-->
                         </div>
                     </div>
                 </section-title>

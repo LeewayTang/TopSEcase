@@ -100,6 +100,19 @@ class Discuss(models.Model):
     type = models.CharField(verbose_name='type', max_length=32, default='discuss')
 
 
+# 讨论评论
+class DiscussComment(models.Model):
+    discuss = models.ForeignKey(to='Discuss', on_delete=models.CASCADE)
+    createTime = models.DateField(verbose_name='评论时间', auto_now_add=True)
+    content = models.TextField(verbose_name='正文')
+    fromUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='评论人', related_name='discussFromUser')
+    fromUserAvatar = models.CharField(verbose_name='评论者', max_length=512)
+    fromUserName = models.CharField(verbose_name='评论者名字', max_length=512)
+    toUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='回复人', default=None, related_name='discussToUser', null=True)
+    toUserId = models.IntegerField(verbose_name='回复者id', default=0)
+    toUserName = models.CharField(verbose_name='回复者名字', max_length=512, default='')
+
+
 # 等待重新写
 # 圈子
 class Quanzi(models.Model):

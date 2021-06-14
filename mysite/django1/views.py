@@ -629,6 +629,8 @@ class ArticleTagInfo(viewsets.GenericViewSet):
         content = request.data.get('content')
         token = request.data.get('token')
         fromUser = Token.objects.get(key__exact=token).usr
+        if fromUser.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -3})
         article = Article.objects.get(id=Id)
         fromUserAvatar = fromUser.avatar
         fromUserName = fromUser.username
@@ -641,6 +643,7 @@ class ArticleTagInfo(viewsets.GenericViewSet):
         else:
             toUserName = ''
         article.commentsCount += 1
+        article.save()
         ArticleComment.objects.create(content=content, article=article, fromUserAvatar=fromUserAvatar,
                                       fromUserName=fromUserName, toUser=toUser, toUserId=toUserId,
                                       toUserName=toUserName, fromUser=fromUser)
@@ -717,6 +720,45 @@ class DiscussTagInfo(viewsets.GenericViewSet):
         print(tag)
         Ret.update({'tag': tag})
         ret = {'msg': 'success', 'data': Ret, 'status': 1}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=IdSerializer)
+    @action(methods=['POST'], detail=False)
+    def getIdComment(self, request):
+        Id = request.data.get('id')
+        print("ID" + Id)
+        queryset = DiscussComment.objects.filter(discuss_id=Id).order_by('createTime')
+        ret = {'msg': 'success', 'data': queryset.values(), 'status': 1}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=TokenSerializer)
+    @action(methods=['POST'], detail=False)
+    def setComment(self, request):
+        Id = request.data.get('id')
+        content = request.data.get('content')
+        token = request.data.get('token')
+        fromUser = Token.objects.get(key__exact=token).usr
+        if fromUser.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -3})
+        discuss = Discuss.objects.get(id=Id)
+        fromUserAvatar = fromUser.avatar
+        fromUserName = fromUser.username
+        toUser = None
+        toUserId = 0
+        toUserName = request.data.get('toUserName')
+        if toUserName is not None:
+            toUser = User.objects.get(username__exact=toUserName)
+            toUserId = toUser.id
+        else:
+            toUserName = ''
+        discuss.commentsCount += 1
+        discuss.save()
+        DiscussComment.objects.create(content=content, discuss=discuss, fromUserAvatar=fromUserAvatar,
+                                      fromUserName=fromUserName, toUser=toUser, toUserId=toUserId,
+                                      toUserName=toUserName, fromUser=fromUser)
+        ret = {'msg': 'success', 'status': 1}
         return Response(ret)
 #
 #     @swagger_auto_schema(responses={200: ""})
@@ -1027,7 +1069,9 @@ class Search(viewsets.GenericViewSet):
     def searchArticle(self, request):
         key = request.data.get('key')
         print(key)
-        queryset = Article.objects.filter(Q(content__icontains=key) or
-                                          Q(summary__icontains=key) or
+        queryset = Article.objects.filter(Q(summary__icontains=key) |
+                                          Q(content__icontains=key) |
                                           Q(title__icontains=key))
+        print(queryset.values())
+
         return Response({'data': queryset.values(), 'status': 1})
