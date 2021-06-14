@@ -217,6 +217,18 @@ class SerchArticleSerializer(serializers.ModelSerializer):
         )
 
 
+class SerchBookSerializer(serializers.ModelSerializer):
+    tag = serializers.CharField(required=True, max_length=32)
+    number = serializers.IntegerField()
+
+    class Meta:
+        model = Book
+        fields = (
+            'tag',
+            'number',
+        )
+
+
 # 等待重新写
 # class UploadBookSerializer(serializers.ModelSerializer):
 #     ISBN = serializers.CharField(required=True, max_length=16)

@@ -171,6 +171,12 @@ class Book(models.Model):
     file = models.FileField(verbose_name='文本', upload_to=book_directory_path)
 
 
+# 书本标签
+class BookTag(models.Model):
+    book = models.ManyToManyField('Book')
+    tag = models.CharField(verbose_name='标签名', max_length=32)
+
+
 # 等待重新写
 # 读书笔记
 # class Note(models.Model):

@@ -112,7 +112,8 @@ class UserInfoView(viewsets.GenericViewSet):
             return Response({'msg': 'Token not exists', 'status': -1})
         user = Token.objects.get(key__exact=token).usr
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': user.quanzi_set.values()}
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
+               'quanzi': user.quanzi_set.values()}
         for i in ret['quanzi']:
             print(i)
             qz = Quanzi.objects.get(name__exact=i['name'])
@@ -183,7 +184,8 @@ class UserInfoView(viewsets.GenericViewSet):
         user.username = username
         user.save()
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': user.quanzi_set.values()}
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
+               'quanzi': user.quanzi_set.values()}
         print(ret)
         Ret = {}
         Ret.update({'msg': 'success'})
@@ -207,7 +209,8 @@ class UserInfoView(viewsets.GenericViewSet):
         user.slogan = slogan
         user.save()
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': user.quanzi_set.values()}
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
+               'quanzi': user.quanzi_set.values()}
         print(ret)
         Ret = {}
         Ret.update({'msg': 'success'})
@@ -242,7 +245,8 @@ class UserInfoView(viewsets.GenericViewSet):
         Article.objects.filter(user__exact=user).update(banner=user.avatar)
         Discuss.objects.filter(user__exact=user).update(banner=user.avatar)
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
-               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title, 'quanzi': user.quanzi_set.values()}
+               'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
+               'quanzi': user.quanzi_set.values()}
         print(ret)
         Ret = {}
         Ret.update({'msg': 'success'})
@@ -345,6 +349,14 @@ class Upload(viewsets.GenericViewSet):
         # Ret.update({'status': 1})
         return Response(Ret)
 
+    def UploadBookTag(self, tag, book):
+        for i in tag:
+            print(i)
+            queryset = BookTag.objects.filter(tag__exact=i)
+            if queryset.count() == 0:
+                BookTag.objects.create(tag=i)
+            queryset = BookTag.objects.get(tag__exact=i)
+            queryset.book.add(book)
 
     @swagger_auto_schema(responses={200: ""},
                          request_body=DiscussUploadSerializer)
@@ -373,10 +385,18 @@ class Upload(viewsets.GenericViewSet):
         tags = request.POST.get('tags')
         print(request.POST.get('ISBN'))
         file = request.FILES.getlist('file')
-
-        Book.objects.create(title=title, author=author, language=language, ISBN=ISBN, introduction=description,
-                            press=press, img='/media/1/file/dbf2c6b8.jpeg', file=file[0], updater=user)
+        tags = tags.split('#')
+        if user.title == '导师':
+            tags.append('导师推荐')
+        else:
+            tags.append('同学推荐')
+        print(tags)
+        book = Book.objects.create(title=title, author=author, language=language, ISBN=ISBN, introduction=description,
+                                   press=press, img='/media/1/file/dbf2c6b8.jpeg', file=file[0], updater=user)
+        self.UploadBookTag(tags, book)
         return Response({'status': 1})
+
+
 #
 #     @swagger_auto_schema(responses={200: ""},
 #                          request_body=UidInfoSerializer)
@@ -815,6 +835,23 @@ class DiscussTagInfo(viewsets.GenericViewSet):
                                       toUserName=toUserName, fromUser=fromUser)
         ret = {'msg': 'success', 'status': 1}
         return Response(ret)
+
+
+# 书
+class BookTagInfo(viewsets.GenericViewSet):
+    queryset = BookTag.objects.all()
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=IdSerializer)
+    @action(methods=['POST'], detail=False)
+    def getIdBook(self, request):
+        Id = request.data.get('id')
+        print("ID" + Id)
+        queryset = Book.objects.filter(id=Id).values()
+        if queryset.count() == 0:
+            return Response({'status': -1})
+        ret = {'msg': 'success', 'data': queryset, 'status': 1}
+        return Response(ret)
 #
 #     @swagger_auto_schema(responses={200: ""})
 #     @action(methods=['GET'], detail=False)
@@ -897,6 +934,7 @@ class TokenInfo(viewsets.GenericViewSet):
     def getToken(self, request):
         queryset = Token.objects.all().values()
         return Response({'msg': 'success', 'data': queryset, 'status': 1})
+
 
 # 等待重新写
 # class CircleInfo(viewsets.GenericViewSet):
@@ -1130,3 +1168,17 @@ class Search(viewsets.GenericViewSet):
         print(queryset.values())
 
         return Response({'data': queryset.values(), 'status': 1})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=SerchBookSerializer)
+    @action(methods=['POST'], detail=False)
+    def searchBook(self, request):
+        tag = request.data.get('tag')
+        number = request.data.get('number')
+        if number is None:
+            number = -1
+        queryset = BookTag.objects.filter(tag__exact=tag).count()
+        if queryset == 0:
+            return Response({'status': -1})
+        queryset = BookTag.objects.get(tag__exact=tag).book.values()[:number]
+        print(queryset)
+        return Response({'data': queryset, 'status': 1})

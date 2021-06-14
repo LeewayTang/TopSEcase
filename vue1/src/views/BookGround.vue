@@ -12,11 +12,12 @@
     <div class="book-bubble">
       <ul class="books">
         <li>
-          <router-link v-for="item in tutorSugBooks" :to="{ path : item.path }" tag="li" active-class="active" :key="item.id" class="link-to">
+          <router-link v-for="item in tutorSugBooks" :to="{ path : '/books/' + item.id}" tag="li" active-class="active"
+                       :key="item.id" class="link-to">
             <div>
-              <a :title=item.name>
-                <img :src="item.icon" height="280px" width="200px;">
-                <div class="book-name">{{ item.name }}</div>
+              <a :title=item.title>
+                <img :src="item.img" height="280px" width="200px;">
+                <div class="book-name">{{ item.title }}</div>
               </a>
             </div>
           </router-link>
@@ -36,11 +37,12 @@
           <div class="book-bubble">
             <ul class="books">
               <li>
-                <router-link v-for="item in peerSugBooks" :to="{ path : item.path }" tag="li" active-class="active" :key="item.id" class="link-to">
+                <router-link v-for="item in peerSugBooks" :to="{ path : '/books/' + item.id }" tag="li" active-class="active"
+                             :key="item.id" class="link-to">
                   <div>
-                    <a :title=item.name>
-                      <img :src="item.icon" height="280px" width="200px;">
-                      <div class="book-name">{{ item.name }}</div>
+                    <a :title=item.title>
+                      <img :src="item.img" height="280px" width="200px;">
+                      <div class="book-name">{{ item.title }}</div>
                     </a>
                   </div>
                 </router-link>
@@ -50,22 +52,22 @@
         </div>
       </el-card>
 
-    <el-card>
-      <div class='sector'>
-        <section-title>精彩点评</section-title>
-        <span class="link-more">
-        <a class="" href="/latest?icn=index-latestbook-all"
-        > 更多»</a>
-      </span>
-      </div>
-      <div class="review">
-        <li v-for="item in comments">
-          {{item.review}}
-          <br>
-          <el-row type="flex" justify="end">—— {{item.name}}</el-row>
-        </li>
-      </div>
-    </el-card>
+<!--    <el-card>-->
+<!--      <div class='sector'>-->
+<!--        <section-title>精彩点评</section-title>-->
+<!--        <span class="link-more">-->
+<!--        <a class="" href="/latest?icn=index-latestbook-all"-->
+<!--        > 更多»</a>-->
+<!--      </span>-->
+<!--      </div>-->
+<!--      <div class="review">-->
+<!--        <li v-for="item in comments">-->
+<!--          {{item.review}}-->
+<!--          <br>-->
+<!--          <el-row type="flex" justify="end">—— {{item.name}}</el-row>-->
+<!--        </li>-->
+<!--      </div>-->
+<!--    </el-card>-->
     </div>
 
 
@@ -107,15 +109,33 @@ export default {
   },
   methods: {
     fetchTSB(){
-      fetchBookList().then(res=>{
-        this.tutorSugBooks = res.data || [];
-        // console.log(this.tutorSugBooks);
+      let self = this;
+      self.$axios({
+        url: '/api/search/searchBook/',
+        method: 'post',
+        data:{
+          tag: '导师推荐',
+          number: 4
+        }
+      }).then(res => {
+        this.tutorSugBooks = res.data.data || [];
+      }).catch(err =>{
+        console.log(err);
       })
     },
     fetchPSB(){
-      fetchBookList().then(res=>{
-        this.peerSugBooks = res.data || [];
-        // console.log(this.tutorSugBooks);
+      let self = this;
+      self.$axios({
+        url: '/api/search/searchBook/',
+        method: 'post',
+        data:{
+          tag: '同学推荐',
+          number: 4
+        }
+      }).then(res => {
+        this.peerSugBooks = res.data.data || [];
+      }).catch(err =>{
+        console.log(err);
       })
     },
     fetchReview(){

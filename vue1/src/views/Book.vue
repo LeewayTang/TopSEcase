@@ -24,11 +24,6 @@
               </div>
             </div>
             <div class="sales-board-line">
-              <div class="sales-board-line-left">
-                <a :href="this.bookInfo.href">购买链接🔗</a>
-              </div>
-            </div>
-            <div class="sales-board-line">
               <el-row type="flex" justify="end">
                 <el-button type="primary">获取电子书</el-button>
               </el-row>
@@ -84,24 +79,35 @@ export default {
   },
   created() {
     // this.fetchBookInfo(this.bookInfo.id);
-    // this.fetchBookList();
+    this.fetchBookInfo();
   },
   methods: {
     fetchBookInfo(){
-      let id = this.$route.params.id;
+      let self = this;
+      let id = self.$route.params.id;
       console.log(id);
-      fetchBookInfo(id).then(res=>{
-        this.bookInfo = res.data;
-        console.log("fuck you in fetchBookInfo")
-        console.log(this.bookInfo);
+      self.$axios({
+        url: '/api/book/getIdBook/',
+        method: 'post',
+        data:{
+          id: id,
+        }
+      }).then(res =>{
+        switch (res.data.status){
+          case -1:
+            self.$Notice.open({
+              title: '查无此书'
+            });
+            self.$router.push({
+              path: '/home',
+            });
+            break;
+          case 1:
+            self.bookInfo = res.data.data[0];
+            break;
+        }
       })
     },
-    // fetchBookList() {
-    //   fetchBookList().then(res => {
-    //     this.bookList = res.data || [];
-    //     console.log(this.bookList);
-    //   })
-    // },
     bookClick(id) {
       console.log(this.$route.path);
       this.$router.push('/books/' + id);
