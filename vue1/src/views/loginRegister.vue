@@ -134,7 +134,9 @@ export default{
           data: {
             uid: self.form.username,
             mail: self.form.useremail,
-            pwd: self.form.userpwd
+            pwd: self.form.userpwd,
+            studentId: self.form.studentID,
+            trueName: self.form.trueName
           }
         })
           .then(res => {
@@ -149,6 +151,8 @@ export default{
                 this.form.username = ''
                 this.form.useremail = ''
                 this.form.userpwd = ''
+                self.form.studentID = ''
+                self.form.trueName = ''
                 this.$router.push({
                   path:`/login`}, () => { }, () => { })
                 // this.login()

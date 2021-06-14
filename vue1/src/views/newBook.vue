@@ -54,14 +54,15 @@
         <legend>书籍上传</legend>
         <el-upload
             class="upload"
-            action="uploadUrl"
+            action="/api/upload/uploadBook/"
             accept=".pdf,.epub,.mobi"
             ref="upload"
             :limit=1
-            :on-success="onSuccess"
+            :on-success="handleSuccess"
             :on-fail="onFail"
             :on-change="printFuckingFileList"
             :on-remove="onRemove"
+            :data="paramsData"
             :auto-upload="false"
             :file-list="fileList"
             :on-exceed="handleExceed"
@@ -72,7 +73,8 @@
       </fieldset>
     </div>
     <div class="submit-holder">
-      <el-button type="success" v-if="!hasFile || ISBN === ''" disabled>提交</el-button>
+      <el-button type="success" v-if="!hasFile || ISBN === '' || title === '' || author === '' || language === ''
+        || tag === ''" disabled>提交</el-button>
       <el-button type="success" v-else @click="submit">提交</el-button>
     </div>
   </div>
@@ -95,16 +97,56 @@ export default {
       tags: '',
       cover_img_url: '',
       fileList: [],
-      hasFile: false
+      hasFile: false,
+      paramsData: {}
     };
   },
   methods:{
     handleExceed(){
       alert('一篇书帖只能上传一本书')
     },
+    handleSuccess(res){
+      let self = this;
+      switch (res.status){
+        case -3:
+          self.$Notice.open({
+            title: '游客禁止发布新书'
+          });
+          self.$router.push({
+            path: '/home'
+          });
+          break;
+        case -1:
+          self.$Notice.open({
+            title: '请登录'
+          });
+          self.$router.push({
+            path: '/login'
+          });
+          break;
+        case 1:
+          self.$Notice.open({
+            title: '发布成功'
+          });
+          self.$router.push({
+            path: '/book-ground'
+          });
+          break;
+      }
+    },
     submit(){
-      this.uploadUrl = ''
-      this.$refs.upload.submit()
+      let self = this
+      self.paramsData.token = sessionStorage.getItem('Authorization')
+      self.paramsData.title = self.title;
+      self.paramsData.author = self.author;
+      self.paramsData.language = self.language;
+      self.paramsData.year = self.year;
+      self.paramsData.ISBN = self.ISBN;
+      self.paramsData.description = self.description;
+      self.paramsData.topic = self.topic;
+      self.paramsData.tags = self.tags;
+      console.log(self.paramsData)
+      this.$refs.upload.submit();
       console.log(this.$refs.upload)
       console.log(this.$refs.upload.uploadFiles)
       this.hasFile = false

@@ -106,9 +106,7 @@ class UserInfoView(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def getUserInfo(self, request):
         # data_json = json.loads(request.body)
-        print(request.data)
         token = request.data.get('token')
-        print(token)
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
             return Response({'msg': 'Token not exists', 'status': -1})
@@ -348,6 +346,37 @@ class Upload(viewsets.GenericViewSet):
         return Response(Ret)
 
 
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=DiscussUploadSerializer)
+    @action(methods=['POST'], detail=False)
+    def uploadBook(self, request):
+        token = request.POST.get('token')
+        title = request.POST.get('title')
+        print(token)
+        print(title)
+
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'status': -1})
+        queryset = Token.objects.get(key__exact=token)
+        user = queryset.usr
+        if user.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -3})
+        author = request.POST.get('author')
+        language = request.POST.get('language')
+        ISBN = request.POST.get('ISBN')
+        description = request.POST.get('description')
+        if description is None or description == '':
+            description = '暂无简介'
+        topic = request.POST.get('topic')
+        press = '暂无出版社信息'
+        tags = request.POST.get('tags')
+        print(request.POST.get('ISBN'))
+        file = request.FILES.getlist('file')
+
+        Book.objects.create(title=title, author=author, language=language, ISBN=ISBN, introduction=description,
+                            press=press, img='/media/1/file/dbf2c6b8.jpeg', file=file[0], updater=user)
+        return Response({'status': 1})
 #
 #     @swagger_auto_schema(responses={200: ""},
 #                          request_body=UidInfoSerializer)
@@ -394,13 +423,15 @@ class LoginRegister(viewsets.GenericViewSet):
         Uid = data_json.get('uid')
         Pwd = data_json.get('pwd')
         Mail = data_json.get('mail')
+        trueName = data_json.get('trueName')
+        iid = data_json.get('studentId')
         queryset = User.objects.filter(username__exact=Uid)
         if queryset.count() != 0:
             return Response({'msg': '用户名已存在', 'status': -2})
         if not re.match('^[0-9a-zA-Z]+[@][0-9a-zA-Z]+.+[0-9a-zA-Z]+$', Mail):
             return Response({'msg': '邮箱格式错误', 'status': -1})
         time = datetime.date.today()
-        user = User.objects.create(username=Uid, pwd=Pwd, mail=Mail, createTime=time)
+        user = User.objects.create(username=Uid, pwd=Pwd, trueName=trueName, mail=Mail, createTime=time, iid=iid)
         if Quanzi.objects.filter(name__exact='BUAA').count() == 0:
             Quanzi.objects.create(name="BUAA")
         qz = Quanzi.objects.get(name__exact="BUAA")
