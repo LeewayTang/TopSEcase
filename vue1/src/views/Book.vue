@@ -83,7 +83,8 @@ export default {
   },
   methods: {
     handleGetBook(){
-      window.location.href = 'http://127.0.0.1:8000/media/' + this.bookInfo.file
+      let url = window.location.href.split('#')[0];
+      window.location.href = url + 'media/' + this.bookInfo.file
     },
     fetchBookInfo(){
       let self = this;
