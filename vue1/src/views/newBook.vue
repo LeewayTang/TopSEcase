@@ -72,6 +72,28 @@
         </el-upload>
       </fieldset>
     </div>
+<!--    <div class="file-prop">-->
+<!--      <fieldset>-->
+<!--        <legend>封面上传</legend>-->
+<!--        <el-upload-->
+<!--            class="upload"-->
+<!--            action="/api/upload/uploadBook/"-->
+<!--            accept=".jpg, .jpeg, .png"-->
+<!--            ref="upload"-->
+<!--            :on-success="handleSuccess"-->
+<!--            :on-fail="onFail"-->
+<!--            :on-change="printFuckingFileList"-->
+<!--            :on-remove="onRemove"-->
+<!--            :data="paramsData"-->
+<!--            :auto-upload="false"-->
+<!--            :file-list="fileList"-->
+<!--            :on-exceed="handleExceed"-->
+<!--            prop="fileList">-->
+<!--          <el-button size="small" type="primary" style="margin: 10%">点击上传</el-button>-->
+<!--          <div slot="tip" class="el-upload__tip">支持jpg, jpeg, png格式文件</div>-->
+<!--        </el-upload>-->
+<!--      </fieldset>-->
+<!--    </div>-->
     <div class="submit-holder">
       <el-button type="success" v-if="!hasFile || ISBN === '' || title === '' || author === '' || language === ''
         || tag === ''" disabled>提交</el-button>
@@ -98,6 +120,7 @@ export default {
       cover_img_url: '',
       fileList: [],
       hasFile: false,
+      hasImage: false,
       paramsData: {}
     };
   },
@@ -150,6 +173,7 @@ export default {
       console.log(this.$refs.upload)
       console.log(this.$refs.upload.uploadFiles)
       this.hasFile = false
+      this.hasImage = false
     },
     onSuccess(res, file, fileList){
       this.$Notice.open({
@@ -170,6 +194,15 @@ export default {
     // 的地方，但是其实很难取到，只能在el-loader的接口里调出来
     printFuckingFileList() {
       this.hasFile = true
+      // let type = this.$refs.upload.uploadFiles[0].raw.type
+
+      // if (type === 'image/jpeg') {
+      //     this.hasImage = true
+      // }
+      // else if (type === 'pdf') {
+      //   this.hasFile = true
+      // }
+      // console.log(type)
       console.log(this.$refs.upload.uploadFiles)
     },
   },

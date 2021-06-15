@@ -385,6 +385,11 @@ class Upload(viewsets.GenericViewSet):
         tags = request.POST.get('tags')
         print(request.POST.get('ISBN'))
         file = request.FILES.getlist('file')
+        for i in file:
+            if i.name.endswith('.pdf'):
+                print('PDF')
+            if i.name.endswith('.jpeg'):
+                print('JPEG')
         tags = tags.split('#')
         if user.title == '导师':
             tags.append('tutor')

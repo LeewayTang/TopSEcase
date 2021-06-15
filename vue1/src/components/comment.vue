@@ -19,7 +19,7 @@
         </div>
         <div class="comment-body">
             <div class="content-text">
-                <p>{{comment.content}}</p>
+              <VueMarkdown :source="comment.content" v-highlight></VueMarkdown>
             </div>
             <div v-if="showCommentEditor" @click.stop="">
                 <mavon-editor :toolbars="{
@@ -44,14 +44,16 @@
 <script>
     import sectionTitle from '@/components/section-title'
     import commentMessageEditor from 'comment-message-editor'
+    import VueMarkdown from 'vue-markdown'
+
     export default {
         name: "comment",
         props: {
           comment: {
-              type: Object
+              type: Object,
           }
         },
-        data(){
+      data(){
           return{
               showCommentEditor: false,
 
@@ -68,7 +70,8 @@
         },
         components: {
             sectionTitle,
-            commentMessageEditor
+            commentMessageEditor,
+          VueMarkdown
         },
         methods: {
             reply(id){

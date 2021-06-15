@@ -587,16 +587,16 @@ export default {
                       type: 'success',
                       message: '你的头像已更改'
                     });
-                    self.websiteInfo = self.$store.state.websiteInfo
-                    self.$router.push({
-                      path: '/personalCenter/' + self.websiteInfo.username
-                    })
+                    self.websiteInfo = self.$store.state.websiteInfo;
+                    this.picture.dialogVisible = false
+                    window.location.reload()
                     break
                   case -1:
                     self.$message({
                       type: 'error',
                       message: '请登录'
                     });
+                    self.picture.dialogVisible = false
                     self.$router.push(
                         {path: `/login`}, onComplete => {
                         }, onAbort => {

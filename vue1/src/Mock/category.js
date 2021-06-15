@@ -11,7 +11,7 @@ export default [
                 data: [
                     {
                         id: 1,
-                        title: '创作笔记',
+                        title: '创作中心',
                         href: '/writeBlog'
                     },
                     {
