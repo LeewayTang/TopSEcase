@@ -104,14 +104,14 @@
         >
       <div class="qz-name">{{item.name}}</div>
       <div class="tutorInfo">
-        <div class="title">导师信息</div>
+        <div class="title">创建者信息</div>
         <div class="infoInstance">
           <img :src="item.tutorInfo.avatar" alt="导师头像">
           <div class="tutorNameID">{{item.tutorInfo.trueName}} | {{item.tutorInfo.iid}}</div>
         </div>
       </div>
       <div class="studentInfo">
-        <div class="title">学生信息</div>
+        <div class="title">成员信息</div>
         <div class="infoInstance" v-for="it in item.studentsInfo">
           <div style="cursor:pointer;" @click="goToPC(it, item)">
             <img :src="it.avatar" alt="学生头像">
@@ -143,7 +143,7 @@
             v-for="tag in quanzi.dynamicTags"
             closable
             :disable-transitions="false"
-            @close="handleTagClose(tag)">
+            @close="handleStudent(tag)">
           {{tag}}
         </el-tag>
         <el-input
@@ -283,9 +283,47 @@ export default {
         console.log(this.studentList)
       })
     },
+    handleStudent(tag){
+      this.quanzi.dynamicTags.splice(this.quanzi.dynamicTags.indexOf(tag), 1);
+    },
     handleTagClose(tag) {
-      this.websiteInfo.quanzi.splice(this.websiteInfo.quanzi.indexOf(tag), 1);
-      this.commitDeleteQuanzi()
+      console.log(tag)
+
+      let self = this;
+      self.$axios({
+        url: '/api/quanzi/delQuanzi/',
+        method: 'post',
+        data: {
+          name: tag.name,
+          token: sessionStorage.getItem('Authorization'),
+        }
+      }).then(res => {
+        switch (res.data.status){
+          case -1:
+            self.$Notice.open({
+              title: '非创建者禁止删除圈子'
+            });
+            break;
+          case 1:
+            this.websiteInfo.quanzi.splice(this.websiteInfo.quanzi.indexOf(tag), 1);
+            self.$Notice.open({
+              title: '删除成功'
+            });
+            self.$axios({
+              method: 'post',
+              url: 'api/user/getUserInfo/',
+              data: {
+                token: sessionStorage.getItem('Authorization')
+              }
+            }).then(res => {
+              self.$store.commit('SET_SITE_INFO', res.data.data)
+              sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
+            })
+            break;
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
 
     showInput() {
@@ -581,9 +619,48 @@ export default {
     },
     commitNewQuanzi(v) {
       // 没有传到服务器！！！！
-      this.websiteInfo.quanzi.push({name: v})
-      console.log(this.websiteInfo.quanzi)
-      this.dialogFormVisible = false
+      let self = this;
+      self.$axios({
+        url: '/api/quanzi/setQuanzi/',
+        method: 'post',
+        data: {
+          name: self.quanzi.name,
+          token: sessionStorage.getItem('Authorization'),
+          member: self.quanzi.dynamicTags,
+        }
+      }).then(res => {
+        switch (res.data.status){
+          case -1:
+            self.$Notice.open({
+              title: '学生信息不存在'
+            });
+            break;
+          case -2:
+            self.$Notice.open({
+              title: '圈子名称重复'
+            });
+            break;
+          case 1:
+            self.$Notice.open({
+              title: '创建成功'
+            });
+            this.dialogFormVisible = false;
+            self.$axios({
+              method: 'post',
+              url: 'api/user/getUserInfo/',
+              data: {
+                token: sessionStorage.getItem('Authorization')
+              }
+            }).then(res => {
+              self.$store.commit('SET_SITE_INFO', res.data.data)
+              sessionStorage.setItem('siteInfo', JSON.stringify(res.data.data))
+            })
+            window.location.reload()
+            break;
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
     commitDeleteQuanzi() {
       // 具体的数据传输没搞明白呢，不着急

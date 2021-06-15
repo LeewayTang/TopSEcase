@@ -173,7 +173,7 @@ export default{
                 break
               case -3: {
                 this.$Notice.open({
-                      title: '学号姓名验证失败'
+                      title: '学号已注册，请联系管理员'
                     }
                 )
                 this.confirmError = true

@@ -450,6 +450,8 @@ class LoginRegister(viewsets.GenericViewSet):
             return Response({'msg': '用户名已存在', 'status': -2})
         if not re.match('^[0-9a-zA-Z]+[@][0-9a-zA-Z]+.+[0-9a-zA-Z]+$', Mail):
             return Response({'msg': '邮箱格式错误', 'status': -1})
+        if User.objects.filter(iid__exact=iid).count() != 0:
+            return Response({'msg': '学号已注册，请联系管理员', 'status': -3})
         time = datetime.date.today()
         user = User.objects.create(username=Uid, pwd=Pwd, trueName=trueName, mail=Mail, createTime=time, iid=iid)
         if Quanzi.objects.filter(name__exact='BUAA').count() == 0:
@@ -612,6 +614,48 @@ class LoginRegister(viewsets.GenericViewSet):
 #         queryset.file = file
 #         queryset.save()
 #         return Response({'msg': 'upload success', 'status': 1})
+
+
+# 圈子
+class QuanziInfo(viewsets.GenericViewSet):
+    queryset = Quanzi.objects.all()
+
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['POST'], detail=False)
+    def setQuanzi(self, request):
+        token = request.data.get('token')
+        name = request.data.get('name')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'status': -1})
+        queryset = Token.objects.get(key__exact=token)
+        user = queryset.usr
+        member = request.data.get('member')
+        for i in member:
+            if User.objects.filter(iid__exact=i).count() == 0:
+                return Response({'status': -1})
+        if Quanzi.objects.filter(name__exact=name).count() != 0:
+            return Response({'status': -2})
+        qz = Quanzi.objects.create(creator=user, name=name, number=1 + len(member))
+        user.quanzi_set.add(qz)
+        for i in member:
+            usr = User.objects.get(iid__iexact=i)
+            usr.quanzi_set.add(qz)
+        return Response({'status': 1})
+
+    @swagger_auto_schema(responses={200: ""})
+    @action(methods=['POST'], detail=False)
+    def delQuanzi(self, request):
+        token = request.data.get('token')
+        name = request.data.get('name')
+        print(name)
+        user = Token.objects.get(key__exact=token).usr
+        qz = Quanzi.objects.get(name__exact=name)
+        if user != qz.creator:
+            return Response({'status': -1})
+        print(qz)
+        qz.delete()
+        return Response({'status': 1})
 
 
 # 文章
@@ -1196,4 +1240,17 @@ class Search(viewsets.GenericViewSet):
             return Response({'status': -1, 'data': []})
         queryset = BookTag.objects.get(tag__exact=tag).book.values()[:number]
         print(queryset)
+        return Response({'data': queryset, 'status': 1})
+
+    @swagger_auto_schema(responses={200: ""}, request_body=TokenSerializer)
+    @action(methods=['POST'], detail=False)
+    def searchUsername(self, request):
+        token = request.data.get('token')
+        queryset = Token.objects.filter(key__exact=token)
+        if queryset.count() == 0:
+            return Response({'msg': 'Token not exists', 'status': -1})
+        user = Token.objects.get(key__exact=token).usr
+        queryset = User.objects.exclude(username__exact=user.username)
+        mx = min(4, queryset.count())
+        queryset = queryset.values('username')[:mx]
         return Response({'data': queryset, 'status': 1})

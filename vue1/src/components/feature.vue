@@ -1,9 +1,24 @@
 <template>
     <div class="feature">
-        <router-link :to="`/article/${data.id}`">
-            <div class="feature-title"><span class="foverlay">{{data.title}}</span></div>
-            <img :src="data.img">
+      <div v-if="data.id === 1">
+        <router-link :to="`/log`">
+          <div class="feature-title"><span class="foverlay">{{data.title}}</span></div>
+          <img :src="data.img">
         </router-link>
+      </div>
+      <div v-else-if="data.id === 2">
+        <router-link :to="`/book-ground`">
+          <div class="feature-title"><span class="foverlay">{{data.title}}</span></div>
+          <img :src="data.img">
+        </router-link>
+      </div>
+      <div v-else-if="data.id === 3">
+        <router-link :to="`/personalCenter/` + $store.state.websiteInfo.username">
+          <div class="feature-title"><span class="foverlay">{{data.title}}</span></div>
+          <img :src="data.img">
+        </router-link>
+      </div>
+
     </div>
 </template>
 

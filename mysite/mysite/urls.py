@@ -62,7 +62,6 @@ urlpatterns = [
     # path("api/login/", views.login),
     path('', TemplateView.as_view(template_name="index.html")),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
-    re_path(r'^#/media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     # path("register/", LoginRegister.register)
 ]
 # +list(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -77,6 +76,7 @@ router.register('articleTag', views.ArticleTagInfo)
 router.register('search', views.Search)
 router.register('discuss', views.DiscussTagInfo)
 router.register('book', views.BookTagInfo)
+router.register('quanzi', views.QuanziInfo)
 # router.register('note', views.NoteInfo)
 urlpatterns += path('api/', include(router.urls)),
 

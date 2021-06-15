@@ -22,7 +22,7 @@
         <div class="quanzi">
           <div class="title">你可能想follow的人</div>
           <ul v-for="item in sugList">
-          <li class="sug-item"><router-link :to="/personalCenter/ + item">{{item}}</router-link></li>
+          <li class="sug-item"><router-link :to="/personalCenter/ + item.username">{{item.username}}</router-link></li>
           </ul>
         </div>
       </div>
@@ -54,8 +54,17 @@ export default {
   },
   methods:{
     getSugList() {
-      fetchSuggest().then(res=>{
-        this.sugList = res.follow || []
+      let self = this;
+      self.$axios({
+        url: '/api/search/searchUsername/',
+        method: 'post',
+        data:{
+          token: sessionStorage.getItem('Authorization'),
+        }
+      }).then(res => {
+        self.sugList = res.data.data;
+      }).catch(err => {
+        console.log(err);
       })
     },
     getArticles() {
