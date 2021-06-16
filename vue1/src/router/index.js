@@ -124,7 +124,7 @@ const router = new VueRouter({
     routes
 })
 router.beforeResolve(async (to, from, next) => {
-    let title = 'MoYun'
+    let title = '墨韵：软院学生读书交流平台'
     if (to.meta.params){
         title = `${to.meta.title}: ${to.params[to.meta.params] || ''} - ${title}`
     }else {

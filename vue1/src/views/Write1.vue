@@ -8,7 +8,7 @@
     </div>
     <el-card class="titleTag">
     <el-input placeholder="请输入标题" v-model="title" clearable></el-input>
-    <el-input placeholder="文章摘要" v-model="summary" clearable></el-input>
+    <el-input placeholder="摘要" v-model="summary" clearable></el-input>
     <div id="edit-tag">
       <el-tag
           :key="tag"

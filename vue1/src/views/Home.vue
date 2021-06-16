@@ -16,11 +16,11 @@
                 <section-title>
                     <div style="display: flex;align-items: flex-end;">站内日推<small-ico></small-ico></div>
                 </section-title>
-                <div class="feature-content">
-                    <div class="feature-item" v-for="item in features" :key="item.title">
-                        <Feature :data="item"></Feature>
-                    </div>
-                </div>
+<!--                <div class="feature-content">-->
+<!--                    <div class="feature-item" v-for="item in features" :key="item.title">-->
+<!--                        <Feature :data="item"></Feature>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             <!--文章列表-->
             <main class="site-main" :class="{'search':hideSlogan}">
