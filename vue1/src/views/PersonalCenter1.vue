@@ -2,7 +2,7 @@
 <div class="personal-center-wrap">
   <div class="header-wrap">
   <el-card class="header" :style="{backgroundImage: 'url('+ bg+ ')'}" style="width: 80%; background-size: cover">
-    <img :src="websiteInfo.avatar" alt="头像" @click="picture.dialogVisible=true">
+    <img :src="websiteInfo.avatar" alt="头像" style="cursor:pointer;" @click="picture.dialogVisible=true">
     <div style="display: flex">
       <div class="username">{{websiteInfo.username}}</div>
       <div class="el-icon-edit" style="color: white; cursor: pointer" @click="renameClick" v-if="$store.state.username === $route.params.username"></div>
