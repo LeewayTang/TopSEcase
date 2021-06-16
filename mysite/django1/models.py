@@ -169,6 +169,7 @@ class Book(models.Model):
     comments = models.IntegerField(verbose_name='评论数', default=0)
     updater = models.ForeignKey(verbose_name='上传者', to='User', on_delete=models.CASCADE)
     file = models.FileField(verbose_name='文本', upload_to=book_directory_path)
+    review = models.TextField(verbose_name='评论')
 
 
 # 书本标签

@@ -47,8 +47,11 @@
 
           <ul class="inline-fields">
             <li>
-              <section-title>书评</section-title>
+              <section-title>书籍简介</section-title>
               <el-input type="textarea" :autosize="{minRows: 2, maxRows: 5}" v-model="description" placeholder="请输入内容"></el-input></li>
+            <li>
+              <section-title>书评</section-title>
+            <el-input type="textarea" :autosize="{minRows: 2, maxRows: 5}" v-model="review" placeholder="请输入内容"></el-input></li>
           </ul>
 
         <div class="file-prop">
@@ -127,7 +130,8 @@ export default {
       hasFile: false,
       hasImage: false,
       paramsData: {},
-      press: ''
+      press: '',
+      review: ''
     };
   },
   methods:{
@@ -176,6 +180,7 @@ export default {
       self.paramsData.topic = self.topic;
       self.paramsData.tags = self.tags;
       self.paramsData.press = self.press;
+      self.paramsData.review = self.review;
       console.log(self.paramsData)
       this.$refs.upload.submit();
       console.log(this.$refs.upload)

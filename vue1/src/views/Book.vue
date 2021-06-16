@@ -53,10 +53,10 @@
         <el-card>
           <h1>精彩书评</h1>
           <div class="sales-board-des">
-            <li v-for="item in bookInfo.comments">
-              {{item.says}}
+            <li>
+              {{bookInfo.review}}
               <br>
-              <el-row type="flex" justify="end">—— {{item.username}}</el-row>
+<!--              <el-row type="flex" justify="end">—— {{item.username}}</el-row>-->
             </li>
           </div>
         </el-card>
@@ -266,7 +266,7 @@ export default {
   width: 75%;
 }
 .sales-board-des {
-  border-top: 20px solid #f0f2f5;
+  border-top: 20px solid #FFFFFF;
   padding: 15px 20px;
 }
 .sales-board-des p {

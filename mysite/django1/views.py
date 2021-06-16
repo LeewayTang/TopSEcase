@@ -360,6 +360,7 @@ class Upload(viewsets.GenericViewSet):
         description = request.POST.get('description')
         if description is None or description == '':
             description = '暂无简介'
+        review = request.POST.get('review')
         topic = request.POST.get('topic')
         press = request.POST.get('press')
         tags = request.POST.get('tags')
@@ -370,7 +371,8 @@ class Upload(viewsets.GenericViewSet):
         else:
             tags.append('student')
         book = Book.objects.create(title=title, author=author, language=language, ISBN=ISBN, introduction=description,
-                                   press=press, img='/media/1/file/dbf2c6b8.jpeg', file=file[0], updater=user)
+                                   press=press, img='/media/1/file/dbf2c6b8.jpeg', file=file[0], updater=user,
+                                   review=review)
         self.UploadBookTag(tags, book)
         return Response({'status': 1})
 
