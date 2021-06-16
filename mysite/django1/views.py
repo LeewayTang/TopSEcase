@@ -115,7 +115,6 @@ class UserInfoView(viewsets.GenericViewSet):
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
                'quanzi': user.quanzi_set.values()}
         for i in ret['quanzi']:
-            print(i)
             qz = Quanzi.objects.get(name__exact=i['name'])
             creator = qz.creator
             i.update({'tutorInfo': {
@@ -125,7 +124,6 @@ class UserInfoView(viewsets.GenericViewSet):
             }
             })
             i.update({'studentsInfo': qz.member.exclude(username__exact=creator.username).values()})
-            print(qz.member.exclude(username__exact=creator.username).values())
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -137,7 +135,6 @@ class UserInfoView(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def getUserInfoByName(self, request):
         # data_json = json.loads(request.body)
-        print(request.data)
         username = request.data.get('username')
         queryset = User.objects.filter(username__exact=username)
         if queryset.count() == 0:
@@ -147,7 +144,6 @@ class UserInfoView(viewsets.GenericViewSet):
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
                'quanzi': user.quanzi_set.values()}
         for i in ret['quanzi']:
-            print(i)
             qz = Quanzi.objects.get(name__exact=i['name'])
             creator = qz.creator
             i.update({'tutorInfo': {
@@ -157,7 +153,6 @@ class UserInfoView(viewsets.GenericViewSet):
             }
             })
             i.update({'studentsInfo': qz.member.exclude(username__exact=creator.username).values()})
-            print(qz.member.exclude(username__exact=creator.username).values())
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -170,7 +165,6 @@ class UserInfoView(viewsets.GenericViewSet):
     def setUserName(self, request):
         token = request.data.get('token')
         username = request.data.get('username')
-        print(token)
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
             return Response({'msg': 'Token not exists', 'status': -1})
@@ -186,7 +180,6 @@ class UserInfoView(viewsets.GenericViewSet):
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
                'quanzi': user.quanzi_set.values()}
-        print(ret)
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -211,7 +204,6 @@ class UserInfoView(viewsets.GenericViewSet):
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
                'quanzi': user.quanzi_set.values()}
-        print(ret)
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -234,7 +226,6 @@ class UserInfoView(viewsets.GenericViewSet):
         avatarBase64 = base64.b64decode(re.sub('^data:image/.*;base64,', '', avB))
         key = generate_random_str()
         form = avB.split(';')[0][11:]
-        print(form)
         if not os.path.exists(MEDIA_ROOT + '/' + str(user.id) + '/avatar/'):
             os.makedirs(MEDIA_ROOT + '/' + str(user.id) + '/avatar/')
         file = open(MEDIA_ROOT + '/' + str(user.id) + '/avatar/' + key + '.' + form, 'wb')
@@ -247,7 +238,6 @@ class UserInfoView(viewsets.GenericViewSet):
         ret = {'username': user.username, 'pwd': user.pwd, 'sex': user.sex, 'avatar': user.avatar,
                'isTeacher': user.isTeacher, 'slogan': user.slogan, 'title': user.title,
                'quanzi': user.quanzi_set.values()}
-        print(ret)
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -264,7 +254,6 @@ class UserInfoView(viewsets.GenericViewSet):
             return Response({'msg': 'Token not exists', 'status': -1})
         user = Token.objects.get(key__exact=token).usr
         ret = {'quanzi': user.quanzi_set.values('name')}
-        print(ret)
         Ret = {}
         Ret.update({'msg': 'success'})
         Ret.update({'data': ret})
@@ -276,8 +265,8 @@ class Upload(viewsets.GenericViewSet):
     queryset = Article.objects.all()
 
     def UploadArticleTag(self, tag, article):
+        tag = list(set(tag))
         for i in tag:
-            print(i)
             queryset = ArticleTag.objects.filter(tag__exact=i)
             if queryset.count() == 0:
                 ArticleTag.objects.create(tag=i)
@@ -300,10 +289,6 @@ class Upload(viewsets.GenericViewSet):
         content = request.data.get('content')
         summary = request.data.get('summary')
         tag = request.data.get('tag')
-        print(tag)
-        print(title)
-        print(content)
-        print(summary)
         article = Article.objects.create(title=title, content=content, summary=summary, user=user, banner=user.avatar)
         self.UploadArticleTag(tag, article)
         Ret = {}
@@ -311,8 +296,8 @@ class Upload(viewsets.GenericViewSet):
         return Response(Ret)
 
     def UploadDiscussTag(self, tag, discuss):
+        tag = list(set(tag))
         for i in tag:
-            print(i)
             queryset = DiscussTag.objects.filter(tag__exact=i)
             if queryset.count() == 0:
                 DiscussTag.objects.create(tag=i)
@@ -334,9 +319,6 @@ class Upload(viewsets.GenericViewSet):
         title = request.data.get('title')
         summary = request.data.get('summary')
         tag = request.data.get('tag')
-        print(tag)
-        print(title)
-        print(summary)
         discuss = Discuss.objects.create(title=title, summary=summary, user=user, banner=user.avatar)
         discuss.banner = user.avatar
         discuss.save()
@@ -350,8 +332,8 @@ class Upload(viewsets.GenericViewSet):
         return Response(Ret)
 
     def UploadBookTag(self, tag, book):
+        tag = list(set(tag))
         for i in tag:
-            print(i)
             queryset = BookTag.objects.filter(tag__exact=i)
             if queryset.count() == 0:
                 BookTag.objects.create(tag=i)
@@ -364,8 +346,6 @@ class Upload(viewsets.GenericViewSet):
     def uploadBook(self, request):
         token = request.POST.get('token')
         title = request.POST.get('title')
-        print(token)
-        print(title)
 
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
@@ -383,23 +363,45 @@ class Upload(viewsets.GenericViewSet):
         topic = request.POST.get('topic')
         press = '暂无出版社信息'
         tags = request.POST.get('tags')
-        print(request.POST.get('ISBN'))
         file = request.FILES.getlist('file')
-        for i in file:
-            if i.name.endswith('.pdf'):
-                print('PDF')
-            if i.name.endswith('.jpeg'):
-                print('JPEG')
         tags = tags.split('#')
         if user.title == '导师':
             tags.append('tutor')
         else:
             tags.append('student')
-        print(tags)
         book = Book.objects.create(title=title, author=author, language=language, ISBN=ISBN, introduction=description,
                                    press=press, img='/media/1/file/dbf2c6b8.jpeg', file=file[0], updater=user)
         self.UploadBookTag(tags, book)
         return Response({'status': 1})
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=DiscussUploadSerializer)
+    @action(methods=['POST'], detail=False)
+    def uploadBookImg(self, request):
+        token = request.POST.get('token')
+        queryset = Token.objects.get(key__exact=token)
+        user = queryset.usr
+        if user.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -1})
+        img = request.FILES.getlist('file')
+        Id = request.POST.get('id')
+        if not os.path.exists(MEDIA_ROOT + '/book/' + str(Id) + '/img/'):
+            os.makedirs(MEDIA_ROOT + '/book/' + str(Id) + '/img/')
+        file = open(MEDIA_ROOT + '/book/' + str(Id) + '/img/' + img[0].name, 'wb')
+        for chunk in img[0].chunks():
+            file.write(chunk)
+        file.close()
+        book = Book.objects.get(id=Id)
+        book.img = MEDIA_URL + '/book/' + str(Id) + '/img/' + img[0].name
+        book.save()
+        # dir = os.path.join(os.path.join(BASE_DIR, 'static'),'profiles')
+        # destination = open(os.path.join(dir, img[0].name),
+        #                    'wb+')
+        # for chunk in img[0].chunks():
+        #     destination.write(chunk)
+        # destination.close()
+        return Response({'status': 1})
+        pass
 
 
 #
@@ -524,7 +526,6 @@ class LoginRegister(viewsets.GenericViewSet):
         user = User.objects.get(mail__exact=Uid, pwd__exact=Pwd)
         token = Token.objects.filter(usr__exact=user)
         if token.count() != 0:
-            print('exists')
             token.delete()
         key = generate_random_str()
         Token.objects.create(key=key, usr=user)
@@ -571,7 +572,6 @@ class LoginRegister(viewsets.GenericViewSet):
     def logout(self, request):
         data_json = json.loads(request.body)
         token = data_json.get('token')
-        print(token)
         queryset = Token.objects.filter(key__exact=token)
         if queryset.count() == 0:
             return Response({'msg': 'No token exists', 'status': -1})
@@ -653,12 +653,10 @@ class QuanziInfo(viewsets.GenericViewSet):
     def delQuanzi(self, request):
         token = request.data.get('token')
         name = request.data.get('name')
-        print(name)
         user = Token.objects.get(key__exact=token).usr
         qz = Quanzi.objects.get(name__exact=name)
         if user != qz.creator:
             return Response({'status': -1})
-        print(qz)
         qz.delete()
         return Response({'status': 1})
 
@@ -715,7 +713,6 @@ class ArticleTagInfo(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def getIdArticle(self, request):
         Id = request.data.get('id')
-        print(Id)
         queryset = Article.objects.filter(id__exact=Id)
         if queryset.count() == 0:
             return Response({'status': -1})
@@ -730,7 +727,6 @@ class ArticleTagInfo(viewsets.GenericViewSet):
         Ret.update({'views': article.viewsCount})
         Ret.update({'comments': article.commentsCount})
         tag = article.articletag_set.values()
-        print(tag)
         Ret.update({'tag': tag})
         ret = {'msg': 'success', 'data': Ret, 'status': 1}
         return Response(ret)
@@ -740,7 +736,6 @@ class ArticleTagInfo(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def getIdComment(self, request):
         Id = request.data.get('id')
-        print("ID" + Id)
         queryset = ArticleComment.objects.filter(article_id=Id).order_by('createTime')
         ret = {'msg': 'success', 'data': queryset.values(), 'status': 1}
         return Response(ret)
@@ -827,7 +822,6 @@ class DiscussTagInfo(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def getIdDiscuss(self, request):
         Id = request.data.get('id')
-        print(Id)
         queryset = Discuss.objects.filter(id__exact=Id)
         if queryset.count() == 0:
             return Response({'status': -1})
@@ -841,7 +835,6 @@ class DiscussTagInfo(viewsets.GenericViewSet):
         Ret.update({'views': discuss.viewsCount})
         Ret.update({'comments': discuss.commentsCount})
         tag = discuss.discusstag_set.values()
-        print(tag)
         Ret.update({'tag': tag})
         ret = {'msg': 'success', 'data': Ret, 'status': 1}
         return Response(ret)
@@ -851,7 +844,6 @@ class DiscussTagInfo(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def getIdComment(self, request):
         Id = request.data.get('id')
-        print("ID" + Id)
         queryset = DiscussComment.objects.filter(discuss_id=Id).order_by('createTime')
         ret = {'msg': 'success', 'data': queryset.values(), 'status': 1}
         return Response(ret)
@@ -895,14 +887,12 @@ class BookTagInfo(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def getIdBook(self, request):
         Id = request.data.get('id')
-        print("ID" + Id)
         queryset = Book.objects.filter(id=Id).values()
         if queryset.count() == 0:
             return Response({'status': -1})
         book = Book.objects.get(id=Id)
         book.viewsCount += 1
         book.save()
-        print(queryset)
         ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
 
@@ -1210,7 +1200,6 @@ class Search(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def searchQuanzi(self, request):
         qz = request.data.get('qz')
-        print(qz)
         queryset = Quanzi.objects.filter(name__exact=qz)
         if queryset.count() == 0:
             return Response({'status': -1})
@@ -1222,11 +1211,9 @@ class Search(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def searchArticle(self, request):
         key = request.data.get('key')
-        print(key)
         queryset = Article.objects.filter(Q(summary__icontains=key) |
                                           Q(content__icontains=key) |
                                           Q(title__icontains=key))
-        print(queryset.values())
 
         return Response({'data': queryset.values(), 'status': 1})
 
@@ -1234,17 +1221,14 @@ class Search(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def searchBook(self, request):
         tag = request.data.get('tag')
-        print(tag)
         number = -1
         number = request.data.get('number')
         if request.data.get('number') is None:
             number = request.data.get('number')
         queryset = BookTag.objects.filter(tag__exact=tag).count()
-        print(number)
         if queryset == 0:
             return Response({'status': -1, 'data': []})
         queryset = BookTag.objects.get(tag__exact=tag).book.values()[:number]
-        print(queryset)
         return Response({'data': queryset, 'status': 1})
 
     @swagger_auto_schema(responses={200: ""}, request_body=TokenSerializer)

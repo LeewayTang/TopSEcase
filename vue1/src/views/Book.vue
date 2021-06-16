@@ -2,9 +2,29 @@
   <div class="book-wrap">
     <div class="book-left">
 <!--      <el-card>-->
-        <img :src="productIcon" class="image" width="220px" :alt="this.bookInfo.title">
+        <img :src="productIcon" class="image" width="220px" :alt="this.bookInfo.title"
+             @click="bookDialogVisible=true">
 <!--      </el-card>-->
     </div>
+    <el-dialog title="编辑" :visible.sync="bookDialogVisible" :before-close="handleClose">
+      <span>
+        <el-row>
+          <input
+              ref="filElem"
+              type="file"
+              id="uploads"
+              accept="image/png, image/jpeg, image/gif, image/jpg"
+              @change="uploadImg($event,1)"
+              class="el-button hide"
+              style="font-size: 15px; margin-bottom:15px; margin-left: 0px"
+          />
+        </el-row>
+        <el-row class="footerBtn" align="center">
+          <el-button type="primary " size="medium" round @click="uploadBookImg">确认</el-button>
+          <el-button type="info" size="medium" round @click="handleClose">取消</el-button>
+        </el-row>
+      </span>
+    </el-dialog>
     <div class="book-right">
       <div class="sales-board">
         <el-card>
@@ -67,6 +87,8 @@ export default {
     return {
       bookInfo:{},
       bookList: [],
+      bookDialogVisible: false,
+      file: [],
     }
   },
   activated() {
@@ -85,6 +107,55 @@ export default {
     handleGetBook(){
       let url = window.location.href.split('#')[0];
       window.location.href = url + 'media/' + this.bookInfo.file
+    },
+    uploadImg(e, num) {
+      const file = e.target.files[0];
+      if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
+        this.$message.error("图片类型必须是.gif,jpeg,jpg,png,bmp中的一种");
+        return false;
+      }
+      this.file = e.target.files;
+      console.log(this.file)
+    },
+    handleClose(v) {
+      this.bookDialogVisible = false;
+    },
+    uploadBookImg(){
+      let self = this;
+      if(self.file === '' || self.file === null){
+        self.$message({
+          type: 'error',
+          message: '输入不能为空'
+        })
+      }else{
+        let formData = new FormData();
+        formData.append('file', self.file[0]);
+        console.log(self.file);
+        formData.append('token', sessionStorage.getItem('Authorization'));
+        formData.append('id', this.$route.params.id)
+        self.$axios.post('/api/upload/uploadBookImg/', formData,{
+          headers:{
+            "Content-Type": "multipart/form-data"
+          }
+        }).then(res => {
+          switch (res.data.status){
+            case -1:
+              self.$message({
+                type: 'error',
+                message: '游客禁止改封面'
+              });
+              break;
+            case 1:
+              self.$message({
+                type: 'success',
+                message: '修改成功'
+              });
+              window.location.reload();
+              break;
+
+          }
+        })
+      }
     },
     fetchBookInfo(){
       let self = this;

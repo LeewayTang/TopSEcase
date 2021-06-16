@@ -96,7 +96,7 @@
 <!--    </div>-->
     <div class="submit-holder">
       <el-button type="success" v-if="!hasFile || ISBN === '' || title === '' || author === '' || language === ''
-        || tag === ''" disabled>提交</el-button>
+        || tags === ''" disabled>提交</el-button>
       <el-button type="success" v-else @click="submit">提交</el-button>
     </div>
   </div>
