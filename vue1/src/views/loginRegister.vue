@@ -18,7 +18,7 @@
             <input type="text" placeholder="用户名" v-model="form.username">
             <span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
             <input type="text" placeholder="真实姓名" v-model="form.trueName">
-            <input type="text" placeholder="学号" v-model="form.studentID">
+            <input type="text" placeholder="学号/教工号" v-model="form.studentID">
             <span class="errTips" v-if="existed">* 姓名学号验证失败！ *</span>
             <input type="email" placeholder="邮箱" v-model="form.useremail">
             <span class="errTips" v-if="emailError">* 邮箱填写错误 *</span>

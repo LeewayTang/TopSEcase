@@ -189,6 +189,7 @@ export default {
   margin-top: 10px;
   background-color: #eef1f3;
   color: #354b44;
+  text-overflow: ellipsis;
 }
 .tag:hover {
   color: #e7051e;

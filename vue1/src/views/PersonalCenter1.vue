@@ -417,6 +417,7 @@ name: "PersonalCenter1",
     },
     //确认截图,上传
     confirm(type) {
+
       this.$refs.cropper.getCropData(res => {
         console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
       });
