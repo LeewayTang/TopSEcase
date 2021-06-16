@@ -1,6 +1,6 @@
 <template>
     <div class="articles">
-      <div class="header" :style="{backgroundImage: 'url(' + articles.avatar + ')'}">
+      <div class="header" :style="{backgroundImage: 'url(' + bg + ')'}">
         <div class="header-text">{{articles.header}}</div>
       </div>
         <div class="site-content animate">
@@ -82,6 +82,7 @@
           firstCategory: '',
           myComment: '',
           showCommentEditor: false,
+          bg: require('../assets/images/background.jpeg'),
         }
       },
       components: {
@@ -170,9 +171,7 @@
                 self.$Notice.open({
                   title: '评论成功'
                 })
-                self.$router.push({
-                  path: '/log'
-                });
+                window.location.reload();
                 break;
             }
           }).catch(err => {
@@ -384,7 +383,7 @@
         }
     }
     .header{
-      height: 400px;
+      height: 200px;
       width: 100%;
       background-size: cover;
     }
@@ -392,7 +391,7 @@
       color: white;
       font-size: xxx-large;
       text-align: center;
-      padding-top: 200px;
+      padding-top: 100px;
     }
     .v-note-wrapper {
       z-index: 0;

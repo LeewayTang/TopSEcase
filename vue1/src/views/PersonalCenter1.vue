@@ -49,7 +49,7 @@
       </div>
     </div>
     <!-- 弹出层-裁剪 -->
-    <el-dialog title="编辑头像" :visible.sync="picture.dialogVisible && $store.state.username === $route.params.username" :before-close="handleClose">
+    <el-dialog title="编辑头像" :visible.sync="picture.dialogVisible && $store.state.websiteInfo.username === $route.params.username" :before-close="handleClose">
       <span>
         <el-row>
           <input
