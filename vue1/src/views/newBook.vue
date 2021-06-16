@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="content-prop">
-      <fieldset>
+      <el-card>
         <legend>书籍属性</legend>
         <ul class="inline-fields">
         <li>
@@ -27,51 +27,56 @@
             <section-title>ISBN</section-title>
             <el-input v-model="ISBN" placeholder="请填写ISBN号"></el-input>
           </li>
+          <li>
+            <section-title>出版社</section-title>
+            <el-input v-model="press" placeholder="请填写出版社"></el-input>
+          </li>
         </ul>
-        <fieldset>
-          <legend>分类</legend>
+
+        <legend>分类</legend>
+        <ul class="inline-fields">
+          <li>
+            <section-title>主题</section-title>
+            <el-input v-model="topic" placeholder="请填写主题"></el-input>
+          </li>
+          <li>
+            <section-title>标签</section-title>
+            <el-input v-model="tags" placeholder="请填写标签（#分割）"></el-input>
+          </li>
+        </ul>
+
           <ul class="inline-fields">
             <li>
-              <section-title>主题</section-title>
-              <el-input v-model="topic" placeholder="请填写主题"></el-input>
-            </li>
-            <li>
-              <section-title>标签</section-title>
-              <el-input v-model="tags" placeholder="请填写标签（#分割）"></el-input>
-            </li>
-          </ul>
-        </fieldset>
-          <ul class="inline-fields">
-            <li>
-              <section-title>简要介绍</section-title>
+              <section-title>书评</section-title>
               <el-input type="textarea" :autosize="{minRows: 2, maxRows: 5}" v-model="description" placeholder="请输入内容"></el-input></li>
           </ul>
 
-      </fieldset>
+        <div class="file-prop">
+          <el-card>
+            <legend>书籍上传</legend>
+            <el-upload
+                class="upload"
+                action="/api/upload/uploadBook/"
+                accept=".pdf,.epub,.mobi"
+                ref="upload"
+                :limit=1
+                :on-success="handleSuccess"
+                :on-fail="onFail"
+                :on-change="printFuckingFileList"
+                :on-remove="onRemove"
+                :data="paramsData"
+                :auto-upload="false"
+                :file-list="fileList"
+                :on-exceed="handleExceed"
+                prop="fileList">
+              <el-button size="small" type="primary" style="margin: 10%">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">支持pdf, mobi, epub格式文件</div>
+            </el-upload>
+          </el-card>
+        </div>
+      </el-card>
     </div>
-    <div class="file-prop">
-      <fieldset>
-        <legend>书籍上传</legend>
-        <el-upload
-            class="upload"
-            action="/api/upload/uploadBook/"
-            accept=".pdf,.epub,.mobi"
-            ref="upload"
-            :limit=1
-            :on-success="handleSuccess"
-            :on-fail="onFail"
-            :on-change="printFuckingFileList"
-            :on-remove="onRemove"
-            :data="paramsData"
-            :auto-upload="false"
-            :file-list="fileList"
-            :on-exceed="handleExceed"
-        prop="fileList">
-          <el-button size="small" type="primary" style="margin: 10%">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">支持pdf, mobi, epub格式文件</div>
-        </el-upload>
-      </fieldset>
-    </div>
+
 <!--    <div class="file-prop">-->
 <!--      <fieldset>-->
 <!--        <legend>封面上传</legend>-->
@@ -121,7 +126,8 @@ export default {
       fileList: [],
       hasFile: false,
       hasImage: false,
-      paramsData: {}
+      paramsData: {},
+      press: ''
     };
   },
   methods:{
@@ -159,6 +165,7 @@ export default {
     },
     submit(){
       let self = this
+      self.$Notice.open({title: '正在传输，请等待'})
       self.paramsData.token = sessionStorage.getItem('Authorization')
       self.paramsData.title = self.title;
       self.paramsData.author = self.author;
@@ -168,6 +175,7 @@ export default {
       self.paramsData.description = self.description;
       self.paramsData.topic = self.topic;
       self.paramsData.tags = self.tags;
+      self.paramsData.press = self.press;
       console.log(self.paramsData)
       this.$refs.upload.submit();
       console.log(this.$refs.upload)

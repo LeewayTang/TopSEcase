@@ -361,7 +361,7 @@ class Upload(viewsets.GenericViewSet):
         if description is None or description == '':
             description = '暂无简介'
         topic = request.POST.get('topic')
-        press = '暂无出版社信息'
+        press = request.POST.get('press')
         tags = request.POST.get('tags')
         file = request.FILES.getlist('file')
         tags = tags.split('#')

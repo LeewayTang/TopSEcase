@@ -35,7 +35,7 @@
           <div class="sales-board-form">
             <div class="sales-board-line">
               <div class="sales-board-line-left">
-                作者：{{ this.bookInfo.author }} ｜ {{ this.bookInfo.press }}
+                作者 | 出版社：{{ this.bookInfo.author }} ｜ {{ this.bookInfo.press }}
               </div>
             </div>
             <div class="sales-board-line">

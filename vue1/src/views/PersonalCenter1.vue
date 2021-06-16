@@ -49,7 +49,7 @@
       </div>
     </div>
     <!-- 弹出层-裁剪 -->
-    <el-dialog title="编辑头像" :visible.sync="picture.dialogVisible" :before-close="handleClose">
+    <el-dialog title="编辑头像" :visible.sync="picture.dialogVisible && $store.state.username === $route.params.username" :before-close="handleClose">
       <span>
         <el-row>
           <input
@@ -387,7 +387,8 @@ export default {
     },
     titleClick() {
       if (this.websiteInfo.title === '学生') {
-        this.$message('学生认证，有加入和退出圈子的权限')
+        this.$message('学生认证，有加入和退出圈子的权限\n' +
+            '导师认证请联系管理员')
       }
       else if (this.websiteInfo.title === '导师') {
         this.$message('导师认证，有创建和删除圈子的权限')

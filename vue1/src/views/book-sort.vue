@@ -70,6 +70,11 @@ export default {
   mounted() {
     this.getBook()
     this.getTag()
+  },
+  watch:{
+    '$route.params.tag'(){
+      this.getBook()
+    }
   }
 }
 </script>
