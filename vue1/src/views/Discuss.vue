@@ -28,7 +28,7 @@
               <!-- 文章标签 -->
               <div class="post-tags" v-for="(tag) in category">
                 <i class="iconfont iconcategory" v-if="firstCategory.id === tag.id"></i>
-                <router-link :to="/category/ + tag.tag">{{tag.tag}}</router-link>
+                <el-tag @click="search(tag.tag)" style="cursor: pointer">{{tag.tag}}</el-tag>
               </div>
             </footer>
           </section-title>
@@ -106,6 +106,11 @@ export default {
       }).catch(err => {
         console.log(err);
       })
+    },
+    search(v){
+      // console.log(this.searchValue)
+      this.$router.push({name:'search',params:{words: v, type: 'tag2'}});
+      this.close()
     },
     fetchH(arr,left,right){
       if (right) {

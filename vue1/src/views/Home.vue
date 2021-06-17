@@ -129,7 +129,8 @@
               url: 'api/search/searchArticle/',
               method: 'post',
               data: {
-                'key': self.$route.params.words
+                'key': self.$route.params.words,
+                'type': self.$route.params.type
               }
             }).then(res => {
               self.postList1 = res.data.data || [];

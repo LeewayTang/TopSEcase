@@ -4,6 +4,7 @@ import json
 import random
 import re
 import string
+from itertools import chain
 
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
@@ -1257,11 +1258,30 @@ class Search(viewsets.GenericViewSet):
     @action(methods=['POST'], detail=False)
     def searchArticle(self, request):
         key = request.data.get('key')
-        queryset = Article.objects.filter(Q(summary__icontains=key) |
-                                          Q(content__icontains=key) |
-                                          Q(title__icontains=key))
-
-        return Response({'data': queryset.values(), 'status': 1})
+        tp = request.data.get('type')
+        if tp == 'global':
+            queryset1 = Article.objects.filter(Q(summary__icontains=key) |
+                                               Q(content__icontains=key) |
+                                               Q(title__icontains=key))
+            queryset1 = queryset1.values_list('viewsCount', 'commentsCount', 'title', 'summary',
+                                              'isTop', 'isHot', 'user', 'pubTime',
+                                              'banner', 'type')
+            print(queryset1)
+            queryset2 = Discuss.objects.filter(Q(summary__icontains=key) |
+                                               Q(title__icontains=key))
+            queryset2 = queryset2.values_list('viewsCount', 'commentsCount', 'title', 'summary',
+                                              'isTop', 'isHot', 'user', 'pubTime',
+                                              'banner', 'type')
+            queryset = []
+            for i in queryset2.values():
+                queryset.append(i)
+            for i in queryset1.values():
+                queryset.append(i)
+        elif tp == 'tag1':
+            queryset = ArticleTag.objects.get(tag__exact=key).article.all().values()
+        else:
+            queryset = DiscussTag.objects.get(tag__exact=key).discuss.all().values()
+        return Response({'data': queryset, 'status': 1})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SerchBookSerializer)
     @action(methods=['POST'], detail=False)

@@ -87,10 +87,10 @@ const routes = [
     //     meta: {title: "讨论"}
     // },
     {
-        path: '/search/:words',
+        path: '/search/:type/:words',
         name: 'search',
         component: () => import('../views/Home.vue'),
-        meta: { title: '搜索', params: 'words'}
+        meta: { title: '搜索', params: {type: 'type', words: 'words'}}
     },
     {
         path: '/markdown_test',
