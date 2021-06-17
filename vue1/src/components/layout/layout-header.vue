@@ -40,7 +40,7 @@
                 <img class="menu-img" :src="$store.state.websiteInfo.avatar" >
                 <div class="childMenu" v-if="category.length">
                     <div class="sub-menu" v-for="item in profile" :key="item.title">
-                    <router-link :to="`${item.href + $store.state.websiteInfo.username}`" @click.native="quit(item.title)"> {{item.title}}</router-link>
+                    <router-link :to="$route.fullPath" @click.native="quit(item.title)"> {{item.title}}</router-link>
                     </div>
                 </div>
             </div>
@@ -112,6 +112,10 @@
               onAbort => {}
               )
             }).catch(err => {console.log(err)})
+          })
+        }else {
+          this.$router.push({
+            path: '/personalCenter/'+ this.$store.state.websiteInfo.username
           })
         }
       },

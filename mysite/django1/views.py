@@ -1206,7 +1206,7 @@ class Search(viewsets.GenericViewSet):
         if queryset.count() == 0:
             return Response({'status': -1})
         return Response(
-            {'user': Quanzi.objects.get(name__exact=qz).member.all().order_by('username').values('username'),
+            {'user': Quanzi.objects.get(name__exact=qz).member.exclude(title__exact='导师').order_by('username').values('username')[:20],
              'status': 1})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SerchArticleSerializer)
