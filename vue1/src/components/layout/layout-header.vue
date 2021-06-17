@@ -27,7 +27,7 @@
 
 <!--               <div class="menu-item hasChild"><router-link to="/writeBlog">创作中心</router-link></div>-->
             <div class="menu-item hasChild">
-                <a>文书房</a>
+                <router-link to="/write" >文书房</router-link>
                 <div class="childMenu" v-if="category.length">
                     <div class="sub-menu" v-for="item in category" :key="item.title"><router-link :to="`${item.href}`">
                       {{item.title}}</router-link></div>

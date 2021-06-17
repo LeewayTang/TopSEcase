@@ -12,12 +12,12 @@ export default [
                     {
                         id: 1,
                         title: '创作中心',
-                        href: '/writeBlog'
+                        href: '/write/writeBlog'
                     },
                     {
                         id: 2,
                         title: '发布新书',
-                        href: '/newBook',
+                        href: '/write/newBook',
                     }
                 ]
             }

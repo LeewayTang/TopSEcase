@@ -45,13 +45,17 @@ const routes = [
         meta: { title: '个人中心', params: 'username'}
     },
     {
-        path: '/writeBlog',
+        path: '/write/writeBlog',
         name: 'writeBlog',
         component: () => import('../views/Write1.vue'),
         meta: { title: '创作笔记'}
     },
     {
-        path: '/newBook',
+        path: '/write',
+        redirect: '/write/newBook'
+    },
+    {
+        path: '/write/newBook',
         name: 'newBook',
         component: () => import('../views/newBook.vue'),
         meta: { title: '发布新书'}
