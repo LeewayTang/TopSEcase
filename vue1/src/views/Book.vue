@@ -45,11 +45,28 @@
             </div>
             <div class="sales-board-line">
               <el-row type="flex" justify="end">
+                <el-button @click.stop="showCommentEditor=true">评论</el-button>
                 <el-button type="primary" @click="handleGetBook">获取电子书</el-button>
               </el-row>
+
             </div>
           </div>
         </el-card>
+        <div v-if="showCommentEditor" @click.stop="">
+          <mavon-editor v-model="myComment" :toolbars="{
+              bold: true, // 粗体
+              italic: true,// 斜体
+              header: true,// 标题
+              quote: true, // 引用
+              code: true, // code
+              table: true, // 表格
+              imagelink: true, // 图片链接
+              fullscreen: true, // 全屏编辑
+              subfield: true, // 单双栏模式
+              preview: true, // 预览
+            }"></mavon-editor>
+          <el-button type="success" @click="submitReply">提交</el-button>
+        </div>
         <el-card>
           <h1>精彩书评</h1>
           <div class="sales-board-des">
@@ -60,6 +77,10 @@
             </li>
           </div>
         </el-card>
+        <div class="comments">
+          <comment v-for="item in comments" :comment="item">
+          </comment>
+        </div>
       </div>
     </div>
   </div>
@@ -69,6 +90,7 @@
 import VSelection from "../components/base/selection";
 import VCounter from "../components/base/counter";
 import VChooser from "../components/base/chooser";
+import comment from '../components/comment';
 import VMulChooser from "../components/base/multiplyChooser";
 import Dialog from "../components/base/dialog";
 import _ from "lodash";
@@ -80,6 +102,7 @@ export default {
     VSelection,
     VCounter,
     VChooser,
+    comment,
     VMulChooser,
     MyDialog: Dialog,
   },
@@ -88,6 +111,9 @@ export default {
       bookInfo:{},
       bookList: [],
       bookDialogVisible: false,
+      showCommentEditor: false,
+      myComment: '',
+      comments: [],
       file: [],
     }
   },
@@ -102,8 +128,24 @@ export default {
   created() {
     // this.fetchBookInfo(this.bookInfo.id);
     this.fetchBookInfo();
+    this.getComment();
   },
   methods: {
+    getComment(){
+      let self = this;
+      console.log("id : " + self.$route.params.id)
+      self.$axios({
+        url: '/api/book/getIdComment/',
+        method: 'post',
+        data:{
+          id: self.$route.params.id,
+        }
+      }).then(res => {
+        self.comments = res.data.data || [];
+      }).catch(err => {
+        console.log(err);
+      })
+    },
     handleGetBook(){
       let url = window.location.href.split('#')[0];
       window.location.href = url + 'media/' + this.bookInfo.file
@@ -119,6 +161,35 @@ export default {
     },
     handleClose(v) {
       this.bookDialogVisible = false;
+    },
+    submitReply(){
+      let self = this
+      self.$axios({
+        url: '/api/book/setComment/',
+        method: 'post',
+        data: {
+          id: self.$route.params.id,
+          content: self.myComment,
+          token: sessionStorage.getItem('Authorization'),
+          toUsername: '',
+        }
+      }).then(res => {
+        switch (res.data.status){
+          case -3:
+            self.$Notice.open({
+              title: '游客禁止发布评论',
+            });
+            break;
+          case 1:
+            self.$Notice.open({
+              title: '评论成功'
+            })
+            window.location.reload();
+            break;
+        }
+      }).catch(err => {
+        console.log(err);
+      })
     },
     uploadBookImg(){
       let self = this;
@@ -189,10 +260,22 @@ export default {
       console.log(this.$route.params.id);
       this.fetchBookInfo(this.$route.params.id);
       console.log(this.bookInfo);
-    }
+    },
+    close(){
+      this.showCommentEditor = false
+    },
   },
   mounted() {
     this.fetchBookInfo(this.bookInfo.id)
+  },
+  watch:{
+    showCommentEditor(value) {
+      if (value) {
+        document.body.addEventListener('click', this.close)
+      } else {
+        document.body.removeEventListener('click', this.close)
+      }
+    }
   },
   // watch: {
   //   '$route'(to, from) {

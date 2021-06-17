@@ -905,6 +905,49 @@ class BookTagInfo(viewsets.GenericViewSet):
                                            Q(tag__exact='tutor')).values()
         ret = {'msg': 'success', 'data': queryset, 'status': 1}
         return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=IdSerializer)
+    @action(methods=['POST'], detail=False)
+    def getIdComment(self, request):
+        Id = request.data.get('id')
+        print(Id)
+        queryset = BookComment.objects.filter(book_id=Id).order_by('createTime')
+        print(queryset.values())
+        ret = {'msg': 'success', 'data': queryset.values(), 'status': 1}
+        return Response(ret)
+
+    @swagger_auto_schema(responses={200: ""},
+                         request_body=TokenSerializer)
+    @action(methods=['POST'], detail=False)
+    def setComment(self, request):
+        Id = request.data.get('id')
+        content = request.data.get('content')
+        token = request.data.get('token')
+        fromUser = Token.objects.get(key__exact=token).usr
+        if fromUser.username == 'traveler':
+            return Response({'msg': 'You can\'t do this', 'status': -3})
+        book = Book.objects.get(id=Id)
+        fromUserAvatar = fromUser.avatar
+        fromUserName = fromUser.username
+        toUser = None
+        toUserId = 0
+        toUserName = request.data.get('toUserName')
+        if toUserName is not None:
+            toUser = User.objects.get(username__exact=toUserName)
+            toUserId = toUser.id
+        else:
+            toUserName = ''
+        book.comments += 1
+        book.save()
+        t = BookComment.objects.create(content=content, book=book, fromUserAvatar=fromUserAvatar,
+                                       fromUserName=fromUserName, toUser=toUser, toUserId=toUserId,
+                                       toUserName=toUserName, fromUser=fromUser)
+        print(t.content)
+        ret = {'msg': 'success', 'status': 1}
+        return Response(ret)
+
+
 #
 #     @swagger_auto_schema(responses={200: ""})
 #     @action(methods=['GET'], detail=False)
@@ -1206,7 +1249,8 @@ class Search(viewsets.GenericViewSet):
         if queryset.count() == 0:
             return Response({'status': -1})
         return Response(
-            {'user': Quanzi.objects.get(name__exact=qz).member.exclude(title__exact='导师').order_by('username').values('username')[:20],
+            {'user': Quanzi.objects.get(name__exact=qz).member.exclude(title__exact='导师').order_by('username').values(
+                'username')[:20],
              'status': 1})
 
     @swagger_auto_schema(responses={200: ""}, request_body=SerchArticleSerializer)

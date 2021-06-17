@@ -172,6 +172,21 @@ class Book(models.Model):
     review = models.TextField(verbose_name='评论')
 
 
+# 书籍评论
+class BookComment(models.Model):
+    book = models.ForeignKey(to='Book', on_delete=models.CASCADE)
+    createTime = models.DateField(verbose_name='评论时间', auto_now_add=True)
+    content = models.TextField(verbose_name='正文')
+    fromUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='评论人',
+                                 related_name='bookFromUser')
+    fromUserAvatar = models.CharField(verbose_name='评论者', max_length=512)
+    fromUserName = models.CharField(verbose_name='评论者名字', max_length=512)
+    toUser = models.ForeignKey(to='User', on_delete=models.CASCADE, verbose_name='回复人', default=None,
+                               related_name='bookToUser', null=True)
+    toUserId = models.IntegerField(verbose_name='回复者id', default=0)
+    toUserName = models.CharField(verbose_name='回复者名字', max_length=512, default='')
+
+
 # 书本标签
 class BookTag(models.Model):
     book = models.ManyToManyField('Book')
