@@ -2,8 +2,10 @@
   <div class="book-wrap">
     <div class="book-left">
 <!--      <el-card>-->
-        <img :src="productIcon" class="image" width="220px" :alt="this.bookInfo.title"
-             @click="bookDialogVisible=true">
+      <img :src="productIcon" class="image" width="220px" :alt="this.bookInfo.title">
+      <el-button round @click="bookDialogVisible = true">
+        修改封面
+      </el-button>
 <!--      </el-card>-->
     </div>
     <el-dialog title="编辑" :visible.sync="bookDialogVisible" :before-close="handleClose">
