@@ -196,6 +196,7 @@ export default {
 .book-name {
   margin-top: 20px;
   font-size: 20px;
+  text-align: center;
 }
 .sector {
   width: 950px;
